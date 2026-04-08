@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catatan Teknisi</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 10px;
+}
+.container {
+  max-width: 500px;
+  margin: auto;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+}
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+}
+button {
+  background: #28a745;
+  color: white;
+  border: none;
+}
+.item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.hapus {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px;
+}
+.total {
+  font-weight: bold;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h3>💰 Catatan Teknisi</h3>
+
+  <div class="total">Total Hari Ini: Rp <span id="total">0</span></div>
+
+  <input id="nama" placeholder="Nama Pelanggan">
+
+  <select id="service">
+    <option value="">Pilih Service</option>
+    <option>Printer</option>
+    <option>Komputer</option>
+    <option>Install</option>
+    <option>Lainnya</option>
+  </select>
+
+  <input id="keterangan" placeholder="Keterangan (jika lainnya)">
+  <input id="biaya" type="number" placeholder="Biaya">
+
+  <button id="btnSimpan" onclick="tambah()">Simpan</button>
+
+  <div id="list"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// 🔴 PASTE CONFIG FIREBASE DI SINI
+const firebaseConfig = {
+  apiKey: "ISI",
+  authDomain: "ISI",
+  projectId: "ISI",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+function today() {
+  return new Date().toISOString().split("T")[0];
+}
+
+async function loadData() {
+  const querySnapshot = await getDocs(collection(db, "data"));
+  let total = 0;
+  let html = "";
+
+  querySnapshot.forEach((docSnap) => {
+    const d = docSnap.data();
+
+    if (d.tanggal === today()) {
+      total += d.biaya;
+
+      let namaService = d.service === "Lainnya" ? d.keterangan : d.service;
+
+      html += `
+        <div class="item">
+          ${d.nama} - ${namaService} - ${d.biaya}
+          <button class="hapus" onclick="hapus('${docSnap.id}')">X</button>
+        </div>
+      `;
+    }
+  });
+
+  document.getElementById("list").innerHTML = html;
+  document.getElementById("total").innerText = total;
+}
+
+window.tambah = async function() {
+  let nama = document.getElementById("nama").value;
+  let service = document.getElementById("service").value;
+  let ket = document.getElementById("keterangan").value;
+  let biaya = parseInt(document.getElementById("biaya").value);
+
+  if (!nama || !service || !biaya) return alert("Isi semua!");
+
+  if (service === "Lainnya" && !ket) {
+    return alert("Isi keterangan!");
+  }
+
+  let btn = document.getElementById("btnSimpan");
+  btn.innerText = "Menyimpan...";
+  btn.disabled = true;
+
+  setTimeout(async () => {
+    await addDoc(collection(db, "data"), {
+      nama,
+      service,
+      keterangan: ket || "",
+      biaya,
+      tanggal: today()
+    });
+
+    alert("✅ Berhasil disimpan");
+
+    document.getElementById("nama").value = "";
+    document.getElementById("service").value = "";
+    document.getElementById("keterangan").value = "";
+    document.getElementById("biaya").value = "";
+
+    btn.innerText = "Simpan";
+    btn.disabled = false;
+
+    document.getElementById("nama").focus();
+
+    loadData();
+  }, 3000);
+};
+
+window.hapus = async function(id) {
+  await deleteDoc(doc(db, "data", id));
+  loadData();
+};
+
+loadData();
+</script>
+</body>
+</html>
