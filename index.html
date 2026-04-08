@@ -28,6 +28,7 @@ button {
   background: #28a745;
   color: white;
   border: none;
+  border-radius: 5px;
 }
 .item {
   padding: 10px;
@@ -35,13 +36,10 @@ button {
 }
 .hapus {
   background: red;
-  color: white;
-  border: none;
   padding: 5px;
 }
 .total {
   font-weight: bold;
-  margin-top: 10px;
 }
 </style>
 </head>
@@ -50,7 +48,8 @@ button {
 <div class="container">
   <h3>💰 Catatan Teknisi</h3>
 
-  <div class="total">Total Hari Ini: Rp <span id="total">0</span></div>
+  <div class="total">Hari Ini: Rp <span id="total">0</span></div>
+  <div class="total">Bulan Ini: Rp <span id="totalBulanan">0</span></div>
 
   <input id="nama" placeholder="Nama Pelanggan">
 
@@ -66,28 +65,30 @@ button {
   <input id="biaya" type="number" placeholder="Biaya">
 
   <button id="btnSimpan" onclick="tambah()">Simpan</button>
+  <button onclick="hapusTerpilih()">🗑️ Hapus Terpilih</button>
+  <button onclick="exportExcel()">📊 Excel</button>
+  <button onclick="exportPDF()">📄 PDF</button>
 
   <div id="list"></div>
 </div>
+
+<!-- LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf/dist/jspdf.umd.min.js"></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// 🔴 PASTE CONFIG FIREBASE DI SINI
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyD25yifoIuCrqXVKEx7NvALoAJ8PNb8pDg",
   authDomain: "catatan-teknisi-50aef.firebaseapp.com",
   projectId: "catatan-teknisi-50aef",
   storageBucket: "catatan-teknisi-50aef.firebasestorage.app",
   messagingSenderId: "172857160604",
-  appId: "1:172857160604:web:8e94e98ca0e7e28309ce59",
-  measurementId: "G-4K83BFYYVR"
+  appId: "1:172857160604:web:8e94e98ca0e7e28309ce59"
 };
-  
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -96,22 +97,33 @@ function today() {
   return new Date().toISOString().split("T")[0];
 }
 
+// LOAD DATA
 async function loadData() {
   const querySnapshot = await getDocs(collection(db, "data"));
-  let total = 0;
+
+  let totalHarian = 0;
+  let totalBulanan = 0;
   let html = "";
+
+  const todayDate = today();
+  const bulanIni = todayDate.substring(0, 7);
 
   querySnapshot.forEach((docSnap) => {
     const d = docSnap.data();
 
-    if (d.tanggal === today()) {
-      total += d.biaya;
+    let namaService = d.service === "Lainnya" ? d.keterangan : d.service;
 
-      let namaService = d.service === "Lainnya" ? d.keterangan : d.service;
+    if (d.tanggal.startsWith(bulanIni)) {
+      totalBulanan += d.biaya;
+    }
+
+    if (d.tanggal === todayDate) {
+      totalHarian += d.biaya;
 
       html += `
         <div class="item">
-          ${d.nama} - ${namaService} - ${d.biaya}
+          <input type="checkbox" class="cek" value="${docSnap.id}">
+          ${d.nama} - ${namaService} - Rp ${d.biaya.toLocaleString()}
           <button class="hapus" onclick="hapus('${docSnap.id}')">X</button>
         </div>
       `;
@@ -119,9 +131,11 @@ async function loadData() {
   });
 
   document.getElementById("list").innerHTML = html;
-  document.getElementById("total").innerText = total;
+  document.getElementById("total").innerText = totalHarian.toLocaleString();
+  document.getElementById("totalBulanan").innerText = totalBulanan.toLocaleString();
 }
 
+// TAMBAH
 window.tambah = async function() {
   let nama = document.getElementById("nama").value;
   let service = document.getElementById("service").value;
@@ -129,25 +143,27 @@ window.tambah = async function() {
   let biaya = parseInt(document.getElementById("biaya").value);
 
   if (!nama || !service || !biaya) return alert("Isi semua!");
-
-  if (service === "Lainnya" && !ket) {
-    return alert("Isi keterangan!");
-  }
+  if (service === "Lainnya" && !ket) return alert("Isi keterangan!");
 
   let btn = document.getElementById("btnSimpan");
   btn.innerText = "Menyimpan...";
   btn.disabled = true;
 
   setTimeout(async () => {
-    await addDoc(collection(db, "data"), {
-      nama,
-      service,
-      keterangan: ket || "",
-      biaya,
-      tanggal: today()
-    });
+    try {
+      await addDoc(collection(db, "data"), {
+        nama,
+        service,
+        keterangan: ket || "",
+        biaya,
+        tanggal: today()
+      });
 
-    alert("✅ Berhasil disimpan");
+      alert("✅ Tersimpan");
+
+    } catch (e) {
+      alert("❌ Gagal: " + e.message);
+    }
 
     document.getElementById("nama").value = "";
     document.getElementById("service").value = "";
@@ -156,18 +172,98 @@ window.tambah = async function() {
 
     btn.innerText = "Simpan";
     btn.disabled = false;
-
     document.getElementById("nama").focus();
 
     loadData();
   }, 3000);
 };
 
+// HAPUS SATU
 window.hapus = async function(id) {
+  if (!confirm("Yakin hapus?")) return;
   await deleteDoc(doc(db, "data", id));
   loadData();
 };
 
+// HAPUS TERPILIH
+window.hapusTerpilih = async function() {
+  const checks = document.querySelectorAll(".cek:checked");
+
+  if (checks.length === 0) return alert("Pilih data dulu!");
+  if (!confirm("Yakin hapus terpilih?")) return;
+
+  for (let c of checks) {
+    await deleteDoc(doc(db, "data", c.value));
+  }
+
+  alert("✅ Dihapus");
+  loadData();
+};
+
+// EXPORT EXCEL
+window.exportExcel = async function() {
+  const querySnapshot = await getDocs(collection(db, "data"));
+  let data = [];
+
+  querySnapshot.forEach((docSnap) => {
+    const d = docSnap.data();
+    let namaService = d.service === "Lainnya" ? d.keterangan : d.service;
+
+    data.push({
+      Tanggal: d.tanggal,
+      Nama: d.nama,
+      Service: namaService,
+      Biaya: d.biaya
+    });
+  });
+
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Laporan");
+  XLSX.writeFile(wb, "laporan.xlsx");
+};
+
+// EXPORT PDF
+window.exportPDF = async function() {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+
+  const querySnapshot = await getDocs(collection(db, "data"));
+  let y = 10;
+  let total = 0;
+
+  pdf.text("Laporan Teknisi", 10, y);
+  y += 10;
+
+  querySnapshot.forEach((docSnap) => {
+    const d = docSnap.data();
+    let namaService = d.service === "Lainnya" ? d.keterangan : d.service;
+
+    total += d.biaya;
+
+    pdf.text(`${d.tanggal} | ${d.nama} | ${namaService} | Rp ${d.biaya}`, 10, y);
+    y += 8;
+
+    if (y > 280) {
+      pdf.addPage();
+      y = 10;
+    }
+  });
+
+  y += 10;
+  pdf.text(`TOTAL: Rp ${total}`, 10, y);
+  pdf.save("laporan.pdf");
+};
+
+// ENTER = SIMPAN
+document.getElementById("biaya").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") tambah();
+});
+
+// AUTO FOCUS
+document.getElementById("nama").focus();
+
+// LOAD AWAL
 loadData();
 </script>
 </body>
