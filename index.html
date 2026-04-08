@@ -6,75 +6,371 @@
 <title>Catatan Teknisi</title>
 
 <style>
-body {
-  font-family: Arial;
-  background: #f4f4f4;
+* {
   margin: 0;
-  padding: 10px;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
 .container {
-  max-width: 500px;
-  margin: auto;
+  max-width: 600px;
+  margin: 0 auto;
   background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 25px;
+  text-align: center;
+}
+
+.header h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.total-section {
+  background: #f8f9fa;
+  padding: 15px 25px;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-label {
+  font-size: 16px;
+  color: #6c757d;
+}
+
+.total-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #28a745;
+}
+
+.form-section {
+  padding: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #495057;
+  font-size: 14px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236c757d'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 15px;
+}
+
+.btn-simpan {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+}
+
+.btn-simpan:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-laporan {
+  background: linear-gradient(135deg, #007bff 0%, #6f42c1 100%);
+  color: white;
+}
+
+.btn-laporan:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+.btn-hapus {
+  background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+  color: white;
+  padding: 8px 12px;
+  font-size: 14px;
+  float: right;
+}
+
+.btn-hapus:hover {
+  transform: scale(1.05);
+}
+
+.list-section {
+  padding: 0 25px 25px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.item-card {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
   padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.item-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-nama {
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 5px;
+}
+
+.item-detail {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.item-biaya {
+  font-size: 18px;
+  font-weight: 700;
+  color: #28a745;
+}
+
+.report-section {
+  padding: 25px;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  display: none;
+}
+
+.report-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.report-card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.report-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.report-label {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 5px;
+}
+
+.report-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.report-list {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.report-item {
+  padding: 10px;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.report-item:last-child {
+  border-bottom: none;
+}
+
+.report-date {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.report-detail {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.report-biaya {
+  font-weight: 600;
+  color: #28a745;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
   border-radius: 10px;
 }
-input, select, button {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
+
+::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 10px;
 }
-button {
-  background: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5563c1;
 }
-.item {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-.hapus {
-  background: red;
-  padding: 5px;
-}
-.total {
-  font-weight: bold;
+
+@media (max-width: 480px) {
+  .container {
+    margin: 10px;
+    border-radius: 15px;
+  }
+  
+  .header h3 {
+    font-size: 20px;
+  }
+  
+  .total-value {
+    font-size: 24px;
+  }
 }
 </style>
 </head>
 
 <body>
 <div class="container">
-  <h3>💰 Catatan Teknisi</h3>
+  <div class="header">
+    <h3>💰 Catatan Teknisi</h3>
+    <p style="opacity: 0.9;">Manajemen Pendapatan Harian</p>
+  </div>
 
-  <div class="total">Hari Ini: Rp <span id="total">0</span></div>
-  <div class="total">Bulan Ini: Rp <span id="totalBulanan">0</span></div>
+  <div class="total-section">
+    <div class="total-label">Total Hari Ini</div>
+    <div class="total-value">Rp <span id="total">0</span></div>
+  </div>
 
-  <input id="nama" placeholder="Nama Pelanggan">
+  <div class="form-section">
+    <div class="form-group">
+      <label for="nama">Nama Pelanggan</label>
+      <input type="text" id="nama" class="form-control" placeholder="Masukkan nama pelanggan">
+    </div>
 
-  <select id="service">
-    <option value="">Pilih Service</option>
-    <option>Printer</option>
-    <option>Komputer</option>
-    <option>Install</option>
-    <option>Lainnya</option>
-  </select>
+    <div class="form-group">
+      <label for="service">Jenis Service</label>
+      <select id="service" class="form-control">
+        <option value="">Pilih Service</option>
+        <option>Printer</option>
+        <option>Komputer</option>
+        <option>Install</option>
+        <option>Lainnya</option>
+      </select>
+    </div>
 
-  <input id="keterangan" placeholder="Keterangan (jika lainnya)">
-  <input id="biaya" type="number" placeholder="Biaya">
+    <div class="form-group">
+      <label for="keterangan">Keterangan (jika lainnya)</label>
+      <input type="text" id="keterangan" class="form-control" placeholder="Deskripsi tambahan">
+    </div>
 
-  <button id="btnSimpan" onclick="tambah()">Simpan</button>
-  <button onclick="hapusTerpilih()">🗑️ Hapus Terpilih</button>
-  <button onclick="exportExcel()">📊 Excel</button>
-  <button onclick="exportPDF()">📄 PDF</button>
+    <div class="form-group">
+      <label for="biaya">Biaya (Rp)</label>
+      <input type="number" id="biaya" class="form-control" placeholder="Masukkan biaya">
+    </div>
 
-  <div id="list"></div>
+    <button id="btnSimpan" class="btn-simpan" onclick="tambah()">Simpan Transaksi</button>
+    <button id="btnLaporan" class="btn-laporan" onclick="tampilkanLaporan()">📊 Lihat Laporan Pendapatan</button>
+  </div>
+
+  <div id="list" class="list-section"></div>
+
+  <div id="laporan" class="report-section">
+    <div class="report-title">Laporan Pendapatan</div>
+    <div class="report-grid">
+      <div class="report-card">
+        <div class="report-label">Hari Ini</div>
+        <div class="report-value" id="totalHariIni">Rp 0</div>
+      </div>
+      <div class="report-card">
+        <div class="report-label">Minggu Ini</div>
+        <div class="report-value" id="totalMingguIni">Rp 0</div>
+      </div>
+      <div class="report-card">
+        <div class="report-label">Bulan Ini</div>
+        <div class="report-value" id="totalBulanIni">Rp 0</div>
+      </div>
+    </div>
+    <div class="report-list" id="report-content"></div>
+  </div>
 </div>
-
-<!-- LIBRARY -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf/dist/jspdf.umd.min.js"></script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -87,7 +383,8 @@ const firebaseConfig = {
   projectId: "catatan-teknisi-50aef",
   storageBucket: "catatan-teknisi-50aef.firebasestorage.app",
   messagingSenderId: "172857160604",
-  appId: "1:172857160604:web:8e94e98ca0e7e28309ce59"
+  appId: "1:172857160604:web:8e94e98ca0e7e28309ce59",
+  measurementId: "G-4K83BFYYVR"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -97,173 +394,155 @@ function today() {
   return new Date().toISOString().split("T")[0];
 }
 
-// LOAD DATA
+function formatRupiah(angka) {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0
+  }).format(angka);
+}
+
 async function loadData() {
   const querySnapshot = await getDocs(collection(db, "data"));
-
-  let totalHarian = 0;
-  let totalBulanan = 0;
+  let total = 0;
   let html = "";
-
-  const todayDate = today();
-  const bulanIni = todayDate.substring(0, 7);
 
   querySnapshot.forEach((docSnap) => {
     const d = docSnap.data();
 
-    let namaService = d.service === "Lainnya" ? d.keterangan : d.service;
+    if (d.tanggal === today()) {
+      total += d.biaya;
 
-    if (d.tanggal.startsWith(bulanIni)) {
-      totalBulanan += d.biaya;
-    }
-
-    if (d.tanggal === todayDate) {
-      totalHarian += d.biaya;
+      let namaService = d.service === "Lainnya" ? d.keterangan : d.service;
 
       html += `
-        <div class="item">
-          <input type="checkbox" class="cek" value="${docSnap.id}">
-          ${d.nama} - ${namaService} - Rp ${d.biaya.toLocaleString()}
-          <button class="hapus" onclick="hapus('${docSnap.id}')">X</button>
+        <div class="item-card">
+          <div class="item-info">
+            <div class="item-nama">${d.nama}</div>
+            <div class="item-detail">${namaService}</div>
+          </div>
+          <div class="item-biaya">${formatRupiah(d.biaya)}</div>
+          <button class="btn-hapus" onclick="hapus('${docSnap.id}')">Hapus</button>
         </div>
       `;
     }
   });
 
   document.getElementById("list").innerHTML = html;
-  document.getElementById("total").innerText = totalHarian.toLocaleString();
-  document.getElementById("totalBulanan").innerText = totalBulanan.toLocaleString();
+  document.getElementById("total").innerText = formatRupiah(total);
 }
 
-// TAMBAH
+async function tampilkanLaporan() {
+  const querySnapshot = await getDocs(collection(db, "data"));
+  let totalHariIni = 0;
+  let totalMingguIni = 0;
+  let totalBulanIni = 0;
+  let dataLaporan = [];
+
+  const today = new Date();
+  const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - today.getDay());
+  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  querySnapshot.forEach((docSnap) => {
+    const d = docSnap.data();
+    const tanggal = new Date(d.tanggal);
+    
+    if (tanggal >= startOfDay) {
+      totalHariIni += d.biaya;
+    }
+    
+    if (tanggal >= startOfWeek) {
+      totalMingguIni += d.biaya;
+    }
+    
+    if (tanggal >= startOfMonth) {
+      totalBulanIni += d.biaya;
+    }
+    
+    dataLaporan.push({
+      nama: d.nama,
+      service: d.service,
+      keterangan: d.keterangan,
+      biaya: d.biaya,
+      tanggal: d.tanggal
+    });
+  });
+
+  document.getElementById("totalHariIni").innerText = formatRupiah(totalHariIni);
+  document.getElementById("totalMingguIni").innerText = formatRupiah(totalMingguIni);
+  document.getElementById("totalBulanIni").innerText = formatRupiah(totalBulanIni);
+
+  let html = "";
+
+  dataLaporan.slice(-10).reverse().forEach(item => {
+    let namaService = item.service === "Lainnya" ? item.keterangan : item.service;
+    html += `
+      <div class="report-item">
+        <div class="report-date">${item.tanggal}</div>
+        <div class="report-detail">${item.nama} - ${namaService}</div>
+        <div class="report-biaya">${formatRupiah(item.biaya)}</div>
+      </div>
+    `;
+  });
+
+  document.getElementById("report-content").innerHTML = html;
+  document.getElementById("laporan").style.display = "block";
+}
+
 window.tambah = async function() {
   let nama = document.getElementById("nama").value;
   let service = document.getElementById("service").value;
   let ket = document.getElementById("keterangan").value;
   let biaya = parseInt(document.getElementById("biaya").value);
 
-  if (!nama || !service || !biaya) return alert("Isi semua!");
-  if (service === "Lainnya" && !ket) return alert("Isi keterangan!");
+  if (!nama || !service || !biaya) {
+    alert("Mohon lengkapi semua field!");
+    return;
+  }
+
+  if (service === "Lainnya" && !ket) {
+    alert("Mohon isi keterangan untuk service 'Lainnya'!");
+    return;
+  }
 
   let btn = document.getElementById("btnSimpan");
   btn.innerText = "Menyimpan...";
   btn.disabled = true;
 
   setTimeout(async () => {
-    try {
-      await addDoc(collection(db, "data"), {
-        nama,
-        service,
-        keterangan: ket || "",
-        biaya,
-        tanggal: today()
-      });
+    await addDoc(collection(db, "data"), {
+      nama,
+      service,
+      keterangan: ket || "",
+      biaya,
+      tanggal: today()
+    });
 
-      alert("✅ Tersimpan");
-
-    } catch (e) {
-      alert("❌ Gagal: " + e.message);
-    }
+    alert("✅ Transaksi berhasil disimpan!");
 
     document.getElementById("nama").value = "";
     document.getElementById("service").value = "";
     document.getElementById("keterangan").value = "";
     document.getElementById("biaya").value = "";
 
-    btn.innerText = "Simpan";
+    btn.innerText = "Simpan Transaksi";
     btn.disabled = false;
+
     document.getElementById("nama").focus();
 
     loadData();
-  }, 3000);
+  }, 1000);
 };
 
-// HAPUS SATU
 window.hapus = async function(id) {
-  if (!confirm("Yakin hapus?")) return;
-  await deleteDoc(doc(db, "data", id));
-  loadData();
-};
-
-// HAPUS TERPILIH
-window.hapusTerpilih = async function() {
-  const checks = document.querySelectorAll(".cek:checked");
-
-  if (checks.length === 0) return alert("Pilih data dulu!");
-  if (!confirm("Yakin hapus terpilih?")) return;
-
-  for (let c of checks) {
-    await deleteDoc(doc(db, "data", c.value));
+  if (confirm("Apakah Anda yakin ingin menghapus transaksi ini?")) {
+    await deleteDoc(doc(db, "data", id));
+    loadData();
   }
-
-  alert("✅ Dihapus");
-  loadData();
 };
 
-// EXPORT EXCEL
-window.exportExcel = async function() {
-  const querySnapshot = await getDocs(collection(db, "data"));
-  let data = [];
-
-  querySnapshot.forEach((docSnap) => {
-    const d = docSnap.data();
-    let namaService = d.service === "Lainnya" ? d.keterangan : d.service;
-
-    data.push({
-      Tanggal: d.tanggal,
-      Nama: d.nama,
-      Service: namaService,
-      Biaya: d.biaya
-    });
-  });
-
-  const ws = XLSX.utils.json_to_sheet(data);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Laporan");
-  XLSX.writeFile(wb, "laporan.xlsx");
-};
-
-// EXPORT PDF
-window.exportPDF = async function() {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF();
-
-  const querySnapshot = await getDocs(collection(db, "data"));
-  let y = 10;
-  let total = 0;
-
-  pdf.text("Laporan Teknisi", 10, y);
-  y += 10;
-
-  querySnapshot.forEach((docSnap) => {
-    const d = docSnap.data();
-    let namaService = d.service === "Lainnya" ? d.keterangan : d.service;
-
-    total += d.biaya;
-
-    pdf.text(`${d.tanggal} | ${d.nama} | ${namaService} | Rp ${d.biaya}`, 10, y);
-    y += 8;
-
-    if (y > 280) {
-      pdf.addPage();
-      y = 10;
-    }
-  });
-
-  y += 10;
-  pdf.text(`TOTAL: Rp ${total}`, 10, y);
-  pdf.save("laporan.pdf");
-};
-
-// ENTER = SIMPAN
-document.getElementById("biaya").addEventListener("keypress", function(e) {
-  if (e.key === "Enter") tambah();
-});
-
-// AUTO FOCUS
-document.getElementById("nama").focus();
-
-// LOAD AWAL
 loadData();
 </script>
 </body>
