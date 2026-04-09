@@ -143,30 +143,62 @@ body::after {
 
 /* Header */
 .header { text-align: center; padding: 28px 20px 24px; }
+
+/* ============ HEADER ICON DENGAN PNG ============ */
 .header-icon {
-  width: 68px; height: 68px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  width: 72px; height: 72px;
   border-radius: 18px;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 16px;
-  box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
+  /* Background gradient tetap ada untuk efek glow */
+  background: linear-gradient(135deg, var(--primary), var(--primary-light), var(--purple));
+  padding: 4px; /* padding untuk border effect */
+  box-shadow: 
+    0 8px 24px rgba(8, 145, 178, 0.35),
+    0 0 0 3px rgba(255,255,255,0.2);
   position: relative;
+  overflow: hidden;
+  animation: iconFloat 3s ease-in-out infinite;
 }
-.header-icon::after {
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.header-icon::before {
   content: '';
   position: absolute;
-  inset: -3px;
-  border-radius: 21px;
+  inset: 0;
+  border-radius: inherit;
   background: linear-gradient(135deg, var(--primary-light), transparent, var(--purple));
-  z-index: -1;
-  opacity: 0.5;
+  z-index: 0;
+  opacity: 0.6;
   animation: iconPulse 3s ease-in-out infinite;
 }
 @keyframes iconPulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.05); opacity: 0.8; }
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
 }
-.header-icon svg { width: 32px; height: 32px; stroke: white; stroke-width: 2; position: relative; z-index: 1; }
+/* Inner container untuk putih + image */
+.header-icon-inner {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.header-icon-inner img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+  /* Drop shadow pada image */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
 .header h1 { font-size: 24px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; margin-bottom: 4px; }
 .header p { font-size: 14px; color: var(--text-muted); font-weight: 500; }
 
@@ -320,9 +352,9 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 @keyframes shimmer-purple { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 .btn-report:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124, 58, 237, 0.38); }
 
-/* ============ ITEM CARD WITH LONG PRESS ============ */
+/* Item Card with Long Press */
 .list-section { margin-bottom: 20px; }
-.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 2px; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 2px; flex-wrap: wrap; gap: 6px; }
 .section-title { font-size: 15px; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 7px; }
 .item-count { background: var(--bg-input); padding: 4px 10px; border-radius: 16px; font-size: 11px; font-weight: 600; color: var(--text-muted); }
 
@@ -562,11 +594,12 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 @media (max-width: 480px) {
   body { padding: 10px; }
   .header { padding: 22px 16px 18px; }
-  .header-icon { width: 58px; height: 58px; }
+  .header-icon { width: 64px; height: 64px; }
   .form-inner { padding: 18px 16px; }
   .item-card { padding: 12px; }
   .ic-chip { display: none; }
   .circuit-node.n1, .circuit-node.n2 { display: none; }
+  .long-press-hint { display: none; }
 }
 </style>
 </head>
@@ -632,9 +665,14 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 <div class="container">
   <!-- Header -->
   <div class="header">
+    <!-- ==================== HEADER ICON PAKAI PNG KAMU ==================== -->
     <div class="header-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="header-icon-inner">
+        <!-- ⬇️ GANTI "icon.png" DENGAN NAMA FILE KAMU -->
+        <img src="icon.png" alt="Logo">
+      </div>
     </div>
+    
     <h1>Catatan Teknisi</h1>
     <p>Manajemen Pendapatan Harian</p>
   </div>
@@ -733,7 +771,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
     </div>
   </div>
 
-  <!-- List with Hint -->
+  <!-- List -->
   <div class="list-section">
     <div class="section-header">
       <div class="section-title">
@@ -743,7 +781,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
       <div style="display:flex;align-items:center;gap:8px;">
         <span class="long-press-hint">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/></svg>
-          Tekan lama utk hapus
+          Tahan utk hapus
         </span>
         <span class="item-count" id="itemCount">0 item</span>
       </div>
@@ -771,7 +809,8 @@ const db = getFirestore(app);
 let selectedDate = '';
 let deleteTargetId = null;
 
-const LONG_PRESS_DURATION = 3000; // 3 detik
+const LONG_PRESS_DURATION = 3000;
+
 const icons = {
   'Printer': { icon: '🖨️', cls: 'icon-printer' },
   'Komputer': { icon: '💻', cls: 'icon-komputer' },
@@ -804,43 +843,32 @@ window.showToast = function(msg,type='success') {
   setTimeout(()=>t.classList.remove('show'),2800);
 };
 
-// ============ LONG PRESS HANDLER ============
+// Long Press Handler
 let pressTimer = null;
 let pressStartTime = 0;
 let pressInterval = null;
 
 function startLongPress(card, docId) {
-  // Clear any existing timer
   clearLongPress();
-  
   pressStartTime = Date.now();
   card.classList.add('pressing');
   
-  // Get progress elements
   const progressText = card.querySelector('.progress-text');
   const progressFill = card.querySelector('.progress-ring-fill');
-  const circumference = 2 * Math.PI * 24; // radius = 24
+  const circumference = 2 * Math.PI * 24;
   
   if (progressFill) {
     progressFill.style.strokeDasharray = circumference;
     progressFill.style.strokeDashoffset = circumference;
   }
   
-  // Update progress every 50ms
   pressInterval = setInterval(() => {
     const elapsed = Date.now() - pressStartTime;
     const progress = Math.min(elapsed / LONG_PRESS_DURATION, 1);
-    
-    if (progressText) {
-      progressText.textContent = Math.ceil((1 - progress) * 3);
-    }
-    if (progressFill) {
-      const offset = circumference * (1 - progress);
-      progressFill.style.strokeDashoffset = offset;
-    }
+    if (progressText) progressText.textContent = Math.ceil((1 - progress) * 3);
+    if (progressFill) progressFill.style.strokeDashoffset = circumference * (1 - progress);
   }, 50);
   
-  // Set the main timer
   pressTimer = setTimeout(() => {
     clearLongPress();
     card.classList.remove('pressing');
@@ -849,19 +877,11 @@ function startLongPress(card, docId) {
 }
 
 function clearLongPress() {
-  if (pressTimer) {
-    clearTimeout(pressTimer);
-    pressTimer = null;
-  }
-  if (pressInterval) {
-    clearInterval(pressInterval);
-    pressInterval = null;
-  }
-  // Remove pressing state from all cards
+  if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+  if (pressInterval) { clearInterval(pressInterval); pressInterval = null; }
   document.querySelectorAll('.item-card.pressing').forEach(c => c.classList.remove('pressing'));
 }
 
-// Touch/Mouse events for long press
 document.addEventListener('touchstart', (e) => {
   const card = e.target.closest('.item-card');
   if (!card || !card.dataset.id) return;
@@ -869,36 +889,21 @@ document.addEventListener('touchstart', (e) => {
   startLongPress(card, card.dataset.id);
 }, { passive: false });
 
-document.addEventListener('touchend', () => {
-  clearLongPress();
-});
-
-document.addEventListener('touchmove', () => {
-  clearLongPress();
-});
-
-// Mouse events for desktop
+document.addEventListener('touchend', () => clearLongPress());
+document.addEventListener('touchmove', () => clearLongPress());
 document.addEventListener('mousedown', (e) => {
   const card = e.target.closest('.item-card');
   if (!card || !card.dataset.id) return;
   startLongPress(card, card.dataset.id);
 });
+document.addEventListener('mouseup', () => clearLongPress());
+document.addEventListener('mouseleave', () => clearLongPress());
 
-document.addEventListener('mouseup', () => {
-  clearLongPress();
-});
-
-document.addEventListener('mouseleave', () => {
-  clearLongPress();
-});
-
-// ============ DELETE MODAL ============
+// Modal
 function showDeleteModal(id, nama) {
   deleteTargetId = id;
   document.getElementById('deleteName').textContent = nama;
   document.getElementById('deleteModal').classList.add('show');
-  
-  // Set confirm button action
   document.getElementById('confirmDeleteBtn').onclick = async () => {
     await window.hapus(deleteTargetId);
     closeDeleteModal();
@@ -910,12 +915,11 @@ window.closeDeleteModal = function() {
   deleteTargetId = null;
 };
 
-// Close modal on overlay click
 document.getElementById('deleteModal').addEventListener('click', (e) => {
   if (e.target === e.currentTarget) closeDeleteModal();
 });
 
-// ============ INIT & DATA ============
+// Init & Data
 function initDate() {
   selectedDate=todayStr();
   document.getElementById('tanggal').value=selectedDate;
