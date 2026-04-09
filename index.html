@@ -50,7 +50,6 @@ body::before {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   background: 
-    /* Base color - soft blue-gray like PCB substrate */
     linear-gradient(180deg, #e8f4f8 0%, #f0f4f8 30%, #f8fafb 70%, #eef2f7 100%);
   z-index: -2;
 }
@@ -63,24 +62,15 @@ body::after {
   z-index: -1;
   opacity: 0.4;
   background-image: 
-    /* Horizontal main traces */
     linear-gradient(90deg, transparent 49.5%, rgba(8, 145, 178, 0.25) 49.5%, rgba(8, 145, 178, 0.25) 50.5%, transparent 50.5%),
     linear-gradient(90deg, transparent 19.5%, rgba(8, 145, 178, 0.15) 19.5%, rgba(8, 145, 178, 0.15) 20.5%, transparent 20.5%),
     linear-gradient(90deg, transparent 79.5%, rgba(8, 145, 178, 0.15) 79.5%, rgba(8, 145, 178, 0.15) 80.5%, transparent 80.5%),
-    
-    /* Vertical traces */
     linear-gradient(0deg, transparent 29.5%, rgba(8, 145, 178, 0.18) 29.5%, rgba(8, 145, 178, 0.18) 30.5%, transparent 30.5%),
     linear-gradient(0deg, transparent 69.5%, rgba(8, 145, 178, 0.18) 69.5%, rgba(8, 145, 178, 0.18) 70.5%, transparent 70.5%),
-    
-    /* Diagonal traces - top left area going to "IC" */
     linear-gradient(45deg, transparent 48%, rgba(124, 58, 237, 0.12) 48%, rgba(124, 58, 237, 0.12) 52%, transparent 52%),
     linear-gradient(135deg, transparent 48%, rgba(8, 145, 178, 0.1) 48%, rgba(8, 145, 178, 0.1) 52%, transparent 52%),
-    
-    /* More circuit paths */
     linear-gradient(60deg, transparent 88%, rgba(8, 145, 178, 0.12) 88%, rgba(8, 145, 178, 0.12) 92%, transparent 92%),
     linear-gradient(-45deg, transparent 85%, rgba(124, 58, 237, 0.1) 85%, rgba(124, 58, 237, 0.1) 89%, transparent 89%),
-    
-    /* Fine grid dots (vias) */
     radial-gradient(circle at center, rgba(8, 145, 178, 0.2) 1px, transparent 1px);
   
   background-size: 
@@ -115,7 +105,7 @@ body::after {
   100% { opacity: 0.55; }
 }
 
-/* IC Chip Component - Top Right */
+/* IC Chip Component */
 .ic-chip {
   position: fixed;
   z-index: -1;
@@ -146,7 +136,7 @@ body::after {
   100% { opacity: 0.35; filter: drop-shadow(0 0 15px rgba(8, 145, 178, 0.4)); }
 }
 
-/* Floating Nodes / Components */
+/* Floating Nodes */
 .circuit-node {
   position: fixed;
   width: 12px;
@@ -292,7 +282,7 @@ body::after {
 .total-card {
   background: var(--bg-card); border: 1.5px solid var(--border);
   border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px;
-  position: relative; overflow: hidden; box-shadow: var(--shadow-sm);
+  position: relative; overflow: hidden;
 }
 .total-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -303,7 +293,7 @@ body::after {
 .total-value { font-size: 34px; font-weight: 800; color: var(--success); display: flex; align-items: baseline; gap: 4px; }
 .total-value .currency { font-size: 18px; font-weight: 700; opacity: 0.6; }
 
-/* ============ FORM SECTION - COLORFUL ============ */
+/* ============ FORM SECTION ============ */
 .form-section {
   background: 
     linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
@@ -400,12 +390,88 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 @keyframes shimmer-purple { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 .btn-report:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124, 58, 237, 0.38); }
 
-.btn-danger {
-  background: linear-gradient(135deg, #fef2f2, #fee2e2);
-  color: var(--danger); padding: 7px 12px; font-size: 11px; font-weight: 700;
-  width: auto; float: right; border-radius: 8px; border: 1px solid #fecaca;
+/* ============ MORE BUTTON (TITIK TIGA) ============ */
+.btn-more {
+  width: 32px; height: 32px; min-width: 32px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  transition: all 0.2s ease;
+  position: relative;
 }
-.btn-danger:hover { background: var(--danger); color: white; border-color: var(--danger); }
+.btn-more:hover {
+  background: rgba(148, 163, 184, 0.15);
+}
+.btn-more:active {
+  transform: scale(0.92);
+}
+.btn-more span {
+  display: block;
+  width: 4px;
+  height: 4px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+.btn-more:hover span {
+  background: var(--danger);
+}
+
+/* Dropdown Menu untuk More Button */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  min-width: 140px;
+  padding: 6px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.95);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  font-family: inherit;
+}
+.dropdown-item:hover {
+  background: #fef2f2;
+  color: var(--danger);
+}
+.dropdown-item svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
 
 /* ============ LIST ============ */
 .list-section { margin-bottom: 20px; }
@@ -423,6 +489,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
   border-radius: var(--radius-md); padding: 15px;
   display: flex; align-items: center; gap: 12px;
   transition: all 0.2s ease; animation: slideIn 0.3s ease backwards;
+  position: relative;
 }
 @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 .item-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(8,145,178,0.1); transform: translateX(3px); }
@@ -440,7 +507,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 .item-date-badge { background: #fffbeb; color: var(--accent); padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 700; margin-left: 5px; }
 .item-date-badge.past { background: #fef2f2; color: var(--danger); }
 
-.item-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.item-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; position: relative; }
 .item-biaya { font-size: 15px; font-weight: 800; color: var(--success); white-space: nowrap; }
 
 /* Toast */
@@ -479,7 +546,6 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 <body>
 
 <!-- Circuit Board Elements -->
-<!-- IC Chip Top Right -->
 <svg class="ic-chip top-right" viewBox="0 0 100 60" fill="none">
   <rect x="10" y="10" width="80" height="40" rx="4" fill="#1e293b" stroke="var(--primary)" stroke-width="1.5"/>
   <circle cx="25" cy="20" r="3" fill="var(--primary-light)"/>
@@ -495,7 +561,6 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
   <line x1="90" y1="40" x2="100" y2="40" stroke="var(--primary)" stroke-width="2"/>
 </svg>
 
-<!-- IC Chip Bottom Left -->
 <svg class="ic-chip bottom-left" viewBox="0 0 120 70" fill="none">
   <rect x="15" y="10" width="90" height="50" rx="5" fill="#1e293b" stroke="var(--purple)" stroke-width="1.5"/>
   <circle cx="28" cy="22" r="3" fill="#a78bfa"/>
@@ -511,13 +576,11 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
   <line x1="105" y1="48" x2="120" y2="55" stroke="var(--purple)" stroke-width="2"/>
 </svg>
 
-<!-- Circuit Nodes -->
 <div class="circuit-node n1"></div>
 <div class="circuit-node n2"></div>
 <div class="circuit-node n3"></div>
 <div class="circuit-node n4"></div>
 
-<!-- Data Particles -->
 <div class="data-particle p1"></div>
 <div class="data-particle p2"></div>
 <div class="data-particle p3"></div>
@@ -691,6 +754,23 @@ window.showToast = function(msg,type='success') {
   setTimeout(()=>t.classList.remove('show'),2800);
 };
 
+// Toggle dropdown menu
+window.toggleDropdown = function(id) {
+  // Close all other dropdowns first
+  document.querySelectorAll('.dropdown-menu').forEach(menu => {
+    if(menu.id !== `dropdown-${id}`) menu.classList.remove('show');
+  });
+  const dropdown = document.getElementById(`dropdown-${id}`);
+  dropdown.classList.toggle('show');
+};
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.btn-more') && !e.target.closest('.dropdown-menu')) {
+    document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('show'));
+  }
+});
+
 function initDate() {
   selectedDate=todayStr();
   document.getElementById('tanggal').value=selectedDate;
@@ -747,7 +827,15 @@ async function loadData(){
           </div>
           <div class="item-right">
             <div class="item-biaya">Rp ${fmt(d.biaya)}</div>
-            <button class="btn btn-danger" onclick="hapus('${doc.id}')">Hapus</button>
+            <button class="btn-more" onclick="event.stopPropagation(); toggleDropdown('${doc.id}')">
+              <span></span><span></span><span></span>
+            </button>
+            <div class="dropdown-menu" id="dropdown-${doc.id}">
+              <button class="dropdown-item" onclick="hapus('${doc.id}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                Hapus Transaksi
+              </button>
+            </div>
           </div></div>`;
       }
     });
@@ -790,6 +878,8 @@ window.tambah=async function(){
 };
 
 window.hapus=async function(id){
+  // Close dropdown first
+  document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('show'));
   if(!confirm('Hapus transaksi ini?'))return;
   try{ await deleteDoc(doc(db,'data',id)); showToast('Dihapus!'); await loadData(); }
   catch(e){ showToast('Gagal hapus!','error'); }
