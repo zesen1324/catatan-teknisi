@@ -3,7 +3,7 @@
 <head>
 <link rel="manifest" href="manifest.json">  
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-select=none">
 <title>Catatan Teknisi</title>
 
 <style>
@@ -18,7 +18,6 @@
   --danger: #dc2626;
   --purple: #7c3aed;
   
-  /* Light Theme */
   --bg-body: #f0f4f8;
   --bg-card: #ffffff;
   --bg-input: #f8fafc;
@@ -40,21 +39,18 @@ body {
   color: var(--text-primary);
   position: relative;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* ============================================== */
-/* ============ CIRCUIT BOARD BACKGROUND ========== */
-/* ============================================== */
+/* Circuit Board Background */
 body::before {
   content: '';
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: 
-    linear-gradient(180deg, #e8f4f8 0%, #f0f4f8 30%, #f8fafb 70%, #eef2f7 100%);
+  background: linear-gradient(180deg, #e8f4f8 0%, #f0f4f8 30%, #f8fafb 70%, #eef2f7 100%);
   z-index: -2;
 }
 
-/* Main Circuit Pattern Layer */
 body::after {
   content: '';
   position: fixed;
@@ -73,30 +69,8 @@ body::after {
     linear-gradient(-45deg, transparent 85%, rgba(124, 58, 237, 0.1) 85%, rgba(124, 58, 237, 0.1) 89%, transparent 89%),
     radial-gradient(circle at center, rgba(8, 145, 178, 0.2) 1px, transparent 1px);
   
-  background-size: 
-    120px 80px,
-    80px 40px,
-    80px 40px,
-    60px 100px,
-    60px 100px,
-    200px 150px,
-    180px 140px,
-    160px 200px,
-    140px 180px,
-    24px 24px;
-  
-  background-position: 
-    0 0,
-    0 20px,
-    0 60px,
-    30px 0,
-    30px 50px,
-    -20px -30px,
-    100% 10%,
-    10% 100%,
-    90% 85%,
-    0 0;
-  
+  background-size: 120px 80px, 80px 40px, 80px 40px, 60px 100px, 60px 100px, 200px 150px, 180px 140px, 160px 200px, 140px 180px, 24px 24px;
+  background-position: 0 0, 0 20px, 0 60px, 30px 0, 30px 50px, -20px -30px, 100% 10%, 10% 100%, 90% 85%, 0 0;
   animation: circuitPulse 8s ease-in-out infinite alternate;
 }
 
@@ -105,93 +79,55 @@ body::after {
   100% { opacity: 0.55; }
 }
 
-/* IC Chip Component */
 .ic-chip {
   position: fixed;
   z-index: -1;
   opacity: 0.25;
   filter: drop-shadow(0 0 8px rgba(8, 145, 178, 0.3));
 }
-
 .ic-chip.top-right {
-  top: 8%;
-  right: -20px;
-  width: 100px;
-  height: 60px;
+  top: 8%; right: -20px;
+  width: 100px; height: 60px;
   transform: rotate(-5deg);
   animation: icGlow 4s ease-in-out infinite alternate;
 }
-
 .ic-chip.bottom-left {
-  bottom: 15%;
-  left: -30px;
-  width: 120px;
-  height: 70px;
+  bottom: 15%; left: -30px;
+  width: 120px; height: 70px;
   transform: rotate(12deg);
   animation: icGlow 5s ease-in-out infinite alternate-reverse;
 }
-
 @keyframes icGlow {
   0% { opacity: 0.2; filter: drop-shadow(0 0 5px rgba(8, 145, 178, 0.2)); }
   100% { opacity: 0.35; filter: drop-shadow(0 0 15px rgba(8, 145, 178, 0.4)); }
 }
 
-/* Floating Nodes */
 .circuit-node {
   position: fixed;
-  width: 12px;
-  height: 12px;
+  width: 12px; height: 12px;
   border-radius: 50%;
   z-index: -1;
   animation: nodeBlink 3s ease-in-out infinite;
 }
-
-.circuit-node.n1 {
-  top: 25%; left: 8%;
-  background: radial-gradient(circle, var(--primary-light), var(--primary));
-  box-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
-  animation-delay: 0s;
-}
-
-.circuit-node.n2 {
-  top: 60%; right: 12%;
-  background: radial-gradient(circle, var(--purple), #a78bfa);
-  box-shadow: 0 0 12px rgba(167, 139, 250, 0.5);
-  animation-delay: 1s;
-}
-
-.circuit-node.n3 {
-  bottom: 20%; left: 15%;
-  background: radial-gradient(circle, var(--accent), #fcd34d);
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
-  animation-delay: 2s;
-}
-
-.circuit-node.n4 {
-  top: 15%; left: 45%;
-  width: 8px; height: 8px;
-  background: var(--success);
-  box-shadow: 0 0 8px rgba(5, 150, 105, 0.5);
-  animation-delay: 0.5s;
-}
+.circuit-node.n1 { top: 25%; left: 8%; background: radial-gradient(circle, var(--primary-light), var(--primary)); box-shadow: 0 0 12px rgba(34, 211, 238, 0.5); animation-delay: 0s; }
+.circuit-node.n2 { top: 60%; right: 12%; background: radial-gradient(circle, var(--purple), #a78bfa); box-shadow: 0 0 12px rgba(167, 139, 250, 0.5); animation-delay: 1s; }
+.circuit-node.n3 { bottom: 20%; left: 15%; background: radial-gradient(circle, var(--accent), #fcd34d); box-shadow: 0 0 12px rgba(245, 158, 11, 0.5); animation-delay: 2s; }
+.circuit-node.n4 { top: 15%; left: 45%; width: 8px; height: 8px; background: var(--success); box-shadow: 0 0 8px rgba(5, 150, 105, 0.5); animation-delay: 0.5s; }
 
 @keyframes nodeBlink {
   0%, 100% { transform: scale(1); opacity: 0.7; }
   50% { transform: scale(1.3); opacity: 1; }
 }
 
-/* Data Flow Particles */
 .data-particle {
   position: fixed;
-  width: 4px;
-  height: 4px;
+  width: 4px; height: 4px;
   background: var(--primary-light);
   border-radius: 50%;
   z-index: -1;
   box-shadow: 0 0 6px var(--primary-light);
   animation: dataFlow 6s linear infinite;
 }
-
 .data-particle.p1 { top: 20%; left: 0; animation-delay: 0s; }
 .data-particle.p2 { top: 50%; left: 0; animation-delay: 2s; }
 .data-particle.p3 { top: 80%; left: 0; animation-delay: 4s; }
@@ -203,12 +139,10 @@ body::after {
   100% { transform: translateX(100vw); opacity: 0; }
 }
 
-/* Container */
 .container { max-width: 480px; margin: 0 auto; position: relative; z-index: 1; }
 
-/* ============ HEADER ============ */
+/* Header */
 .header { text-align: center; padding: 28px 20px 24px; }
-
 .header-icon {
   width: 68px; height: 68px;
   background: linear-gradient(135deg, var(--primary), var(--primary-light));
@@ -233,11 +167,10 @@ body::after {
   50% { transform: scale(1.05); opacity: 0.8; }
 }
 .header-icon svg { width: 32px; height: 32px; stroke: white; stroke-width: 2; position: relative; z-index: 1; }
-
 .header h1 { font-size: 24px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; margin-bottom: 4px; }
 .header p { font-size: 14px; color: var(--text-muted); font-weight: 500; }
 
-/* ============ DATE NAV ============ */
+/* Date Nav */
 .date-nav { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
 .date-nav-btn {
   width: 42px; height: 42px; border-radius: 12px;
@@ -257,13 +190,11 @@ body::after {
   background: var(--bg-card); border: 2px solid var(--border);
   border-radius: 13px; padding: 10px 20px; text-align: center; min-width: 160px;
   cursor: pointer; transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
+  position: relative; overflow: hidden;
 }
 .date-nav-display::before {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: linear-gradient(90deg, transparent, rgba(8,145,178,0.05), transparent);
   transform: translateX(-100%);
   transition: transform 0.5s ease;
@@ -278,7 +209,7 @@ body::after {
   margin-left: 5px; vertical-align: middle; font-weight: 700;
 }
 
-/* ============ TOTAL CARD ============ */
+/* Total Card */
 .total-card {
   background: var(--bg-card); border: 1.5px solid var(--border);
   border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px;
@@ -293,11 +224,10 @@ body::after {
 .total-value { font-size: 34px; font-weight: 800; color: var(--success); display: flex; align-items: baseline; gap: 4px; }
 .total-value .currency { font-size: 18px; font-weight: 700; opacity: 0.6; }
 
-/* ============ FORM SECTION ============ */
+/* Form Section */
 .form-section {
-  background: 
-    linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
-    linear-gradient(135deg, var(--primary), #06b6d4, var(--purple)) border-box;
+  background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+              linear-gradient(135deg, var(--primary), #06b6d4, var(--purple)) border-box;
   border: 2.5px solid transparent;
   border-radius: var(--radius-lg);
   padding: 6px; margin-bottom: 16px;
@@ -390,90 +320,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 @keyframes shimmer-purple { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 .btn-report:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124, 58, 237, 0.38); }
 
-/* ============ MORE BUTTON (TITIK TIGA) ============ */
-.btn-more {
-  width: 32px; height: 32px; min-width: 32px;
-  padding: 0;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  transition: all 0.2s ease;
-  position: relative;
-}
-.btn-more:hover {
-  background: rgba(148, 163, 184, 0.15);
-}
-.btn-more:active {
-  transform: scale(0.92);
-}
-.btn-more span {
-  display: block;
-  width: 4px;
-  height: 4px;
-  background: var(--text-muted);
-  border-radius: 50%;
-  transition: all 0.2s ease;
-}
-.btn-more:hover span {
-  background: var(--danger);
-}
-
-/* Dropdown Menu untuk More Button */
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 6px;
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  min-width: 140px;
-  padding: 6px;
-  z-index: 100;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-8px) scale(0.95);
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.dropdown-menu.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0) scale(1);
-}
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.15s ease;
-  border: none;
-  background: none;
-  width: 100%;
-  font-family: inherit;
-}
-.dropdown-item:hover {
-  background: #fef2f2;
-  color: var(--danger);
-}
-.dropdown-item svg {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-}
-
-/* ============ LIST ============ */
+/* ============ ITEM CARD WITH LONG PRESS ============ */
 .list-section { margin-bottom: 20px; }
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 2px; }
 .section-title { font-size: 15px; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 7px; }
@@ -490,12 +337,91 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
   display: flex; align-items: center; gap: 12px;
   transition: all 0.2s ease; animation: slideIn 0.3s ease backwards;
   position: relative;
+  user-select: none;
+  touch-action: manipulation;
+  cursor: default;
 }
 @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
-.item-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(8,145,178,0.1); transform: translateX(3px); }
+.item-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(8,145,178,0.1); }
+
+/* Long Press States */
+.item-card.pressing {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15), 0 4px 20px rgba(220, 38, 38, 0.2);
+  transform: scale(0.98);
+}
+.item-card.pressing .item-icon {
+  animation: shake 0.3s ease-in-out infinite;
+}
+@keyframes shake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+/* Progress Ring Overlay */
+.press-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(220, 38, 38, 0.08);
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.item-card.pressing .press-overlay {
+  opacity: 1;
+}
+
+.progress-ring-container {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+.progress-ring {
+  transform: rotate(-90deg);
+}
+.progress-ring-bg {
+  fill: none;
+  stroke: rgba(220, 38, 38, 0.15);
+  stroke-width: 4;
+}
+.progress-ring-fill {
+  fill: none;
+  stroke: var(--danger);
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.05s linear;
+}
+.progress-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--danger);
+}
+.progress-hint {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--danger);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
 .item-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.item-icon { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.item-icon { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: transform 0.2s ease; }
 .icon-printer { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
 .icon-komputer { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
 .icon-install { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
@@ -507,8 +433,22 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 .item-date-badge { background: #fffbeb; color: var(--accent); padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 700; margin-left: 5px; }
 .item-date-badge.past { background: #fef2f2; color: var(--danger); }
 
-.item-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; position: relative; }
+.item-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .item-biaya { font-size: 15px; font-weight: 800; color: var(--success); white-space: nowrap; }
+
+/* Long press hint badge */
+.long-press-hint {
+  font-size: 9px;
+  color: var(--text-muted);
+  background: var(--bg-input);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  opacity: 0.7;
+}
 
 /* Toast */
 .toast {
@@ -524,6 +464,94 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .toast.success { border-left: 4px solid var(--success); }
 .toast.error { border-left: 4px solid var(--danger); }
+
+/* Delete Confirmation Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-box {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+.modal-overlay.show .modal-box {
+  transform: scale(1) translateY(0);
+}
+.modal-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 28px;
+}
+.modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.modal-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+}
+.modal-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+.modal-btn-cancel {
+  background: var(--bg-input);
+  color: var(--text-secondary);
+}
+.modal-btn-cancel:hover {
+  background: var(--border);
+}
+.modal-btn-delete {
+  background: linear-gradient(135deg, var(--danger), #b91c1c);
+  color: white;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+.modal-btn-delete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+}
 
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -545,7 +573,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 
 <body>
 
-<!-- Circuit Board Elements -->
+<!-- Circuit Elements -->
 <svg class="ic-chip top-right" viewBox="0 0 100 60" fill="none">
   <rect x="10" y="10" width="80" height="40" rx="4" fill="#1e293b" stroke="var(--primary)" stroke-width="1.5"/>
   <circle cx="25" cy="20" r="3" fill="var(--primary-light)"/>
@@ -585,7 +613,21 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 <div class="data-particle p2"></div>
 <div class="data-particle p3"></div>
 
+<!-- Toast -->
 <div id="toast" class="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal-box">
+    <div class="modal-icon">🗑️</div>
+    <div class="modal-title">Hapus Transaksi?</div>
+    <div class="modal-text">Data transaksi <strong id="deleteName"></strong> akan dihapus permanen dan tidak bisa dikembalikan.</div>
+    <div class="modal-buttons">
+      <button class="modal-btn modal-btn-cancel" onclick="closeDeleteModal()">Batal</button>
+      <button class="modal-btn modal-btn-delete" id="confirmDeleteBtn">Hapus</button>
+    </div>
+  </div>
+</div>
 
 <div class="container">
   <!-- Header -->
@@ -691,14 +733,20 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
     </div>
   </div>
 
-  <!-- List -->
+  <!-- List with Hint -->
   <div class="list-section">
     <div class="section-header">
       <div class="section-title">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
         Transaksi <span id="listDateLabel">Hari Ini</span>
       </div>
-      <span class="item-count" id="itemCount">0 item</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="long-press-hint">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/></svg>
+          Tekan lama utk hapus
+        </span>
+        <span class="item-count" id="itemCount">0 item</span>
+      </div>
     </div>
     <div id="list" class="list-container"></div>
   </div>
@@ -721,7 +769,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let selectedDate = '';
+let deleteTargetId = null;
 
+const LONG_PRESS_DURATION = 3000; // 3 detik
 const icons = {
   'Printer': { icon: '🖨️', cls: 'icon-printer' },
   'Komputer': { icon: '💻', cls: 'icon-komputer' },
@@ -754,23 +804,118 @@ window.showToast = function(msg,type='success') {
   setTimeout(()=>t.classList.remove('show'),2800);
 };
 
-// Toggle dropdown menu
-window.toggleDropdown = function(id) {
-  // Close all other dropdowns first
-  document.querySelectorAll('.dropdown-menu').forEach(menu => {
-    if(menu.id !== `dropdown-${id}`) menu.classList.remove('show');
-  });
-  const dropdown = document.getElementById(`dropdown-${id}`);
-  dropdown.classList.toggle('show');
-};
+// ============ LONG PRESS HANDLER ============
+let pressTimer = null;
+let pressStartTime = 0;
+let pressInterval = null;
 
-// Close dropdown when clicking outside
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.btn-more') && !e.target.closest('.dropdown-menu')) {
-    document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('show'));
+function startLongPress(card, docId) {
+  // Clear any existing timer
+  clearLongPress();
+  
+  pressStartTime = Date.now();
+  card.classList.add('pressing');
+  
+  // Get progress elements
+  const progressText = card.querySelector('.progress-text');
+  const progressFill = card.querySelector('.progress-ring-fill');
+  const circumference = 2 * Math.PI * 24; // radius = 24
+  
+  if (progressFill) {
+    progressFill.style.strokeDasharray = circumference;
+    progressFill.style.strokeDashoffset = circumference;
   }
+  
+  // Update progress every 50ms
+  pressInterval = setInterval(() => {
+    const elapsed = Date.now() - pressStartTime;
+    const progress = Math.min(elapsed / LONG_PRESS_DURATION, 1);
+    
+    if (progressText) {
+      progressText.textContent = Math.ceil((1 - progress) * 3);
+    }
+    if (progressFill) {
+      const offset = circumference * (1 - progress);
+      progressFill.style.strokeDashoffset = offset;
+    }
+  }, 50);
+  
+  // Set the main timer
+  pressTimer = setTimeout(() => {
+    clearLongPress();
+    card.classList.remove('pressing');
+    showDeleteModal(docId, card.dataset.nama);
+  }, LONG_PRESS_DURATION);
+}
+
+function clearLongPress() {
+  if (pressTimer) {
+    clearTimeout(pressTimer);
+    pressTimer = null;
+  }
+  if (pressInterval) {
+    clearInterval(pressInterval);
+    pressInterval = null;
+  }
+  // Remove pressing state from all cards
+  document.querySelectorAll('.item-card.pressing').forEach(c => c.classList.remove('pressing'));
+}
+
+// Touch/Mouse events for long press
+document.addEventListener('touchstart', (e) => {
+  const card = e.target.closest('.item-card');
+  if (!card || !card.dataset.id) return;
+  e.preventDefault();
+  startLongPress(card, card.dataset.id);
+}, { passive: false });
+
+document.addEventListener('touchend', () => {
+  clearLongPress();
 });
 
+document.addEventListener('touchmove', () => {
+  clearLongPress();
+});
+
+// Mouse events for desktop
+document.addEventListener('mousedown', (e) => {
+  const card = e.target.closest('.item-card');
+  if (!card || !card.dataset.id) return;
+  startLongPress(card, card.dataset.id);
+});
+
+document.addEventListener('mouseup', () => {
+  clearLongPress();
+});
+
+document.addEventListener('mouseleave', () => {
+  clearLongPress();
+});
+
+// ============ DELETE MODAL ============
+function showDeleteModal(id, nama) {
+  deleteTargetId = id;
+  document.getElementById('deleteName').textContent = nama;
+  document.getElementById('deleteModal').classList.add('show');
+  
+  // Set confirm button action
+  document.getElementById('confirmDeleteBtn').onclick = async () => {
+    await window.hapus(deleteTargetId);
+    closeDeleteModal();
+  };
+}
+
+window.closeDeleteModal = function() {
+  document.getElementById('deleteModal').classList.remove('show');
+  deleteTargetId = null;
+};
+
+// Close modal on overlay click
+document.getElementById('deleteModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeDeleteModal();
+});
+
+// ============ INIT & DATA ============
 function initDate() {
   selectedDate=todayStr();
   document.getElementById('tanggal').value=selectedDate;
@@ -810,14 +955,25 @@ async function loadData(){
   try{
     const snap=await getDocs(collection(db,'data'));
     let total=0,count=0,html='';
-    snap.forEach(doc=>{
-      const d=doc.data();
+    snap.forEach(docSnap=>{
+      const d=docSnap.data();
       if(d.tanggal===selectedDate){
         total+=d.biaya; count++;
         const nm=d.service==='Lainnya'?(d.keterangan||'Lainnya'):d.service;
         const ic=icons[d.service]||icons['Lainnya'];
         const past=d.tanggal!==todayStr();
-        html+=`<div class="item-card" style="animation-delay:${count*0.04}s">
+        
+        html+=`<div class="item-card" data-id="${docSnap.id}" data-nama="${d.nama}" style="animation-delay:${count*0.04}s">
+          <div class="press-overlay">
+            <div class="progress-ring-container">
+              <svg class="progress-ring" width="60" height="60">
+                <circle class="progress-ring-bg" cx="30" cy="30" r="24"/>
+                <circle class="progress-ring-fill" cx="30" cy="30" r="24"/>
+              </svg>
+              <div class="progress-text">3</div>
+            </div>
+            <div class="progress-hint">Tahan untuk hapus</div>
+          </div>
           <div class="item-left">
             <div class="item-icon ${ic.cls}">${ic.icon}</div>
             <div class="item-info">
@@ -827,20 +983,11 @@ async function loadData(){
           </div>
           <div class="item-right">
             <div class="item-biaya">Rp ${fmt(d.biaya)}</div>
-            <button class="btn-more" onclick="event.stopPropagation(); toggleDropdown('${doc.id}')">
-              <span></span><span></span><span></span>
-            </button>
-            <div class="dropdown-menu" id="dropdown-${doc.id}">
-              <button class="dropdown-item" onclick="hapus('${doc.id}')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-                Hapus Transaksi
-              </button>
-            </div>
           </div></div>`;
       }
     });
     document.getElementById('list').innerHTML=count===0?
-      `<div class="empty-state"><div class="empty-state-icon">🔧</div><p>Belum ada transaksi</p></div>`:html;
+      `<div class="empty-state"><div class="empty-state-icon">🔧</div><p>Belum ada transaksi<br><small style="opacity:0.6;font-size:12px;">Tekan lama item untuk menghapus</small></p></div>`:html;
     document.getElementById('total').textContent=fmt(total);
     document.getElementById('itemCount').textContent=`${count} item`;
   }catch(e){ console.error(e); }
@@ -878,10 +1025,11 @@ window.tambah=async function(){
 };
 
 window.hapus=async function(id){
-  // Close dropdown first
-  document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('show'));
-  if(!confirm('Hapus transaksi ini?'))return;
-  try{ await deleteDoc(doc(db,'data',id)); showToast('Dihapus!'); await loadData(); }
+  try{ 
+    await deleteDoc(doc(db,'data',id)); 
+    showToast('Transaksi dihapus!'); 
+    await loadData(); 
+  }
   catch(e){ showToast('Gagal hapus!','error'); }
 };
 
