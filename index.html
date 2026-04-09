@@ -14,7 +14,6 @@
   --primary-dark: #0f766e;
   --primary-light: #14b8a6;
   --accent: #f59e0b;
-  --accent-glow: rgba(245, 158, 11, 0.3);
   --success: #10b981;
   --danger: #ef4444;
   --danger-soft: #fef2f2;
@@ -51,7 +50,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Animated Background */
 body::before {
   content: '';
   position: fixed;
@@ -61,18 +59,16 @@ body::before {
   bottom: 0;
   background: 
     radial-gradient(ellipse at 20% 20%, rgba(13, 148, 136, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 60%);
+    radial-gradient(ellipse at 80% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* Floating Orbs */
 .orb {
   position: fixed;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.4;
+  opacity: 0.35;
   animation: float 20s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
@@ -84,7 +80,6 @@ body::before {
   background: linear-gradient(135deg, var(--primary), transparent);
   top: -100px;
   left: -100px;
-  animation-delay: 0s;
 }
 
 .orb-2 {
@@ -109,7 +104,6 @@ body::before {
   z-index: 1;
 }
 
-/* Header */
 .header {
   text-align: center;
   padding: 32px 24px 28px;
@@ -152,7 +146,6 @@ body::before {
   font-weight: 500;
 }
 
-/* Total Card */
 .total-card {
   background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
   border: 1px solid var(--border);
@@ -206,7 +199,6 @@ body::before {
   opacity: 0.7;
 }
 
-/* Form Section */
 .form-section {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -268,7 +260,6 @@ select.form-control {
   padding-right: 44px;
 }
 
-/* Buttons */
 .btn {
   width: 100%;
   padding: 15px 20px;
@@ -283,8 +274,7 @@ select.form-control {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  position: relative;
-  overflow: hidden;
+  text-decoration: none;
 }
 
 .btn-primary {
@@ -298,23 +288,19 @@ select.form-control {
   box-shadow: 0 10px 30px rgba(13, 148, 136, 0.45);
 }
 
-.btn-primary:active:not(:disabled) {
-  transform: translateY(0);
-}
-
 .btn-primary:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.btn-secondary {
+.btn-report {
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: white;
   box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
   margin-top: 12px;
 }
 
-.btn-secondary:hover {
+.btn-report:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
 }
@@ -336,9 +322,8 @@ select.form-control {
   color: white;
 }
 
-/* List Section */
 .list-section {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .section-header {
@@ -371,7 +356,7 @@ select.form-control {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-height: 380px;
+  max-height: 400px;
   overflow-y: auto;
   padding-right: 4px;
 }
@@ -392,7 +377,6 @@ select.form-control {
   font-size: 14px;
 }
 
-/* Item Card */
 .item-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -407,14 +391,8 @@ select.form-control {
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .item-card:hover {
@@ -465,9 +443,6 @@ select.form-control {
 .item-detail {
   font-size: 13px;
   color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .item-right {
@@ -484,162 +459,6 @@ select.form-control {
   white-space: nowrap;
 }
 
-/* Report Section */
-.report-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  display: none;
-  animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.report-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.report-title {
-  font-size: 18px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.btn-close-report {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.btn-close-report:hover {
-  background: var(--danger-soft);
-  color: var(--danger);
-  border-color: var(--danger);
-}
-
-.report-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.report-card {
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 16px 12px;
-  text-align: center;
-  transition: all 0.25s ease;
-}
-
-.report-card:hover {
-  border-color: var(--primary);
-  transform: translateY(-3px);
-}
-
-.report-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-}
-
-.report-value {
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--primary-light);
-}
-
-.report-list {
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  max-height: 280px;
-  overflow-y: auto;
-}
-
-.report-item {
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  transition: background 0.2s ease;
-}
-
-.report-item:last-child {
-  border-bottom: none;
-}
-
-.report-item:hover {
-  background: var(--bg-card);
-}
-
-.report-date-badge {
-  background: var(--bg-card);
-  padding: 5px 10px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.report-detail {
-  flex: 1;
-  font-size: 14px;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.report-biaya {
-  font-weight: 700;
-  color: var(--success);
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
-}
-
-/* Toast Notification */
 .toast {
   position: fixed;
   bottom: 24px;
@@ -665,64 +484,30 @@ select.form-control {
   opacity: 1;
 }
 
-.toast.success {
-  border-color: var(--success);
+.toast.success { border-color: var(--success); }
+.toast.error { border-color: var(--danger); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+.spin { animation: spin 1s linear infinite; }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.toast.error {
-  border-color: var(--danger);
-}
-
-/* Responsive */
 @media (max-width: 480px) {
-  body {
-    padding: 10px;
-  }
-
-  .header {
-    padding: 24px 16px 20px;
-  }
-
-  .header-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 28px;
-    border-radius: 16px;
-  }
-
-  .header h1 {
-    font-size: 22px;
-  }
-
-  .total-value {
-    font-size: 32px;
-  }
-
-  .form-section,
-  .total-card,
-  .report-section {
-    padding: 18px;
-    border-radius: var(--radius-md);
-  }
-
-  .report-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .item-card {
-    padding: 14px;
-  }
-
-  .item-icon {
-    width: 38px;
-    height: 38px;
-    font-size: 18px;
-  }
-
-  .item-biaya {
-    font-size: 15px;
-  }
+  body { padding: 10px; }
+  .header { padding: 24px 16px 20px; }
+  .header-icon { width: 60px; height: 60px; font-size: 28px; }
+  .header h1 { font-size: 22px; }
+  .total-value { font-size: 32px; }
+  .form-section, .total-card { padding: 18px; border-radius: var(--radius-md); }
+  .item-card { padding: 14px; }
+  .item-icon { width: 38px; height: 38px; font-size: 18px; }
 }
 </style>
 </head>
@@ -751,8 +536,7 @@ select.form-control {
     <div class="total-label">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-        <line x1="16" y1="2" x2="16" y2="6"/>
-        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
         <line x1="3" y1="10" x2="21" y2="10"/>
       </svg>
       Total Pendapatan Hari Ini
@@ -807,10 +591,10 @@ select.form-control {
       Simpan Transaksi
     </button>
     
-    <button id="btnLaporan" class="btn btn-secondary" onclick="tampilkanLaporan()">
+    <a href="laporan.html" class="btn btn-report">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      Lihat Laporan
-    </button>
+      Buka Halaman Laporan
+    </a>
   </div>
 
   <div class="list-section">
@@ -822,38 +606,6 @@ select.form-control {
       <span class="item-count" id="itemCount">0 item</span>
     </div>
     <div id="list" class="list-container"></div>
-  </div>
-
-  <div id="laporan" class="report-section">
-    <div class="report-header">
-      <div class="report-title">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-        Laporan Pendapatan
-      </div>
-      <button class="btn-close-report" onclick="tutupLaporan()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    
-    <div class="report-grid">
-      <div class="report-card">
-        <div class="report-label">Hari Ini</div>
-        <div class="report-value" id="totalHariIni">Rp 0</div>
-      </div>
-      <div class="report-card">
-        <div class="report-label">Minggu Ini</div>
-        <div class="report-value" id="totalMingguIni">Rp 0</div>
-      </div>
-      <div class="report-card">
-        <div class="report-label">Bulan Ini</div>
-        <div class="report-value" id="totalBulanIni">Rp 0</div>
-      </div>
-    </div>
-    
-    <div class="section-header" style="margin-top: 20px; margin-bottom: 12px;">
-      <div class="section-title" style="font-size: 14px;">Riwayat Transaksi</div>
-    </div>
-    <div class="report-list" id="report-content"></div>
   </div>
 </div>
 
@@ -874,7 +626,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Service icons mapping
 const serviceIcons = {
   'Printer': { icon: '🖨️', class: 'printer' },
   'Komputer': { icon: '💻', class: 'komputer' },
@@ -893,7 +644,6 @@ function formatRupiah(angka) {
   }).format(angka);
 }
 
-// Toast notification
 window.showToast = function(message, type = 'success') {
   const toast = document.getElementById('toast');
   const toastIcon = document.getElementById('toastIcon');
@@ -910,15 +660,9 @@ window.showToast = function(message, type = 'success') {
   }, 3000);
 };
 
-// Show/hide keterangan field based on service selection
 document.getElementById('service').addEventListener('change', function() {
   const keteranganGroup = document.getElementById('keteranganGroup');
-  if (this.value === 'Lainnya') {
-    keteranganGroup.style.display = 'block';
-    document.getElementById('keterangan').focus();
-  } else {
-    keteranganGroup.style.display = 'none';
-  }
+  keteranganGroup.style.display = this.value === 'Lainnya' ? 'block' : 'none';
 });
 
 async function loadData() {
@@ -943,9 +687,7 @@ async function loadData() {
             <div class="item-icon ${serviceInfo.class}">${serviceInfo.icon}</div>
             <div class="item-info">
               <div class="item-nama">${d.nama}</div>
-              <div class="item-detail">
-                <span>${namaService}</span>
-              </div>
+              <div class="item-detail">${namaService}</div>
             </div>
           </div>
           <div class="item-right">
@@ -974,91 +716,6 @@ async function loadData() {
   document.getElementById('itemCount').textContent = `${count} item`;
 }
 
-async function tampilkanLaporan() {
-  const querySnapshot = await getDocs(collection(db, "data"));
-  let totalHariIni = 0;
-  let totalMingguIni = 0;
-  let totalBulanIni = 0;
-  let dataLaporan = [];
-
-  const now = new Date();
-  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const startOfWeek = new Date(now);
-  startOfWeek.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1)); // Monday start
-  startOfWeek.setHours(0, 0, 0, 0);
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-
-  querySnapshot.forEach((docSnap) => {
-    const d = docSnap.data();
-    const tanggal = new Date(d.tanggal + 'T00:00:00');
-    
-    if (tanggal >= startOfDay && tanggal < new Date(startOfDay.getTime() + 86400000)) {
-      totalHariIni += d.biaya;
-    }
-    
-    if (tanggal >= startOfWeek) {
-      totalMingguIni += d.biaya;
-    }
-    
-    if (tanggal >= startOfMonth) {
-      totalBulanIni += d.biaya;
-    }
-    
-    dataLaporan.push({
-      nama: d.nama,
-      service: d.service,
-      keterangan: d.keterangan,
-      biaya: d.biaya,
-      tanggal: d.tanggal
-    });
-  });
-
-  // Sort by date descending
-  dataLaporan.sort((a, b) => b.tanggal.localeCompare(a.tanggal));
-
-  document.getElementById('totalHariIni').textContent = `Rp ${formatRupiah(totalHariIni)}`;
-  document.getElementById('totalMingguIni').textContent = `Rp ${formatRupiah(totalMingguIni)}`;
-  document.getElementById('totalBulanIni').textContent = `Rp ${formatRupiah(totalBulanIni)}`;
-
-  let html = "";
-
-  if (dataLaporan.length === 0) {
-    html = `<div class="empty-state"><p>Tidak ada data laporan</p></div>`;
-  } else {
-    dataLaporan.slice(0, 20).forEach(item => {
-      const namaService = item.service === "Lainnya" ? (item.keterangan || 'Lainnya') : item.service;
-      
-      // Format date to Indonesian format
-      const dateObj = new Date(item.tanggal + 'T00:00:00');
-      const formattedDate = dateObj.toLocaleDateString('id-ID', { 
-        day: 'numeric', 
-        month: 'short',
-        year: 'numeric'
-      });
-      
-      html += `
-        <div class="report-item">
-          <div class="report-date-badge">${formattedDate}</div>
-          <div class="report-detail">${item.nama} - ${namaService}</div>
-          <div class="report-biaya">Rp ${formatRupiah(item.biaya)}</div>
-        </div>
-      `;
-    });
-  }
-
-  document.getElementById('report-content').innerHTML = html;
-  document.getElementById('laporan').style.display = 'block';
-  
-  // Scroll to report
-  setTimeout(() => {
-    document.getElementById('laporan').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
-}
-
-window.tutupLaporan = function() {
-  document.getElementById('laporan').style.display = 'none';
-};
-
 window.tambah = async function() {
   const nama = document.getElementById('nama').value.trim();
   const service = document.getElementById('service').value;
@@ -1066,7 +723,6 @@ window.tambah = async function() {
   const biayaVal = document.getElementById('biaya').value;
   const biaya = parseInt(biayaVal);
 
-  // Validation
   if (!nama) {
     showToast('Mohon isi nama pelanggan!', 'error');
     document.getElementById('nama').focus();
@@ -1107,7 +763,6 @@ window.tambah = async function() {
 
     showToast('Transaksi berhasil disimpan!');
 
-    // Reset form
     document.getElementById('nama').value = '';
     document.getElementById('service').value = '';
     document.getElementById('keterangan').value = '';
@@ -1139,19 +794,7 @@ window.hapus = async function(id) {
   }
 };
 
-// Initialize
 loadData();
 </script>
-
-<style>
-.spin {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-</style>
 </body>
 </html>
