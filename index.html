@@ -7,21 +7,32 @@
 <title>Catatan Teknisi</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
 :root {
-  --primary-gradient-start: #0f766e;
-  --primary-gradient-end: #06b6d4;
-  --secondary-gradient-start: #0891b2;
-  --secondary-gradient-end: #0e7490;
-  --danger-gradient-start: #dc2626;
-  --danger-gradient-end: #f97316;
-  --background-color: #f8fafc;
-  --card-background: #ffffff;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --border-color: #e2e8f0;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --primary: #0d9488;
+  --primary-dark: #0f766e;
+  --primary-light: #14b8a6;
+  --accent: #f59e0b;
+  --accent-glow: rgba(245, 158, 11, 0.3);
+  --success: #10b981;
+  --danger: #ef4444;
+  --danger-soft: #fef2f2;
+  --bg-main: #0c1222;
+  --bg-card: #151d2e;
+  --bg-card-hover: #1a2540;
+  --bg-input: #0f172a;
+  --border: #1e293b;
+  --border-focus: #0d9488;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
 }
 
 * {
@@ -31,359 +42,685 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg-main);
   min-height: 100vh;
-  padding: 20px;
+  padding: 16px;
   color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Animated Background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(13, 148, 136, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Floating Orbs */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: float 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb-1 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, var(--primary), transparent);
+  top: -100px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 250px;
+  height: 250px;
+  background: linear-gradient(135deg, var(--accent), transparent);
+  bottom: -80px;
+  right: -80px;
+  animation-delay: -7s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
 }
 
 .container {
-  max-width: 600px;
+  max-width: 520px;
   margin: 0 auto;
-  background: var(--card-background);
-  border-radius: 20px;
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
+/* Header */
 .header {
-  background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
-  color: white;
-  padding: 30px 25px;
   text-align: center;
+  padding: 32px 24px 28px;
+  position: relative;
+}
+
+.header-icon {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  font-size: 32px;
+  box-shadow: 0 12px 32px rgba(13, 148, 136, 0.35);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 12px 32px rgba(13, 148, 136, 0.35); }
+  50% { box-shadow: 0 12px 40px rgba(13, 148, 136, 0.5); }
+}
+
+.header h1 {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header p {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Total Card */
+.total-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 20px;
   position: relative;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.header::before {
+.total-card::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,112C1248,107,1344,117,1392,122.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
-  background-size: cover;
-  opacity: 0.3;
-}
-
-.header h3 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 5px;
-  position: relative;
-  z-index: 1;
-}
-
-.header p {
-  font-size: 16px;
-  opacity: 0.9;
-  position: relative;
-  z-index: 1;
-}
-
-.total-section {
-  background: var(--background-color);
-  padding: 20px 25px;
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
 }
 
 .total-label {
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
   color: var(--text-secondary);
   font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.total-label svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--accent);
 }
 
 .total-value {
-  font-size: 32px;
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--success);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  letter-spacing: -1px;
+}
+
+.total-value .currency {
+  font-size: 22px;
   font-weight: 700;
-  color: #10b981;
+  opacity: 0.7;
 }
 
+/* Form Section */
 .form-section {
-  padding: 25px;
-}
-
-.form-group {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
   margin-bottom: 20px;
 }
 
-.form-group label {
-  display: block;
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group:last-of-type {
+  margin-bottom: 22px;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 8px;
-  font-weight: 500;
-  color: var(--text-primary);
-  font-size: 14px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .form-control {
   width: 100%;
-  padding: 14px 15px;
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  background-color: var(--card-background);
+  padding: 14px 16px;
+  background: var(--bg-input);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text-primary);
+  transition: all 0.25s ease;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
 }
 
 .form-control:focus {
   outline: none;
-  border-color: var(--primary-gradient-start);
-  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
+  background: var(--bg-card);
 }
 
 select.form-control {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236c757d'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 15px center;
-  background-size: 20px;
+  background-position: right 14px center;
+  background-size: 18px;
+  padding-right: 44px;
 }
 
-button {
+/* Buttons */
+.btn {
   width: 100%;
-  padding: 14px;
+  padding: 15px 20px;
   border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 15px;
-  color: white;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   position: relative;
   overflow: hidden;
 }
 
-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.2);
-  transition: left 0.5s;
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.35);
 }
 
-button:hover::before {
-  left: 100%;
-}
-
-.btn-simpan {
-  background: linear-gradient(135deg, var(--secondary-gradient-start) 0%, var(--secondary-gradient-end) 100%);
-}
-
-.btn-simpan:hover {
+.btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 30px rgba(13, 148, 136, 0.45);
 }
 
-.btn-laporan {
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+  margin-top: 12px;
 }
 
-.btn-laporan:hover {
+.btn-secondary:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
 }
 
-.btn-hapus {
-  background: linear-gradient(135deg, var(--danger-gradient-start) 0%, var(--danger-gradient-end) 100%);
-  padding: 8px 12px;
-  font-size: 14px;
+.btn-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  width: auto;
   float: right;
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-sm);
+  box-shadow: none;
 }
 
-.btn-hapus:hover {
-  transform: scale(1.05);
-  box-shadow: var(--shadow-md);
+.btn-danger:hover {
+  background: var(--danger);
+  color: white;
 }
 
+/* List Section */
 .list-section {
-  padding: 0 25px 25px;
-  max-height: 400px;
-  overflow-y: auto;
+  margin-bottom: 20px;
 }
 
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding: 0 4px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-count {
+  background: var(--bg-input);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+
+.empty-state-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-state p {
+  font-size: 14px;
+}
+
+/* Item Card */
 .item-card {
-  background: var(--card-background);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   padding: 18px;
-  margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-sm);
+  gap: 16px;
+  transition: all 0.25s ease;
+  animation: slideIn 0.35s ease backwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .item-card:hover {
-  transform: translateX(5px);
+  border-color: var(--primary);
+  background: var(--bg-card-hover);
+  transform: translateX(4px);
   box-shadow: var(--shadow-md);
-  border-color: var(--primary-gradient-start);
 }
 
-.item-info {
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   flex: 1;
+  min-width: 0;
+}
+
+.item-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.item-icon.printer { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.item-icon.komputer { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.item-icon.install { background: linear-gradient(135deg, #10b981, #059669); }
+.item-icon.lainnya { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+.item-info {
+  min-width: 0;
 }
 
 .item-nama {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 15px;
   color: var(--text-primary);
-  margin-bottom: 5px;
-  font-size: 16px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-detail {
-  color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.item-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .item-biaya {
-  font-size: 20px;
-  font-weight: 700;
-  color: #10b981;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--success);
+  white-space: nowrap;
 }
 
+/* Report Section */
 .report-section {
-  padding: 25px;
-  background: var(--background-color);
-  border-top: 1px solid var(--border-color);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
   display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.report-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .report-title {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-close-report {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-close-report:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-color: var(--danger);
 }
 
 .report-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
   margin-bottom: 20px;
 }
 
 .report-card {
-  background: var(--card-background);
-  border-radius: 12px;
-  padding: 18px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 12px;
   text-align: center;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.3s ease;
-  border: 1px solid var(--border-color);
+  transition: all 0.25s ease;
 }
 
 .report-card:hover {
+  border-color: var(--primary);
   transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--primary-gradient-start);
 }
 
 .report-label {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 5px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
 }
 
 .report-value {
-  font-size: 26px;
-  font-weight: 700;
-  color: #6366f1;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--primary-light);
 }
 
 .report-list {
-  background: var(--card-background);
-  border-radius: 12px;
-  padding: 15px;
-  max-height: 300px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  max-height: 280px;
   overflow-y: auto;
-  border: 1px solid var(--border-color);
 }
 
 .report-item {
-  padding: 12px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  transition: background-color 0.2s ease;
-}
-
-.report-item:hover {
-  background-color: var(--background-color);
+  gap: 12px;
+  transition: background 0.2s ease;
 }
 
 .report-item:last-child {
   border-bottom: none;
 }
 
-.report-date {
-  color: var(--text-secondary);
-  font-size: 12px;
+.report-item:hover {
+  background: var(--bg-card);
+}
+
+.report-date-badge {
+  background: var(--bg-card);
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
 .report-detail {
   flex: 1;
-  margin: 0 10px;
   font-size: 14px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .report-biaya {
-  font-weight: 600;
-  color: #10b981;
-  font-size: 16px;
+  font-weight: 700;
+  color: var(--success);
+  font-size: 14px;
+  white-space: nowrap;
 }
 
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background-color);
-  border-radius: 10px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-gradient-start);
+  background: var(--border);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary-gradient-end);
+  background: var(--text-muted);
 }
 
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 14px 24px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast.success {
+  border-color: var(--success);
+}
+
+.toast.error {
+  border-color: var(--danger);
+}
+
+/* Responsive */
 @media (max-width: 480px) {
-  .container {
-    margin: 10px;
-    border-radius: 15px;
+  body {
+    padding: 10px;
   }
-  
-  .header h3 {
+
+  .header {
+    padding: 24px 16px 20px;
+  }
+
+  .header-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+    border-radius: 16px;
+  }
+
+  .header h1 {
     font-size: 22px;
   }
-  
+
   .total-value {
-    font-size: 28px;
+    font-size: 32px;
   }
-  
-  .form-control {
-    padding: 12px 15px;
+
+  .form-section,
+  .total-card,
+  .report-section {
+    padding: 18px;
+    border-radius: var(--radius-md);
   }
-  
-  button {
-    padding: 12px;
+
+  .report-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .item-card {
+    padding: 14px;
+  }
+
+  .item-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .item-biaya {
     font-size: 15px;
   }
 }
@@ -391,52 +728,113 @@ button:hover::before {
 </head>
 
 <body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div id="toast" class="toast">
+  <span id="toastIcon"></span>
+  <span id="toastMessage"></span>
+</div>
+
 <div class="container">
   <div class="header">
-    <h3>💰 Catatan Teknisi</h3>
-    <p style="opacity: 0.9;">Manajemen Pendapatan Harian</p>
+    <div class="header-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+      </svg>
+    </div>
+    <h1>Catatan Teknisi</h1>
+    <p>Manajemen Pendapatan Harian</p>
   </div>
 
-  <div class="total-section">
-    <div class="total-label">Total Hari Ini</div>
-    <div class="total-value">Rp <span id="total">0</span></div>
+  <div class="total-card">
+    <div class="total-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      Total Pendapatan Hari Ini
+    </div>
+    <div class="total-value">
+      <span class="currency">Rp</span>
+      <span id="total">0</span>
+    </div>
   </div>
 
   <div class="form-section">
     <div class="form-group">
-      <label for="nama">Nama Pelanggan</label>
-      <input type="text" id="nama" class="form-control" placeholder="Masukkan nama pelanggan">
+      <label class="form-label" for="nama">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Nama Pelanggan
+      </label>
+      <input type="text" id="nama" class="form-control" placeholder="Masukkan nama pelanggan...">
     </div>
 
     <div class="form-group">
-      <label for="service">Jenis Service</label>
+      <label class="form-label" for="service">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Jenis Service
+      </label>
       <select id="service" class="form-control">
-        <option value="">Pilih Service</option>
-        <option>Printer</option>
-        <option>Komputer</option>
-        <option>Install</option>
-        <option>Lainnya</option>
+        <option value="">Pilih jenis service...</option>
+        <option value="Printer">Printer</option>
+        <option value="Komputer">Komputer / Laptop</option>
+        <option value="Install">Install Software</option>
+        <option value="Lainnya">Lainnya</option>
       </select>
     </div>
 
-    <div class="form-group">
-      <label for="keterangan">Keterangan (jika lainnya)</label>
-      <input type="text" id="keterangan" class="form-control" placeholder="Deskripsi tambahan">
+    <div class="form-group" id="keteranganGroup" style="display: none;">
+      <label class="form-label" for="keterangan">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Keterangan Tambahan
+      </label>
+      <input type="text" id="keterangan" class="form-control" placeholder="Deskripsi service lainnya...">
     </div>
 
     <div class="form-group">
-      <label for="biaya">Biaya (Rp)</label>
-      <input type="number" id="biaya" class="form-control" placeholder="Masukkan biaya">
+      <label class="form-label" for="biaya">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Biaya (Rp)
+      </label>
+      <input type="number" id="biaya" class="form-control" placeholder="Masukkan jumlah biaya..." min="0">
     </div>
 
-    <button id="btnSimpan" class="btn-simpan" onclick="tambah()">Simpan Transaksi</button>
-    <button id="btnLaporan" class="btn-laporan" onclick="tampilkanLaporan()">📊 Lihat Laporan Pendapatan</button>
+    <button id="btnSimpan" class="btn btn-primary" onclick="tambah()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Simpan Transaksi
+    </button>
+    
+    <button id="btnLaporan" class="btn btn-secondary" onclick="tampilkanLaporan()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Lihat Laporan
+    </button>
   </div>
 
-  <div id="list" class="list-section"></div>
+  <div class="list-section">
+    <div class="section-header">
+      <div class="section-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Transaksi Hari Ini
+      </div>
+      <span class="item-count" id="itemCount">0 item</span>
+    </div>
+    <div id="list" class="list-container"></div>
+  </div>
 
   <div id="laporan" class="report-section">
-    <div class="report-title">Laporan Pendapatan</div>
+    <div class="report-header">
+      <div class="report-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        Laporan Pendapatan
+      </div>
+      <button class="btn-close-report" onclick="tutupLaporan()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    
     <div class="report-grid">
       <div class="report-card">
         <div class="report-label">Hari Ini</div>
@@ -451,14 +849,17 @@ button:hover::before {
         <div class="report-value" id="totalBulanIni">Rp 0</div>
       </div>
     </div>
+    
+    <div class="section-header" style="margin-top: 20px; margin-bottom: 12px;">
+      <div class="section-title" style="font-size: 14px;">Riwayat Transaksi</div>
+    </div>
     <div class="report-list" id="report-content"></div>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD25yifoIuCrqXVKEx7NvALoAJ8PNb8pDg",
@@ -473,21 +874,57 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Service icons mapping
+const serviceIcons = {
+  'Printer': { icon: '🖨️', class: 'printer' },
+  'Komputer': { icon: '💻', class: 'komputer' },
+  'Install': { icon: '📦', class: 'install' },
+  'Lainnya': { icon: '⚙️', class: 'lainnya' }
+};
+
 function today() {
   return new Date().toISOString().split("T")[0];
 }
 
 function formatRupiah(angka) {
   return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
   }).format(angka);
 }
+
+// Toast notification
+window.showToast = function(message, type = 'success') {
+  const toast = document.getElementById('toast');
+  const toastIcon = document.getElementById('toastIcon');
+  const toastMessage = document.getElementById('toastMessage');
+  
+  toast.className = 'toast ' + type;
+  toastIcon.textContent = type === 'success' ? '✅' : '❌';
+  toastMessage.textContent = message;
+  
+  toast.classList.add('show');
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+};
+
+// Show/hide keterangan field based on service selection
+document.getElementById('service').addEventListener('change', function() {
+  const keteranganGroup = document.getElementById('keteranganGroup');
+  if (this.value === 'Lainnya') {
+    keteranganGroup.style.display = 'block';
+    document.getElementById('keterangan').focus();
+  } else {
+    keteranganGroup.style.display = 'none';
+  }
+});
 
 async function loadData() {
   const querySnapshot = await getDocs(collection(db, "data"));
   let total = 0;
+  let count = 0;
   let html = "";
 
   querySnapshot.forEach((docSnap) => {
@@ -495,24 +932,46 @@ async function loadData() {
 
     if (d.tanggal === today()) {
       total += d.biaya;
+      count++;
 
-      let namaService = d.service === "Lainnya" ? d.keterangan : d.service;
+      const namaService = d.service === "Lainnya" ? (d.keterangan || 'Lainnya') : d.service;
+      const serviceInfo = serviceIcons[d.service] || serviceIcons['Lainnya'];
 
       html += `
-        <div class="item-card">
-          <div class="item-info">
-            <div class="item-nama">${d.nama}</div>
-            <div class="item-detail">${namaService}</div>
+        <div class="item-card" style="animation-delay: ${count * 0.05}s">
+          <div class="item-left">
+            <div class="item-icon ${serviceInfo.class}">${serviceInfo.icon}</div>
+            <div class="item-info">
+              <div class="item-nama">${d.nama}</div>
+              <div class="item-detail">
+                <span>${namaService}</span>
+              </div>
+            </div>
           </div>
-          <div class="item-biaya">${formatRupiah(d.biaya)}</div>
-          <button class="btn-hapus" onclick="hapus('${docSnap.id}')">Hapus</button>
+          <div class="item-right">
+            <div class="item-biaya">Rp ${formatRupiah(d.biaya)}</div>
+            <button class="btn btn-danger" onclick="hapus('${docSnap.id}')">Hapus</button>
+          </div>
         </div>
       `;
     }
   });
 
-  document.getElementById("list").innerHTML = html;
-  document.getElementById("total").innerText = formatRupiah(total);
+  const listEl = document.getElementById('list');
+  
+  if (count === 0) {
+    listEl.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📋</div>
+        <p>Belum ada transaksi hari ini</p>
+      </div>
+    `;
+  } else {
+    listEl.innerHTML = html;
+  }
+  
+  document.getElementById('total').textContent = formatRupiah(total);
+  document.getElementById('itemCount').textContent = `${count} item`;
 }
 
 async function tampilkanLaporan() {
@@ -522,17 +981,18 @@ async function tampilkanLaporan() {
   let totalBulanIni = 0;
   let dataLaporan = [];
 
-  const today = new Date();
-  const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  const startOfWeek = new Date(today);
-  startOfWeek.setDate(today.getDate() - today.getDay());
-  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const now = new Date();
+  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1)); // Monday start
+  startOfWeek.setHours(0, 0, 0, 0);
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
   querySnapshot.forEach((docSnap) => {
     const d = docSnap.data();
-    const tanggal = new Date(d.tanggal);
+    const tanggal = new Date(d.tanggal + 'T00:00:00');
     
-    if (tanggal >= startOfDay) {
+    if (tanggal >= startOfDay && tanggal < new Date(startOfDay.getTime() + 86400000)) {
       totalHariIni += d.biaya;
     }
     
@@ -553,48 +1013,90 @@ async function tampilkanLaporan() {
     });
   });
 
-  document.getElementById("totalHariIni").innerText = formatRupiah(totalHariIni);
-  document.getElementById("totalMingguIni").innerText = formatRupiah(totalMingguIni);
-  document.getElementById("totalBulanIni").innerText = formatRupiah(totalBulanIni);
+  // Sort by date descending
+  dataLaporan.sort((a, b) => b.tanggal.localeCompare(a.tanggal));
+
+  document.getElementById('totalHariIni').textContent = `Rp ${formatRupiah(totalHariIni)}`;
+  document.getElementById('totalMingguIni').textContent = `Rp ${formatRupiah(totalMingguIni)}`;
+  document.getElementById('totalBulanIni').textContent = `Rp ${formatRupiah(totalBulanIni)}`;
 
   let html = "";
 
-  dataLaporan.slice(-10).reverse().forEach(item => {
-    let namaService = item.service === "Lainnya" ? item.keterangan : item.service;
-    html += `
-      <div class="report-item">
-        <div class="report-date">${item.tanggal}</div>
-        <div class="report-detail">${item.nama} - ${namaService}</div>
-        <div class="report-biaya">${formatRupiah(item.biaya)}</div>
-      </div>
-    `;
-  });
+  if (dataLaporan.length === 0) {
+    html = `<div class="empty-state"><p>Tidak ada data laporan</p></div>`;
+  } else {
+    dataLaporan.slice(0, 20).forEach(item => {
+      const namaService = item.service === "Lainnya" ? (item.keterangan || 'Lainnya') : item.service;
+      
+      // Format date to Indonesian format
+      const dateObj = new Date(item.tanggal + 'T00:00:00');
+      const formattedDate = dateObj.toLocaleDateString('id-ID', { 
+        day: 'numeric', 
+        month: 'short',
+        year: 'numeric'
+      });
+      
+      html += `
+        <div class="report-item">
+          <div class="report-date-badge">${formattedDate}</div>
+          <div class="report-detail">${item.nama} - ${namaService}</div>
+          <div class="report-biaya">Rp ${formatRupiah(item.biaya)}</div>
+        </div>
+      `;
+    });
+  }
 
-  document.getElementById("report-content").innerHTML = html;
-  document.getElementById("laporan").style.display = "block";
+  document.getElementById('report-content').innerHTML = html;
+  document.getElementById('laporan').style.display = 'block';
+  
+  // Scroll to report
+  setTimeout(() => {
+    document.getElementById('laporan').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
 }
 
-window.tambah = async function() {
-  let nama = document.getElementById("nama").value;
-  let service = document.getElementById("service").value;
-  let ket = document.getElementById("keterangan").value;
-  let biaya = parseInt(document.getElementById("biaya").value);
+window.tutupLaporan = function() {
+  document.getElementById('laporan').style.display = 'none';
+};
 
-  if (!nama || !service || !biaya) {
-    alert("Mohon lengkapi semua field!");
+window.tambah = async function() {
+  const nama = document.getElementById('nama').value.trim();
+  const service = document.getElementById('service').value;
+  const ket = document.getElementById('keterangan').value.trim();
+  const biayaVal = document.getElementById('biaya').value;
+  const biaya = parseInt(biayaVal);
+
+  // Validation
+  if (!nama) {
+    showToast('Mohon isi nama pelanggan!', 'error');
+    document.getElementById('nama').focus();
+    return;
+  }
+  
+  if (!service) {
+    showToast('Mohon pilih jenis service!', 'error');
+    document.getElementById('service').focus();
+    return;
+  }
+  
+  if (!biayaVal || isNaN(biaya) || biaya <= 0) {
+    showToast('Mohon masukkan biaya yang valid!', 'error');
+    document.getElementById('biaya').focus();
     return;
   }
 
   if (service === "Lainnya" && !ket) {
-    alert("Mohon isi keterangan untuk service 'Lainnya'!");
+    showToast('Mohon isi keterangan untuk service Lainnya!', 'error');
+    document.getElementById('keterangan').focus();
     return;
   }
 
-  let btn = document.getElementById("btnSimpan");
-  btn.innerText = "Menyimpan...";
+  const btn = document.getElementById('btnSimpan');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<svg class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Menyimpan...';
   btn.disabled = true;
 
-  setTimeout(async () => {
+  try {
     await addDoc(collection(db, "data"), {
       nama,
       service,
@@ -603,30 +1105,53 @@ window.tambah = async function() {
       tanggal: today()
     });
 
-    alert("✅ Transaksi berhasil disimpan!");
+    showToast('Transaksi berhasil disimpan!');
 
-    document.getElementById("nama").value = "";
-    document.getElementById("service").value = "";
-    document.getElementById("keterangan").value = "";
-    document.getElementById("biaya").value = "";
+    // Reset form
+    document.getElementById('nama').value = '';
+    document.getElementById('service').value = '';
+    document.getElementById('keterangan').value = '';
+    document.getElementById('biaya').value = '';
+    document.getElementById('keteranganGroup').style.display = 'none';
 
-    btn.innerText = "Simpan Transaksi";
+    document.getElementById('nama').focus();
+    
+    await loadData();
+  } catch (error) {
+    showToast('Gagal menyimpan data!', 'error');
+    console.error(error);
+  } finally {
+    btn.innerHTML = originalText;
     btn.disabled = false;
-
-    document.getElementById("nama").focus();
-
-    loadData();
-  }, 1000);
-};
-
-window.hapus = async function(id) {
-  if (confirm("Apakah Anda yakin ingin menghapus transaksi ini?")) {
-    await deleteDoc(doc(db, "data", id));
-    loadData();
   }
 };
 
+window.hapus = async function(id) {
+  if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
+    try {
+      await deleteDoc(doc(db, "data", id));
+      showToast('Transaksi berhasil dihapus!');
+      await loadData();
+    } catch (error) {
+      showToast('Gagal menghapus data!', 'error');
+      console.error(error);
+    }
+  }
+};
+
+// Initialize
 loadData();
 </script>
+
+<style>
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
 </body>
 </html>
