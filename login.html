@@ -1,0 +1,29 @@
+<!-- Logout Button -->
+<button onclick="logout()" style="
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(220,38,38,0.4)'" 
+   onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 12px rgba(220,38,38,0.3)'">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+    <polyline points="16 17 21 12 16 7"/>
+    <line x1="21" y1="12" x2="9" y2="12"/>
+  </svg>
+  Logout
+</button>
