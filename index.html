@@ -10,39 +10,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --primary: #0d9488;
-  --primary-dark: #0f766e;
-  --primary-light: #14b8a6;
+  --primary: #0891b2;
+  --primary-dark: #0e7490;
+  --primary-light: #22d3ee;
   --accent: #f59e0b;
-  --success: #10b981;
-  --danger: #ef4444;
-  --danger-soft: #fef2f2;
-  --bg-main: #0c1222;
-  --bg-card: #151d2e;
-  --bg-card-hover: #1a2540;
-  --bg-input: #0f172a;
-  --border: #1e293b;
-  --border-focus: #0d9488;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --success: #059669;
+  --danger: #dc2626;
+  --purple: #7c3aed;
+  
+  /* Light Theme */
+  --bg-body: #f0f4f8;
+  --bg-card: #ffffff;
+  --bg-input: #f8fafc;
+  --border: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
   --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: var(--bg-main);
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
   min-height: 100vh;
   padding: 16px;
   color: var(--text-primary);
@@ -50,713 +42,597 @@ body {
   overflow-x: hidden;
 }
 
+/* ============================================== */
+/* ============ CIRCUIT BOARD BACKGROUND ========== */
+/* ============================================== */
 body::before {
   content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background: 
-    radial-gradient(ellipse at 20% 20%, rgba(13, 148, 136, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
+    /* Base color - soft blue-gray like PCB substrate */
+    linear-gradient(180deg, #e8f4f8 0%, #f0f4f8 30%, #f8fafb 70%, #eef2f7 100%);
+  z-index: -2;
 }
 
-.orb {
+/* Main Circuit Pattern Layer */
+body::after {
+  content: '';
   position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  opacity: 0.4;
+  background-image: 
+    /* Horizontal main traces */
+    linear-gradient(90deg, transparent 49.5%, rgba(8, 145, 178, 0.25) 49.5%, rgba(8, 145, 178, 0.25) 50.5%, transparent 50.5%),
+    linear-gradient(90deg, transparent 19.5%, rgba(8, 145, 178, 0.15) 19.5%, rgba(8, 145, 178, 0.15) 20.5%, transparent 20.5%),
+    linear-gradient(90deg, transparent 79.5%, rgba(8, 145, 178, 0.15) 79.5%, rgba(8, 145, 178, 0.15) 80.5%, transparent 80.5%),
+    
+    /* Vertical traces */
+    linear-gradient(0deg, transparent 29.5%, rgba(8, 145, 178, 0.18) 29.5%, rgba(8, 145, 178, 0.18) 30.5%, transparent 30.5%),
+    linear-gradient(0deg, transparent 69.5%, rgba(8, 145, 178, 0.18) 69.5%, rgba(8, 145, 178, 0.18) 70.5%, transparent 70.5%),
+    
+    /* Diagonal traces - top left area going to "IC" */
+    linear-gradient(45deg, transparent 48%, rgba(124, 58, 237, 0.12) 48%, rgba(124, 58, 237, 0.12) 52%, transparent 52%),
+    linear-gradient(135deg, transparent 48%, rgba(8, 145, 178, 0.1) 48%, rgba(8, 145, 178, 0.1) 52%, transparent 52%),
+    
+    /* More circuit paths */
+    linear-gradient(60deg, transparent 88%, rgba(8, 145, 178, 0.12) 88%, rgba(8, 145, 178, 0.12) 92%, transparent 92%),
+    linear-gradient(-45deg, transparent 85%, rgba(124, 58, 237, 0.1) 85%, rgba(124, 58, 237, 0.1) 89%, transparent 89%),
+    
+    /* Fine grid dots (vias) */
+    radial-gradient(circle at center, rgba(8, 145, 178, 0.2) 1px, transparent 1px);
+  
+  background-size: 
+    120px 80px,
+    80px 40px,
+    80px 40px,
+    60px 100px,
+    60px 100px,
+    200px 150px,
+    180px 140px,
+    160px 200px,
+    140px 180px,
+    24px 24px;
+  
+  background-position: 
+    0 0,
+    0 20px,
+    0 60px,
+    30px 0,
+    30px 50px,
+    -20px -30px,
+    100% 10%,
+    10% 100%,
+    90% 85%,
+    0 0;
+  
+  animation: circuitPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes circuitPulse {
+  0% { opacity: 0.35; }
+  100% { opacity: 0.55; }
+}
+
+/* IC Chip Component - Top Right */
+.ic-chip {
+  position: fixed;
+  z-index: -1;
+  opacity: 0.25;
+  filter: drop-shadow(0 0 8px rgba(8, 145, 178, 0.3));
+}
+
+.ic-chip.top-right {
+  top: 8%;
+  right: -20px;
+  width: 100px;
+  height: 60px;
+  transform: rotate(-5deg);
+  animation: icGlow 4s ease-in-out infinite alternate;
+}
+
+.ic-chip.bottom-left {
+  bottom: 15%;
+  left: -30px;
+  width: 120px;
+  height: 70px;
+  transform: rotate(12deg);
+  animation: icGlow 5s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes icGlow {
+  0% { opacity: 0.2; filter: drop-shadow(0 0 5px rgba(8, 145, 178, 0.2)); }
+  100% { opacity: 0.35; filter: drop-shadow(0 0 15px rgba(8, 145, 178, 0.4)); }
+}
+
+/* Floating Nodes / Components */
+.circuit-node {
+  position: fixed;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.35;
-  animation: float 20s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 0;
+  z-index: -1;
+  animation: nodeBlink 3s ease-in-out infinite;
 }
 
-.orb-1 {
-  width: 300px;
-  height: 300px;
-  background: linear-gradient(135deg, var(--primary), transparent);
-  top: -100px;
-  left: -100px;
+.circuit-node.n1 {
+  top: 25%; left: 8%;
+  background: radial-gradient(circle, var(--primary-light), var(--primary));
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
+  animation-delay: 0s;
 }
 
-.orb-2 {
-  width: 250px;
-  height: 250px;
-  background: linear-gradient(135deg, var(--accent), transparent);
-  bottom: -80px;
-  right: -80px;
-  animation-delay: -7s;
+.circuit-node.n2 {
+  top: 60%; right: 12%;
+  background: radial-gradient(circle, var(--purple), #a78bfa);
+  box-shadow: 0 0 12px rgba(167, 139, 250, 0.5);
+  animation-delay: 1s;
 }
 
-@keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -30px) scale(1.05); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
+.circuit-node.n3 {
+  bottom: 20%; left: 15%;
+  background: radial-gradient(circle, var(--accent), #fcd34d);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+  animation-delay: 2s;
 }
 
-.container {
-  max-width: 520px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+.circuit-node.n4 {
+  top: 15%; left: 45%;
+  width: 8px; height: 8px;
+  background: var(--success);
+  box-shadow: 0 0 8px rgba(5, 150, 105, 0.5);
+  animation-delay: 0.5s;
 }
 
-.header {
-  text-align: center;
-  padding: 32px 24px 28px;
-  position: relative;
+@keyframes nodeBlink {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; }
 }
+
+/* Data Flow Particles */
+.data-particle {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: var(--primary-light);
+  border-radius: 50%;
+  z-index: -1;
+  box-shadow: 0 0 6px var(--primary-light);
+  animation: dataFlow 6s linear infinite;
+}
+
+.data-particle.p1 { top: 20%; left: 0; animation-delay: 0s; }
+.data-particle.p2 { top: 50%; left: 0; animation-delay: 2s; }
+.data-particle.p3 { top: 80%; left: 0; animation-delay: 4s; }
+
+@keyframes dataFlow {
+  0% { transform: translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+
+/* Container */
+.container { max-width: 480px; margin: 0 auto; position: relative; z-index: 1; }
+
+/* ============ HEADER ============ */
+.header { text-align: center; padding: 28px 20px 24px; }
 
 .header-icon {
-  width: 72px;
-  height: 72px;
+  width: 68px; height: 68px;
   background: linear-gradient(135deg, var(--primary), var(--primary-light));
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 18px;
-  font-size: 32px;
-  box-shadow: 0 12px 32px rgba(13, 148, 136, 0.35);
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 12px 32px rgba(13, 148, 136, 0.35); }
-  50% { box-shadow: 0 12px 40px rgba(13, 148, 136, 0.5); }
-}
-
-.header h1 {
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 6px;
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.header p {
-  color: var(--text-muted);
-  font-size: 14px;
-  font-weight: 500;
-}
-
-/* Date Navigation */
-.date-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.date-nav-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 8px 24px rgba(8, 145, 178, 0.3);
   position: relative;
-  z-index: 10;
 }
-
-.date-nav-btn:hover:not(:disabled) {
-  background: var(--bg-card-hover);
-  color: var(--primary);
-  border-color: var(--primary);
-  transform: scale(1.05);
-}
-
-.date-nav-btn:active:not(:disabled) {
-  transform: scale(0.95);
-}
-
-.date-nav-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.date-nav-display {
-  background: var(--bg-card);
-  border: 2px solid var(--border);
-  border-radius: 14px;
-  padding: 12px 24px;
-  text-align: center;
-  min-width: 170px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  position: relative;
-  z-index: 10;
-}
-
-.date-nav-display:hover {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
-}
-
-.date-nav-display .date-day {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1.2;
-}
-
-.date-nav-display .date-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.date-today-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
-  color: white;
-  font-size: 9px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  margin-left: 6px;
-  vertical-align: middle;
-  font-weight: 700;
-  animation: badge-pulse 2s ease-in-out infinite;
-}
-
-@keyframes badge-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4); }
-  50% { box-shadow: 0 0 0 6px rgba(13, 148, 136, 0); }
-}
-
-.total-card {
-  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-bottom: 20px;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.total-card::before {
+.header-icon::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--primary), var(--accent));
+  inset: -3px;
+  border-radius: 21px;
+  background: linear-gradient(135deg, var(--primary-light), transparent, var(--purple));
+  z-index: -1;
+  opacity: 0.5;
+  animation: iconPulse 3s ease-in-out infinite;
+}
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+.header-icon svg { width: 32px; height: 32px; stroke: white; stroke-width: 2; position: relative; z-index: 1; }
+
+.header h1 { font-size: 24px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; margin-bottom: 4px; }
+.header p { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+
+/* ============ DATE NAV ============ */
+.date-nav { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
+.date-nav-btn {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  color: var(--text-secondary); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s ease;
+}
+.date-nav-btn:hover:not(:disabled) { 
+  background: linear-gradient(135deg, rgba(8,145,178,0.1), rgba(124,58,237,0.1)); 
+  border-color: var(--primary); color: var(--primary); 
+  box-shadow: 0 0 15px rgba(8,145,178,0.15);
+}
+.date-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.date-nav-display {
+  background: var(--bg-card); border: 2px solid var(--border);
+  border-radius: 13px; padding: 10px 20px; text-align: center; min-width: 160px;
+  cursor: pointer; transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.date-nav-display::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(8,145,178,0.05), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+.date-nav-display:hover::before { transform: translateX(100%); }
+.date-nav-display:hover { border-color: var(--primary); }
+.date-day { font-size: 20px; font-weight: 800; color: var(--text-primary); line-height: 1.2; position: relative; }
+.date-label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.today-badge {
+  display: inline-block; background: linear-gradient(135deg, var(--primary), #06b6d4);
+  color: white; font-size: 8px; padding: 2px 7px; border-radius: 5px;
+  margin-left: 5px; vertical-align: middle; font-weight: 700;
 }
 
-.total-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: var(--text-secondary);
-  font-weight: 500;
-  margin-bottom: 10px;
+/* ============ TOTAL CARD ============ */
+.total-card {
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px;
+  position: relative; overflow: hidden; box-shadow: var(--shadow-sm);
 }
-
-.total-label svg {
-  width: 18px;
-  height: 18px;
-  stroke: var(--accent);
+.total-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--purple));
 }
+.total-label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); font-weight: 600; margin-bottom: 8px; }
+.total-label svg { width: 16px; height: 16px; stroke: var(--accent); }
+.total-value { font-size: 34px; font-weight: 800; color: var(--success); display: flex; align-items: baseline; gap: 4px; }
+.total-value .currency { font-size: 18px; font-weight: 700; opacity: 0.6; }
 
-.total-value {
-  font-size: 38px;
-  font-weight: 800;
-  color: var(--success);
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-  letter-spacing: -1px;
-}
-
-.total-value .currency {
-  font-size: 22px;
-  font-weight: 700;
-  opacity: 0.7;
-}
-
+/* ============ FORM SECTION - COLORFUL ============ */
 .form-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  background: 
+    linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+    linear-gradient(135deg, var(--primary), #06b6d4, var(--purple)) border-box;
+  border: 2.5px solid transparent;
   border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-bottom: 20px;
+  padding: 6px; margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(8, 145, 178, 0.12), 0 0 0 1px rgba(255,255,255,0.8) inset;
+  position: relative; overflow: hidden;
+}
+.form-inner {
+  background: linear-gradient(180deg, #ffffff 0%, #fafffe 100%);
+  border-radius: calc(var(--radius-lg) - 4px);
+  padding: 22px 20px; position: relative;
+}
+.form-inner::before {
+  content: ''; position: absolute; top: -40px; right: -30px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(8, 145, 178, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.form-inner::after {
+  content: ''; position: absolute; bottom: -30px; left: -20px;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-.form-group {
-  margin-bottom: 18px;
+.form-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px dashed rgba(8, 145, 178, 0.2); }
+.form-header-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--primary), #06b6d4);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.25);
 }
+.form-header-icon svg { width: 18px; height: 18px; stroke: white; stroke-width: 2.5; }
+.form-header-text h3 { font-size: 15px; font-weight: 800; color: var(--primary-dark); letter-spacing: -0.3px; }
+.form-header-text p { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
-.form-group:last-of-type {
-  margin-bottom: 22px;
-}
-
+.form-group { margin-bottom: 15px; position: relative; z-index: 1; }
+.form-group:last-of-type { margin-bottom: 20px; }
 .form-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
-  font-weight: 600;
-  font-size: 13px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 7px; font-weight: 700; font-size: 11px;
+  color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.6px;
 }
+.form-label svg { width: 13px; height: 13px; stroke: var(--primary); }
 
 .form-control {
-  width: 100%;
-  padding: 14px 16px;
-  background: var(--bg-input);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-md);
-  font-size: 15px;
-  font-family: inherit;
-  color: var(--text-primary);
+  width: 100%; padding: 14px 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbfc 100%);
+  border: 1.8px solid #cbd5e1; border-radius: 11px;
+  font-size: 15px; font-family: inherit; color: var(--text-primary);
   transition: all 0.25s ease;
 }
-
-.form-control::placeholder {
-  color: var(--text-muted);
-}
-
+.form-control::placeholder { color: #94a3b8; }
 .form-control:focus {
-  outline: none;
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
-  background: var(--bg-card);
+  outline: none; border-color: var(--primary); background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1), 0 2px 8px rgba(8, 145, 178, 0.08);
+  transform: translateY(-1px);
 }
-
-input[type="date"] {
-  position: relative;
-  cursor: pointer;
-  color-scheme: dark;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  opacity: 0.7;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-}
-
 select.form-control {
   appearance: none;
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  background-size: 18px;
-  padding-right: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230891b2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center; background-size: 18px;
+  padding-right: 42px;
 }
+input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: pointer; }
 
 .btn {
-  width: 100%;
-  padding: 15px 20px;
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: 15px;
-  font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
+  width: 100%; padding: 15px 20px; border: none;
+  border-radius: 12px; font-size: 15px; font-weight: 700;
+  font-family: inherit; cursor: pointer;
   transition: all 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  text-decoration: none;
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+  text-decoration: none; position: relative; overflow: hidden;
 }
-
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  color: white;
-  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.35);
+  background: linear-gradient(135deg, var(--primary) 0%, #0e7490 50%, var(--primary-dark) 100%);
+  background-size: 200% 200%; color: white;
+  box-shadow: 0 4px 16px rgba(8, 145, 178, 0.35);
+  animation: shimmer 3s ease infinite;
 }
-
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(13, 148, 136, 0.45);
-}
-
-.btn-primary:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
+@keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(8, 145, 178, 0.45); }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .btn-report {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
-  margin-top: 12px;
+  background: linear-gradient(135deg, var(--purple), #6d28d9);
+  color: white; box-shadow: 0 4px 16px rgba(124, 58, 237, 0.28);
+  margin-top: 10px; animation: shimmer-purple 4s ease infinite; background-size: 200% 200%;
 }
-
-.btn-report:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-}
+@keyframes shimmer-purple { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.btn-report:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124, 58, 237, 0.38); }
 
 .btn-danger {
-  background: var(--danger-soft);
-  color: var(--danger);
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  width: auto;
-  float: right;
-  border-radius: var(--radius-sm);
-  box-shadow: none;
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  color: var(--danger); padding: 7px 12px; font-size: 11px; font-weight: 700;
+  width: auto; float: right; border-radius: 8px; border: 1px solid #fecaca;
 }
+.btn-danger:hover { background: var(--danger); color: white; border-color: var(--danger); }
 
-.btn-danger:hover {
-  background: var(--danger);
-  color: white;
-}
+/* ============ LIST ============ */
+.list-section { margin-bottom: 20px; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 2px; }
+.section-title { font-size: 15px; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 7px; }
+.item-count { background: var(--bg-input); padding: 4px 10px; border-radius: 16px; font-size: 11px; font-weight: 600; color: var(--text-muted); }
 
-.list-section {
-  margin-bottom: 24px;
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-  padding: 0 4px;
-}
-
-.section-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.item-count {
-  background: var(--bg-input);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.list-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: 400px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 48px 24px;
-  color: var(--text-muted);
-}
-
-.empty-state-icon {
-  font-size: 56px;
-  margin-bottom: 16px;
-  opacity: 0.5;
-}
-
-.empty-state p {
-  font-size: 14px;
-}
+.list-container { display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto; padding-right: 3px; }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+.empty-state-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
+.empty-state p { font-size: 14px; }
 
 .item-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  transition: all 0.25s ease;
-  animation: slideIn 0.35s ease backwards;
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: var(--radius-md); padding: 15px;
+  display: flex; align-items: center; gap: 12px;
+  transition: all 0.2s ease; animation: slideIn 0.3s ease backwards;
 }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+.item-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(8,145,178,0.1); transform: translateX(3px); }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+.item-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.item-icon { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.icon-printer { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.icon-komputer { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+.icon-install { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+.icon-lainnya { background: linear-gradient(135deg, #fef3c7, #fde68a); }
 
-.item-card:hover {
-  border-color: var(--primary);
-  background: var(--bg-card-hover);
-  transform: translateX(4px);
-  box-shadow: var(--shadow-md);
-}
+.item-info { min-width: 0; }
+.item-name { font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item-detail { font-size: 12px; color: var(--text-muted); }
+.item-date-badge { background: #fffbeb; color: var(--accent); padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 700; margin-left: 5px; }
+.item-date-badge.past { background: #fef2f2; color: var(--danger); }
 
-.item-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex: 1;
-  min-width: 0;
-}
+.item-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.item-biaya { font-size: 15px; font-weight: 800; color: var(--success); white-space: nowrap; }
 
-.item-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
-.item-icon.printer { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-.item-icon.komputer { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
-.item-icon.install { background: linear-gradient(135deg, #10b981, #059669); }
-.item-icon.lainnya { background: linear-gradient(135deg, #f59e0b, #d97706); }
-
-.item-info {
-  min-width: 0;
-}
-
-.item-nama {
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--text-primary);
-  margin-bottom: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.item-detail {
-  font-size: 13px;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.item-date-badge {
-  background: rgba(245, 158, 11, 0.15);
-  color: var(--accent);
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.item-date-badge.past {
-  background: rgba(239, 68, 68, 0.15);
-  color: var(--danger);
-}
-
-.item-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-}
-
-.item-biaya {
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--success);
-  white-space: nowrap;
-}
-
+/* Toast */
 .toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
+  position: fixed; bottom: 20px; left: 50%;
   transform: translateX(-50%) translateY(100px);
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  padding: 14px 24px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 600;
-  font-size: 14px;
-  box-shadow: var(--shadow-lg);
-  z-index: 1000;
-  opacity: 0;
-  transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  padding: 12px 20px; border-radius: 12px;
+  display: flex; align-items: center; gap: 8px;
+  font-weight: 600; font-size: 13px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 9999;
+  opacity: 0; transition: all 0.3s cubic-bezier(0.68,-0.55,0.265,1.55); max-width: 90vw;
 }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast.success { border-left: 4px solid var(--success); }
+.toast.error { border-left: 4px solid var(--danger); }
 
-.toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
-.toast.success { border-color: var(--success); }
-.toast.error { border-color: var(--danger); }
-
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-
-.spin { animation: spin 1s linear infinite; }
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+.spin { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 480px) {
   body { padding: 10px; }
-  .header { padding: 24px 16px 20px; }
-  .header-icon { width: 60px; height: 60px; font-size: 28px; }
-  .header h1 { font-size: 22px; }
-  .total-value { font-size: 32px; }
-  .form-section, .total-card { padding: 18px; border-radius: var(--radius-md); }
-  .item-card { padding: 14px; }
-  .item-icon { width: 38px; height: 38px; font-size: 18px; }
-  .date-nav-display { min-width: 140px; padding: 10px 16px; }
-  .date-nav-btn { width: 40px; height: 40px; }
+  .header { padding: 22px 16px 18px; }
+  .header-icon { width: 58px; height: 58px; }
+  .form-inner { padding: 18px 16px; }
+  .item-card { padding: 12px; }
+  .ic-chip { display: none; }
+  .circuit-node.n1, .circuit-node.n2 { display: none; }
 }
 </style>
 </head>
 
 <body>
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
 
-<div id="toast" class="toast">
-  <span id="toastIcon"></span>
-  <span id="toastMessage"></span>
-</div>
+<!-- Circuit Board Elements -->
+<!-- IC Chip Top Right -->
+<svg class="ic-chip top-right" viewBox="0 0 100 60" fill="none">
+  <rect x="10" y="10" width="80" height="40" rx="4" fill="#1e293b" stroke="var(--primary)" stroke-width="1.5"/>
+  <circle cx="25" cy="20" r="3" fill="var(--primary-light)"/>
+  <circle cx="25" cy="40" r="3" fill="var(--primary-light)"/>
+  <circle cx="75" cy="20" r="3" fill="var(--primary-light)"/>
+  <circle cx="75" cy="40" r="3" fill="var(--primary-light)"/>
+  <rect x="30" y="22" width="40" height="16" rx="2" fill="#334155"/>
+  <line x1="10" y1="20" x2="0" y2="20" stroke="var(--primary)" stroke-width="2"/>
+  <line x1="10" y1="30" x2="0" y2="30" stroke="var(--primary)" stroke-width="2"/>
+  <line x1="10" y1="40" x2="0" y2="40" stroke="var(--primary)" stroke-width="2"/>
+  <line x1="90" y1="20" x2="100" y2="20" stroke="var(--primary)" stroke-width="2"/>
+  <line x1="90" y1="30" x2="100" y2="30" stroke="var(--primary)" stroke-width="2"/>
+  <line x1="90" y1="40" x2="100" y2="40" stroke="var(--primary)" stroke-width="2"/>
+</svg>
+
+<!-- IC Chip Bottom Left -->
+<svg class="ic-chip bottom-left" viewBox="0 0 120 70" fill="none">
+  <rect x="15" y="10" width="90" height="50" rx="5" fill="#1e293b" stroke="var(--purple)" stroke-width="1.5"/>
+  <circle cx="28" cy="22" r="3" fill="#a78bfa"/>
+  <circle cx="28" cy="48" r="3" fill="#a78bfa"/>
+  <circle cx="92" cy="22" r="3" fill="#a78bfa"/>
+  <circle cx="92" cy="48" r="3" fill="#a78bfa"/>
+  <rect x="38" y="25" width="44" height="20" rx="3" fill="#334155"/>
+  <line x1="15" y1="22" x2="0" y2="15" stroke="var(--purple)" stroke-width="2"/>
+  <line x1="15" y1="35" x2="0" y2="35" stroke="var(--purple)" stroke-width="2"/>
+  <line x1="15" y1="48" x2="0" y2="55" stroke="var(--purple)" stroke-width="2"/>
+  <line x1="105" y1="22" x2="120" y2="15" stroke="var(--purple)" stroke-width="2"/>
+  <line x1="105" y1="35" x2="120" y2="35" stroke="var(--purple)" stroke-width="2"/>
+  <line x1="105" y1="48" x2="120" y2="55" stroke="var(--purple)" stroke-width="2"/>
+</svg>
+
+<!-- Circuit Nodes -->
+<div class="circuit-node n1"></div>
+<div class="circuit-node n2"></div>
+<div class="circuit-node n3"></div>
+<div class="circuit-node n4"></div>
+
+<!-- Data Particles -->
+<div class="data-particle p1"></div>
+<div class="data-particle p2"></div>
+<div class="data-particle p3"></div>
+
+<div id="toast" class="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
 
 <div class="container">
+  <!-- Header -->
   <div class="header">
     <div class="header-icon">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
     </div>
     <h1>Catatan Teknisi</h1>
     <p>Manajemen Pendapatan Harian</p>
   </div>
 
-  <!-- Date Navigator -->
+  <!-- Date Nav -->
   <div class="date-nav">
-    <button class="date-nav-btn" id="btnPrev" onclick="changeDate(-1)" title="Hari Sebelumnya">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 18 9 12 15 6"/>
-      </svg>
+    <button class="date-nav-btn" id="btnPrev" onclick="changeDate(-1)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
-    <div class="date-nav-display" onclick="document.getElementById('tanggal').showPicker && document.getElementById('tanggal').showPicker(); document.getElementById('tanggal').click();" title="Klik untuk pilih tanggal">
+    <div class="date-nav-display" onclick="document.getElementById('tanggal').showPicker && document.getElementById('tanggal').showPicker(); document.getElementById('tanggal').click();">
       <div class="date-day" id="displayDate">-</div>
-      <div class="date-label">Tap untuk ganti <span class="date-today-badge" id="todayBadge" style="display:none">HARI INI</span></div>
+      <div class="date-label">Tap ganti <span class="today-badge" id="todayBadge" style="display:none">INI</span></div>
     </div>
-    <button class="date-nav-btn" id="btnNext" onclick="changeDate(1)" title="Hari Berikutnya">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 18 15 12 9 6"/>
-      </svg>
+    <button class="date-nav-btn" id="btnNext" onclick="changeDate(1)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
   </div>
 
+  <!-- Total Card -->
   <div class="total-card">
     <div class="total-label">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-        <line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Total Pendapatan <span id="totalDateLabel">Hari Ini</span>
     </div>
-    <div class="total-value">
-      <span class="currency">Rp</span>
-      <span id="total">0</span>
-    </div>
+    <div class="total-value"><span class="currency">Rp</span><span id="total">0</span></div>
   </div>
 
+  <!-- Form Section -->
   <div class="form-section">
-    <!-- Tanggal Input -->
-    <div class="form-group">
-      <label class="form-label" for="tanggal">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Tanggal Transaksi
-      </label>
-      <input type="date" id="tanggal" class="form-control">
-    </div>
+    <div class="form-inner">
+      <div class="form-header">
+        <div class="form-header-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <div class="form-header-text">
+          <h3>Tambah Transaksi Baru</h3>
+          <p>Isi data service di bawah ini</p>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label class="form-label" for="nama">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Nama Pelanggan
-      </label>
-      <input type="text" id="nama" class="form-control" placeholder="Masukkan nama pelanggan...">
-    </div>
+      <div class="form-group">
+        <label class="form-label" for="tanggal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Tanggal Transaksi
+        </label>
+        <input type="date" id="tanggal" class="form-control">
+      </div>
 
-    <div class="form-group">
-      <label class="form-label" for="service">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-        Jenis Service
-      </label>
-      <select id="service" class="form-control">
-        <option value="">Pilih jenis service...</option>
-        <option value="Printer">Printer</option>
-        <option value="Komputer">Komputer / Laptop</option>
-        <option value="Install">Install Software</option>
-        <option value="Lainnya">Lainnya</option>
-      </select>
-    </div>
+      <div class="form-group">
+        <label class="form-label" for="nama">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Nama Pelanggan
+        </label>
+        <input type="text" id="nama" class="form-control" placeholder="Masukkan nama pelanggan...">
+      </div>
 
-    <div class="form-group" id="keteranganGroup" style="display: none;">
-      <label class="form-label" for="keterangan">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        Keterangan Tambahan
-      </label>
-      <input type="text" id="keterangan" class="form-control" placeholder="Deskripsi service lainnya...">
-    </div>
+      <div class="form-group">
+        <label class="form-label" for="service">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          Jenis Service
+        </label>
+        <select id="service" class="form-control">
+          <option value="">Pilih jenis service...</option>
+          <option>Printer</option>
+          <option>Komputer / Laptop</option>
+          <option>Install Software</option>
+          <option>Lainnya</option>
+        </select>
+      </div>
 
-    <div class="form-group">
-      <label class="form-label" for="biaya">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        Biaya (Rp)
-      </label>
-      <input type="number" id="biaya" class="form-control" placeholder="Masukkan jumlah biaya..." min="0">
-    </div>
+      <div class="form-group" id="ketGroup" style="display:none;">
+        <label class="form-label" for="keterangan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Keterangan
+        </label>
+        <input type="text" id="keterangan" class="form-control" placeholder="Deskripsi tambahan...">
+      </div>
 
-    <button id="btnSimpan" class="btn btn-primary" onclick="tambah()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Simpan Transaksi
-    </button>
-    
-    <a href="laporan.html" class="btn btn-report">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-      Buka Halaman Laporan
-    </a>
+      <div class="form-group">
+        <label class="form-label" for="biaya">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          Biaya (Rp)
+        </label>
+        <input type="number" id="biaya" class="form-control" placeholder="Masukkan jumlah biaya..." min="0">
+      </div>
+
+      <button class="btn btn-primary" id="btnSimpan" onclick="tambah()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Simpan Transaksi
+      </button>
+      
+      <a href="laporan.html" class="btn btn-report">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Buka Halaman Laporan
+      </a>
+    </div>
   </div>
 
+  <!-- List -->
   <div class="list-section">
     <div class="section-header">
       <div class="section-title">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
         Transaksi <span id="listDateLabel">Hari Ini</span>
       </div>
       <span class="item-count" id="itemCount">0 item</span>
@@ -775,307 +651,151 @@ const firebaseConfig = {
   projectId: "catatan-teknisi-50aef",
   storageBucket: "catatan-teknisi-50aef.firebasestorage.app",
   messagingSenderId: "172857160604",
-  appId: "1:172857160604:web:8e94e98ca0e7e28309ce59",
-  measurementId: "G-4K83BFYYVR"
+  appId: "1:172857160604:web:8e94e98ca0e7e28309ce59"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Global selected date - initialized to today
 let selectedDate = '';
 
-const serviceIcons = {
-  'Printer': { icon: '🖨️', class: 'printer' },
-  'Komputer': { icon: '💻', class: 'komputer' },
-  'Install': { icon: '📦', class: 'install' },
-  'Lainnya': { icon: '⚙️', class: 'lainnya' }
+const icons = {
+  'Printer': { icon: '🖨️', cls: 'icon-printer' },
+  'Komputer': { icon: '💻', cls: 'icon-komputer' },
+  'Install': { icon: '📦', cls: 'icon-install' },
+  'Lainnya': { icon: '⚙️', cls: 'icon-lainnya' }
 };
 
-function getTodayString() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
-function formatRupiah(angka) {
-  return new Intl.NumberFormat('id-ID', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(angka);
+function fmt(n) { return new Intl.NumberFormat('id-ID',{minimumFractionDigits:0,maximumFractionDigits:0}).format(n); }
+
+function fmtDate(d) {
+  const [y,m,day] = d.split('-');
+  return new Date(y,m-1,day).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
 }
 
-function formatDateDisplay(dateStr) {
-  const [year, month, day] = dateStr.split('-');
-  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-  const options = { day: 'numeric', month: 'long', year: 'numeric' };
-  return date.toLocaleDateString('id-ID', options);
+function fmtShort(d) {
+  const [y,m,day] = d.split('-');
+  return new Date(y,m-1,day).toLocaleDateString('id-ID',{day:'numeric',month:'short'});
 }
 
-function formatDateShort(dateStr) {
-  const [year, month, day] = dateStr.split('-');
-  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-  const options = { day: 'numeric', month: 'short' };
-  return date.toLocaleDateString('id-ID', options);
-}
-
-window.showToast = function(message, type = 'success') {
-  const toast = document.getElementById('toast');
-  const toastIcon = document.getElementById('toastIcon');
-  const toastMessage = document.getElementById('toastMessage');
-  
-  toast.className = 'toast ' + type;
-  toastIcon.textContent = type === 'success' ? '✅' : '❌';
-  toastMessage.textContent = message;
-  
-  toast.classList.add('show');
-  
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
+window.showToast = function(msg,type='success') {
+  const t=document.getElementById('toast');
+  document.getElementById('toastIcon').textContent=type==='success'?'✅':'❌';
+  document.getElementById('toastMsg').textContent=msg;
+  t.className=`toast show ${type}`;
+  setTimeout(()=>t.classList.remove('show'),2800);
 };
 
-// Initialize date picker
-function initDatePicker() {
-  selectedDate = getTodayString();
-  const dateInput = document.getElementById('tanggal');
-  dateInput.value = selectedDate;
+function initDate() {
+  selectedDate=todayStr();
+  document.getElementById('tanggal').value=selectedDate;
+  document.getElementById('tanggal').max=selectedDate;
+  updateDisplay();
   
-  // Set max date to today
-  dateInput.max = selectedDate;
-  
-  // Listen for date changes
-  dateInput.addEventListener('change', function() {
-    if (this.value) {
-      // Validate: don't allow future dates
-      if (this.value > getTodayString()) {
-        showToast('Tidak bisa memilih tanggal depan!', 'error');
-        this.value = selectedDate;
-        return;
-      }
-      selectedDate = this.value;
-      updateDateDisplay();
-      loadData();
-    }
+  document.getElementById('tanggal').addEventListener('change',function(){
+    if(this.value&&this.value<=todayStr()){
+      selectedDate=this.value; updateDisplay(); loadData();
+    } else { this.value=selectedDate; showToast('Tidak boleh lebih dari hari ini!','error'); }
   });
   
-  updateDateDisplay();
+  document.getElementById('service').addEventListener('change',function(){
+    document.getElementById('ketGroup').style.display=this.value==='Lainnya'?'block':'none';
+  });
 }
 
-function updateDateDisplay() {
-  const displayDate = document.getElementById('displayDate');
-  const todayBadge = document.getElementById('todayBadge');
-  const totalDateLabel = document.getElementById('totalDateLabel');
-  const listDateLabel = document.getElementById('listDateLabel');
-  const btnPrev = document.getElementById('btnPrev');
-  const btnNext = document.getElementById('btnNext');
-  
-  const todayStr = getTodayString();
-  const isToday = selectedDate === todayStr;
-  
-  // Update display
-  if (isToday) {
-    displayDate.textContent = 'Hari Ini';
-    todayBadge.style.display = 'inline-block';
-    totalDateLabel.textContent = 'Hari Ini';
-    listDateLabel.textContent = 'Hari Ini';
-  } else {
-    displayDate.textContent = formatDateDisplay(selectedDate);
-    todayBadge.style.display = 'none';
-    totalDateLabel.textContent = formatDateShort(selectedDate);
-    listDateLabel.textContent = formatDateShort(selectedDate);
-  }
-  
-  // Update button states
-  // Next button disabled if already at today
-  btnNext.disabled = isToday;
-  
-  // Prev button always enabled (can go back indefinitely)
-  btnPrev.disabled = false;
+function updateDisplay() {
+  const isToday=selectedDate===todayStr();
+  document.getElementById('displayDate').textContent=isToday?'Hari Ini':fmtDate(selectedDate);
+  document.getElementById('todayBadge').style.display=isToday?'inline-block':'none';
+  document.getElementById('totalDateLabel').textContent=isToday?'Hari Ini':fmtShort(selectedDate);
+  document.getElementById('listDateLabel').textContent=isToday?'Hari Ini':fmtShort(selectedDate);
+  document.getElementById('btnNext').disabled=isToday;
 }
 
-window.changeDate = function(days) {
-  const [year, month, day] = selectedDate.split('-');
-  const currentDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-  
-  // Add/subtract days
-  currentDate.setDate(currentDate.getDate() + days);
-  
-  // Format back to YYYY-MM-DD
-  const newYear = currentDate.getFullYear();
-  const newMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
-  const newDay = String(currentDate.getDate()).padStart(2, '0');
-  const newDateStr = `${newYear}-${newMonth}-${newDay}`;
-  
-  // Check: don't allow future dates
-  const todayStr = getTodayString();
-  if (newDateStr > todayStr) {
-    showToast('Sudah mencapai hari ini!', 'error');
-    return;
-  }
-  
-  // Update selected date
-  selectedDate = newDateStr;
-  document.getElementById('tanggal').value = selectedDate;
-  
-  // Refresh UI
-  updateDateDisplay();
-  loadData();
+window.changeDate=function(dir){
+  const[y,m,d]=selectedDate.split('-');
+  const dt=new Date(+y,+m-1,+d);
+  dt.setDate(dt.getDate()+dir);
+  const ns=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+  if(ns>todayStr()){ showToast('Sudah hari ini!','error'); return; }
+  selectedDate=ns; document.getElementById('tanggal').value=ns; updateDisplay(); loadData();
 };
 
-document.getElementById('service').addEventListener('change', function() {
-  const keteranganGroup = document.getElementById('keteranganGroup');
-  keteranganGroup.style.display = this.value === 'Lainnya' ? 'block' : 'none';
-});
-
-async function loadData() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "data"));
-    let total = 0;
-    let count = 0;
-    let html = "";
-
-    querySnapshot.forEach((docSnap) => {
-      const d = docSnap.data();
-
-      if (d.tanggal === selectedDate) {
-        total += d.biaya;
-        count++;
-
-        const namaService = d.service === "Lainnya" ? (d.keterangan || 'Lainnya') : d.service;
-        const serviceInfo = serviceIcons[d.service] || serviceIcons['Lainnya'];
-        
-        const isPast = d.tanggal !== getTodayString();
-
-        html += `
-          <div class="item-card" style="animation-delay: ${count * 0.05}s">
-            <div class="item-left">
-              <div class="item-icon ${serviceInfo.class}">${serviceInfo.icon}</div>
-              <div class="item-info">
-                <div class="item-nama">${d.nama}</div>
-                <div class="item-detail">
-                  ${namaService}
-                  ${isPast ? `<span class="item-date-badge past">Input Terlambat</span>` : ''}
-                </div>
-              </div>
-            </div>
-            <div class="item-right">
-              <div class="item-biaya">Rp ${formatRupiah(d.biaya)}</div>
-              <button class="btn btn-danger" onclick="hapus('${docSnap.id}')">Hapus</button>
+async function loadData(){
+  try{
+    const snap=await getDocs(collection(db,'data'));
+    let total=0,count=0,html='';
+    snap.forEach(doc=>{
+      const d=doc.data();
+      if(d.tanggal===selectedDate){
+        total+=d.biaya; count++;
+        const nm=d.service==='Lainnya'?(d.keterangan||'Lainnya'):d.service;
+        const ic=icons[d.service]||icons['Lainnya'];
+        const past=d.tanggal!==todayStr();
+        html+=`<div class="item-card" style="animation-delay:${count*0.04}s">
+          <div class="item-left">
+            <div class="item-icon ${ic.cls}">${ic.icon}</div>
+            <div class="item-info">
+              <div class="item-name">${d.nama}</div>
+              <div class="item-detail">${nm}${past?`<span class="item-date-badge past">Terlambat</span>`:''}</div>
             </div>
           </div>
-        `;
+          <div class="item-right">
+            <div class="item-biaya">Rp ${fmt(d.biaya)}</div>
+            <button class="btn btn-danger" onclick="hapus('${doc.id}')">Hapus</button>
+          </div></div>`;
       }
     });
-
-    const listEl = document.getElementById('list');
-    
-    if (count === 0) {
-      listEl.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-state-icon">📋</div>
-          <p>Tidak ada transaksi pada tanggal ini</p>
-        </div>
-      `;
-    } else {
-      listEl.innerHTML = html;
-    }
-    
-    document.getElementById('total').textContent = formatRupiah(total);
-    document.getElementById('itemCount').textContent = `${count} item`;
-    
-  } catch (error) {
-    console.error('Error loading data:', error);
-    showToast('Gagal memuat data!', 'error');
-  }
+    document.getElementById('list').innerHTML=count===0?
+      `<div class="empty-state"><div class="empty-state-icon">🔧</div><p>Belum ada transaksi</p></div>`:html;
+    document.getElementById('total').textContent=fmt(total);
+    document.getElementById('itemCount').textContent=`${count} item`;
+  }catch(e){ console.error(e); }
 }
 
-window.tambah = async function() {
-  const nama = document.getElementById('nama').value.trim();
-  const service = document.getElementById('service').value;
-  const ket = document.getElementById('keterangan').value.trim();
-  const biayaVal = document.getElementById('biaya').value;
-  const biaya = parseInt(biayaVal);
-  const tanggal = selectedDate;
-
-  if (!nama) {
-    showToast('Mohon isi nama pelanggan!', 'error');
-    document.getElementById('nama').focus();
-    return;
-  }
+window.tambah=async function(){
+  const nama=document.getElementById('nama').value.trim();
+  const svc=document.getElementById('service').value;
+  const ket=document.getElementById('keterangan').value.trim();
+  const bv=document.getElementById('biaya').value;
+  const biaya=parseInt(bv);
   
-  if (!service) {
-    showToast('Mohon pilih jenis service!', 'error');
-    document.getElementById('service').focus();
-    return;
-  }
+  if(!nama){ showToast('Isi nama pelanggan!','error'); return; }
+  if(!svc){ showToast('Pilih service!','error'); return; }
+  if(!bv||isNaN(biaya)||biaya<=0){ showToast('Biaya tidak valid!','error'); return; }
+  if(svc==='Lainnya'&&!ket){ showToast('Isi keterangan!','error'); return; }
   
-  if (!biayaVal || isNaN(biaya) || biaya <= 0) {
-    showToast('Mohon masukkan biaya yang valid!', 'error');
-    document.getElementById('biaya').focus();
-    return;
-  }
-
-  if (service === "Lainnya" && !ket) {
-    showToast('Mohon isi keterangan untuk service Lainnya!', 'error');
-    document.getElementById('keterangan').focus();
-    return;
-  }
-
-  const btn = document.getElementById('btnSimpan');
-  const originalText = btn.innerHTML;
-  btn.innerHTML = '<svg class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Menyimpan...';
-  btn.disabled = true;
-
-  try {
-    await addDoc(collection(db, "data"), {
-      nama,
-      service,
-      keterangan: ket || "",
-      biaya,
-      tanggal: tanggal
-    });
-
-    const isPast = tanggal !== getTodayString();
-    showToast(isPast ? `Transaksi ${formatDateShort(tanggal)} berhasil disimpan!` : 'Transaksi berhasil disimpan!');
-
-    // Reset form except date
-    document.getElementById('nama').value = '';
-    document.getElementById('service').value = '';
-    document.getElementById('keterangan').value = '';
-    document.getElementById('biaya').value = '';
-    document.getElementById('keteranganGroup').style.display = 'none';
-
+  const btn=document.getElementById('btnSimpan');
+  const orig=btn.innerHTML;
+  btn.innerHTML='<span class="spin">⏳</span> Menyimpan...';
+  btn.disabled=true;
+  
+  try{
+    await addDoc(collection(db,'data'),{nama,service:svc,keterangan:ket||'',biaya,tanggal:selectedDate});
+    showToast(selectedDate===todayStr()?'Tersimpan!':`Tersimpan (${fmtShort(selectedDate)})`);
+    document.getElementById('nama').value='';
+    document.getElementById('service').value='';
+    document.getElementById('keterangan').value='';
+    document.getElementById('biaya').value='';
+    document.getElementById('ketGroup').style.display='none';
     document.getElementById('nama').focus();
-    
     await loadData();
-  } catch (error) {
-    showToast('Gagal menyimpan data!', 'error');
-    console.error(error);
-  } finally {
-    btn.innerHTML = originalText;
-    btn.disabled = false;
-  }
+  }catch(e){ showToast('Gagal simpan!','error'); }
+  finally{ btn.innerHTML=orig; btn.disabled=false; }
 };
 
-window.hapus = async function(id) {
-  if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
-    try {
-      await deleteDoc(doc(db, "data", id));
-      showToast('Transaksi berhasil dihapus!');
-      await loadData();
-    } catch (error) {
-      showToast('Gagal menghapus data!', 'error');
-      console.error(error);
-    }
-  }
+window.hapus=async function(id){
+  if(!confirm('Hapus transaksi ini?'))return;
+  try{ await deleteDoc(doc(db,'data',id)); showToast('Dihapus!'); await loadData(); }
+  catch(e){ showToast('Gagal hapus!','error'); }
 };
 
-// Initialize app
-initDatePicker();
-loadData();
+initDate(); loadData();
 </script>
 </body>
 </html>
