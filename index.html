@@ -144,15 +144,13 @@ body::after {
 /* Header */
 .header { text-align: center; padding: 28px 20px 24px; }
 
-/* ============ HEADER ICON DENGAN PNG ============ */
 .header-icon {
   width: 72px; height: 72px;
   border-radius: 18px;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 16px;
-  /* Background gradient tetap ada untuk efek glow */
   background: linear-gradient(135deg, var(--primary), var(--primary-light), var(--purple));
-  padding: 4px; /* padding untuk border effect */
+  padding: 4px;
   box-shadow: 
     0 8px 24px rgba(8, 145, 178, 0.35),
     0 0 0 3px rgba(255,255,255,0.2);
@@ -178,7 +176,6 @@ body::after {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 0.8; }
 }
-/* Inner container untuk putih + image */
 .header-icon-inner {
   width: 100%;
   height: 100%;
@@ -195,7 +192,6 @@ body::after {
   width: 85%;
   height: 85%;
   object-fit: contain;
-  /* Drop shadow pada image */
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
@@ -256,15 +252,57 @@ body::after {
 .total-value { font-size: 34px; font-weight: 800; color: var(--success); display: flex; align-items: baseline; gap: 4px; }
 .total-value .currency { font-size: 18px; font-weight: 700; opacity: 0.6; }
 
-/* Form Section */
+/* ============ FORM SECTION DENGAN DATE BADGE ============ */
+.form-wrapper {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+/* Date Badge yang nempel di form */
+.form-date-badge {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  background: linear-gradient(135deg, var(--primary), #06b6d4);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  animation: badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes badgePop {
+  0% { transform: scale(0.5) translateY(10px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.form-date-badge svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+.form-date-badge .badge-today {
+  background: rgba(255,255,255,0.25);
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  margin-left: 2px;
+}
+
 .form-section {
   background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
               linear-gradient(135deg, var(--primary), #06b6d4, var(--purple)) border-box;
   border: 2.5px solid transparent;
   border-radius: var(--radius-lg);
-  padding: 6px; margin-bottom: 16px;
+  padding: 6px;
   box-shadow: 0 4px 20px rgba(8, 145, 178, 0.12), 0 0 0 1px rgba(255,255,255,0.8) inset;
-  position: relative; overflow: hidden;
+  position: relative; overflow: visible;
 }
 .form-inner {
   background: linear-gradient(180deg, #ffffff 0%, #fafffe 100%);
@@ -324,7 +362,6 @@ select.form-control {
   background-repeat: no-repeat; background-position: right 14px center; background-size: 18px;
   padding-right: 42px;
 }
-input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: pointer; }
 
 .btn {
   width: 100%; padding: 15px 20px; border: none;
@@ -391,7 +428,6 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
   75% { transform: rotate(5deg); }
 }
 
-/* Progress Ring Overlay */
 .press-overlay {
   position: absolute;
   inset: 0;
@@ -405,29 +441,18 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
   pointer-events: none;
   transition: opacity 0.2s ease;
 }
-.item-card.pressing .press-overlay {
-  opacity: 1;
-}
+.item-card.pressing .press-overlay { opacity: 1; }
 
 .progress-ring-container {
   position: relative;
   width: 60px;
   height: 60px;
 }
-.progress-ring {
-  transform: rotate(-90deg);
-}
-.progress-ring-bg {
-  fill: none;
-  stroke: rgba(220, 38, 38, 0.15);
-  stroke-width: 4;
-}
+.progress-ring { transform: rotate(-90deg); }
+.progress-ring-bg { fill: none; stroke: rgba(220, 38, 38, 0.15); stroke-width: 4; }
 .progress-ring-fill {
-  fill: none;
-  stroke: var(--danger);
-  stroke-width: 4;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.05s linear;
+  fill: none; stroke: var(--danger); stroke-width: 4;
+  stroke-linecap: round; transition: stroke-dashoffset 0.05s linear;
 }
 .progress-text {
   position: absolute;
@@ -468,7 +493,6 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 .item-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .item-biaya { font-size: 15px; font-weight: 800; color: var(--success); white-space: nowrap; }
 
-/* Long press hint badge */
 .long-press-hint {
   font-size: 9px;
   color: var(--text-muted);
@@ -497,7 +521,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 .toast.success { border-left: 4px solid var(--success); }
 .toast.error { border-left: 4px solid var(--danger); }
 
-/* Delete Confirmation Modal */
+/* Delete Modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -512,10 +536,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
   visibility: hidden;
   transition: all 0.3s ease;
 }
-.modal-overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
+.modal-overlay.show { opacity: 1; visibility: visible; }
 .modal-box {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
@@ -527,63 +548,28 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 25px 50px rgba(0,0,0,0.25);
 }
-.modal-overlay.show .modal-box {
-  transform: scale(1) translateY(0);
-}
+.modal-overlay.show .modal-box { transform: scale(1) translateY(0); }
 .modal-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
+  width: 64px; height: 64px; border-radius: 50%;
   background: linear-gradient(135deg, #fef2f2, #fee2e2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 16px;
-  font-size: 28px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px; font-size: 28px;
 }
-.modal-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-}
-.modal-text {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 24px;
-  line-height: 1.5;
-}
-.modal-buttons {
-  display: flex;
-  gap: 10px;
-}
+.modal-title { font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
+.modal-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5; }
+.modal-buttons { display: flex; gap: 10px; }
 .modal-btn {
-  flex: 1;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
+  flex: 1; padding: 12px 16px; border-radius: 10px;
+  font-size: 14px; font-weight: 700; font-family: inherit;
+  cursor: pointer; transition: all 0.2s ease; border: none;
 }
-.modal-btn-cancel {
-  background: var(--bg-input);
-  color: var(--text-secondary);
-}
-.modal-btn-cancel:hover {
-  background: var(--border);
-}
+.modal-btn-cancel { background: var(--bg-input); color: var(--text-secondary); }
+.modal-btn-cancel:hover { background: var(--border); }
 .modal-btn-delete {
   background: linear-gradient(135deg, var(--danger), #b91c1c);
-  color: white;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  color: white; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
-.modal-btn-delete:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
-}
+.modal-btn-delete:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4); }
 
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -596,6 +582,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
   .header { padding: 22px 16px 18px; }
   .header-icon { width: 64px; height: 64px; }
   .form-inner { padding: 18px 16px; }
+  .form-date-badge { font-size: 10px; padding: 4px 10px; right: 12px; top: -8px; }
   .item-card { padding: 12px; }
   .ic-chip { display: none; }
   .circuit-node.n1, .circuit-node.n2 { display: none; }
@@ -649,12 +636,12 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 <!-- Toast -->
 <div id="toast" class="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
 
-<!-- Delete Confirmation Modal -->
+<!-- Delete Modal -->
 <div class="modal-overlay" id="deleteModal">
   <div class="modal-box">
     <div class="modal-icon">🗑️</div>
     <div class="modal-title">Hapus Transaksi?</div>
-    <div class="modal-text">Data transaksi <strong id="deleteName"></strong> akan dihapus permanen dan tidak bisa dikembalikan.</div>
+    <div class="modal-text">Data transaksi <strong id="deleteName"></strong> akan dihapus permanen.</div>
     <div class="modal-buttons">
       <button class="modal-btn modal-btn-cancel" onclick="closeDeleteModal()">Batal</button>
       <button class="modal-btn modal-btn-delete" id="confirmDeleteBtn">Hapus</button>
@@ -665,14 +652,11 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
 <div class="container">
   <!-- Header -->
   <div class="header">
-    <!-- ==================== HEADER ICON PAKAI PNG KAMU ==================== -->
     <div class="header-icon">
       <div class="header-icon-inner">
-        <!-- ⬇️ GANTI "icon.png" DENGAN NAMA FILE KAMU -->
         <img src="icon.png" alt="Logo">
       </div>
     </div>
-    
     <h1>Catatan Teknisi</h1>
     <p>Manajemen Pendapatan Harian</p>
   </div>
@@ -700,74 +684,80 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: p
     <div class="total-value"><span class="currency">Rp</span><span id="total">0</span></div>
   </div>
 
-  <!-- Form Section -->
-  <div class="form-section">
-    <div class="form-inner">
-      <div class="form-header">
-        <div class="form-header-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+  <!-- ============ FORM SECTION + DATE BADGE ============ -->
+  <div class="form-wrapper">
+    <!-- Badge tanggal nempel di pojok kanan atas form -->
+    <div class="form-date-badge" id="formDateBadge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span id="formDateText">Hari Ini</span>
+      <span class="badge-today" id="badgeToday" style="display:none">INI</span>
+    </div>
+
+    <!-- Hidden date input (tetap ada tapi tersembunyi) -->
+    <input type="date" id="tanggal" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none;" tabindex="-1">
+
+    <div class="form-section">
+      <div class="form-inner">
+        <div class="form-header">
+          <div class="form-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+          <div class="form-header-text">
+            <h3>Tambah Transaksi Baru</h3>
+            <p>Isi data service di bawah ini</p>
+          </div>
         </div>
-        <div class="form-header-text">
-          <h3>Tambah Transaksi Baru</h3>
-          <p>Isi data service di bawah ini</p>
+
+        <!-- Tanggal DIHAPUS dari sini -->
+
+        <div class="form-group">
+          <label class="form-label" for="nama">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Nama Pelanggan
+          </label>
+          <input type="text" id="nama" class="form-control" placeholder="Masukkan nama pelanggan...">
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="form-label" for="tanggal">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Tanggal Transaksi
-        </label>
-        <input type="date" id="tanggal" class="form-control">
-      </div>
+        <div class="form-group">
+          <label class="form-label" for="service">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+            Jenis Service
+          </label>
+          <select id="service" class="form-control">
+            <option value="">Pilih jenis service...</option>
+            <option>Printer</option>
+            <option>Komputer / Laptop</option>
+            <option>Install Software</option>
+            <option>Lainnya</option>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <label class="form-label" for="nama">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          Nama Pelanggan
-        </label>
-        <input type="text" id="nama" class="form-control" placeholder="Masukkan nama pelanggan...">
-      </div>
+        <div class="form-group" id="ketGroup" style="display:none;">
+          <label class="form-label" for="keterangan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Keterangan
+          </label>
+          <input type="text" id="keterangan" class="form-control" placeholder="Deskripsi tambahan...">
+        </div>
 
-      <div class="form-group">
-        <label class="form-label" for="service">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-          Jenis Service
-        </label>
-        <select id="service" class="form-control">
-          <option value="">Pilih jenis service...</option>
-          <option>Printer</option>
-          <option>Komputer / Laptop</option>
-          <option>Install Software</option>
-          <option>Lainnya</option>
-        </select>
-      </div>
+        <div class="form-group">
+          <label class="form-label" for="biaya">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            Biaya (Rp)
+          </label>
+          <input type="number" id="biaya" class="form-control" placeholder="Masukkan jumlah biaya..." min="0">
+        </div>
 
-      <div class="form-group" id="ketGroup" style="display:none;">
-        <label class="form-label" for="keterangan">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Keterangan
-        </label>
-        <input type="text" id="keterangan" class="form-control" placeholder="Deskripsi tambahan...">
+        <button class="btn btn-primary" id="btnSimpan" onclick="tambah()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Simpan Transaksi
+        </button>
+        
+        <a href="laporan.html" class="btn btn-report">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Buka Halaman Laporan
+        </a>
       </div>
-
-      <div class="form-group">
-        <label class="form-label" for="biaya">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-          Biaya (Rp)
-        </label>
-        <input type="number" id="biaya" class="form-control" placeholder="Masukkan jumlah biaya..." min="0">
-      </div>
-
-      <button class="btn btn-primary" id="btnSimpan" onclick="tambah()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Simpan Transaksi
-      </button>
-      
-      <a href="laporan.html" class="btn btn-report">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        Buka Halaman Laporan
-      </a>
     </div>
   </div>
 
@@ -827,12 +817,12 @@ function fmt(n) { return new Intl.NumberFormat('id-ID',{minimumFractionDigits:0,
 
 function fmtDate(d) {
   const [y,m,day] = d.split('-');
-  return new Date(y,m-1,day).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  return new Date(y,m-1,day).toLocaleDateString('id-ID',{day:'numeric',month:'short'});
 }
 
-function fmtShort(d) {
+function fmtDateFull(d) {
   const [y,m,day] = d.split('-');
-  return new Date(y,m-1,day).toLocaleDateString('id-ID',{day:'numeric',month:'short'});
+  return new Date(y,m-1,day).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
 }
 
 window.showToast = function(msg,type='success') {
@@ -926,6 +916,7 @@ function initDate() {
   document.getElementById('tanggal').max=selectedDate;
   updateDisplay();
   
+  // Date nav click juga update badge
   document.getElementById('tanggal').addEventListener('change',function(){
     if(this.value&&this.value<=todayStr()){
       selectedDate=this.value; updateDisplay(); loadData();
@@ -939,11 +930,31 @@ function initDate() {
 
 function updateDisplay() {
   const isToday=selectedDate===todayStr();
-  document.getElementById('displayDate').textContent=isToday?'Hari Ini':fmtDate(selectedDate);
+  
+  // Update date nav
+  document.getElementById('displayDate').textContent=isToday?'Hari Ini':fmtDateFull(selectedDate);
   document.getElementById('todayBadge').style.display=isToday?'inline-block':'none';
-  document.getElementById('totalDateLabel').textContent=isToday?'Hari Ini':fmtShort(selectedDate);
-  document.getElementById('listDateLabel').textContent=isToday?'Hari Ini':fmtShort(selectedDate);
+  document.getElementById('totalDateLabel').textContent=isToday?'Hari Ini':fmtDate(selectedDate);
+  document.getElementById('listDateLabel').textContent=isToday?'Hari Ini':fmtDate(selectedDate);
   document.getElementById('btnNext').disabled=isToday;
+  
+  // Update form date badge
+  const badgeText = document.getElementById('formDateText');
+  const badgeToday = document.getElementById('badgeToday');
+  const badgeEl = document.getElementById('formDateBadge');
+  
+  if (isToday) {
+    badgeText.textContent = 'Hari Ini';
+    badgeToday.style.display = 'inline';
+  } else {
+    badgeText.textContent = fmtDate(selectedDate);
+    badgeToday.style.display = 'none';
+  }
+  
+  // Re-animate badge on change
+  badgeEl.style.animation = 'none';
+  badgeEl.offsetHeight; // trigger reflow
+  badgeEl.style.animation = 'badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
 }
 
 window.changeDate=function(dir){
@@ -1016,7 +1027,7 @@ window.tambah=async function(){
   
   try{
     await addDoc(collection(db,'data'),{nama,service:svc,keterangan:ket||'',biaya,tanggal:selectedDate});
-    showToast(selectedDate===todayStr()?'Tersimpan!':`Tersimpan (${fmtShort(selectedDate)})`);
+    showToast(selectedDate===todayStr()?'Tersimpan!':`Tersimpan (${fmtDate(selectedDate)})`);
     document.getElementById('nama').value='';
     document.getElementById('service').value='';
     document.getElementById('keterangan').value='';
