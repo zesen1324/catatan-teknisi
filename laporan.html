@@ -31,11 +31,7 @@
   --radius-lg: 24px;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -50,15 +46,10 @@ body {
 body::before {
   content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(13, 148, 136, 0.1) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 100%, rgba(13, 148, 136, 0.1) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
 }
 
 .orb {
@@ -67,26 +58,10 @@ body::before {
   filter: blur(80px);
   opacity: 0.3;
   animation: float 25s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
-
-.orb-1 {
-  width: 350px;
-  height: 350px;
-  background: linear-gradient(135deg, var(--purple), transparent);
-  top: -120px;
-  right: -120px;
-}
-
-.orb-2 {
-  width: 280px;
-  height: 280px;
-  background: linear-gradient(135deg, var(--primary), transparent);
-  bottom: -100px;
-  left: -100px;
-  animation-delay: -10s;
-}
+.orb-1 { width: 350px; height: 350px; background: linear-gradient(135deg, var(--purple), transparent); top: -120px; right: -120px; }
+.orb-2 { width: 280px; height: 280px; background: linear-gradient(135deg, var(--primary), transparent); bottom: -100px; left: -100px; animation-delay: -10s; }
 
 @keyframes float {
   0%, 100% { transform: translate(0, 0) scale(1); }
@@ -94,12 +69,7 @@ body::before {
   66% { transform: translate(-20px, 20px) scale(0.95); }
 }
 
-.container {
-  max-width: 640px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
+.container { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
 
 /* Header */
 .header {
@@ -108,16 +78,9 @@ body::before {
   justify-content: space-between;
   padding: 24px 0 28px;
 }
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
+.header-left { display: flex; align-items: center; gap: 16px; }
 .back-btn {
-  width: 46px;
-  height: 46px;
+  width: 46px; height: 46px;
   border-radius: 14px;
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -130,34 +93,19 @@ body::before {
   flex-shrink: 0;
   text-decoration: none;
 }
-
 .back-btn:hover {
   background: var(--bg-card-hover);
   color: var(--text-primary);
   border-color: var(--primary);
   transform: translateX(-3px);
 }
+.header-info h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+.header-info p { color: var(--text-muted); font-size: 14px; }
 
-.header-info h1 {
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 4px;
-}
-
-.header-info p {
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-/* Three Dots Menu */
-.menu-container {
-  position: relative;
-}
-
+/* Menu Button */
+.menu-container { position: relative; }
 .menu-btn {
-  width: 44px;
-  height: 44px;
+  width: 44px; height: 44px;
   border-radius: 14px;
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -168,18 +116,8 @@ body::before {
   justify-content: center;
   transition: all 0.25s ease;
 }
-
-.menu-btn:hover {
-  background: var(--bg-card-hover);
-  color: var(--text-primary);
-  border-color: var(--primary);
-}
-
-.menu-btn.active {
-  background: var(--bg-card-hover);
-  border-color: var(--primary);
-  color: var(--primary-light);
-}
+.menu-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--primary); }
+.menu-btn.active { background: var(--bg-card-hover); border-color: var(--primary); color: var(--primary-light); }
 
 .dropdown-menu {
   position: absolute;
@@ -197,13 +135,11 @@ body::before {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 100;
 }
-
 .dropdown-menu.show {
   opacity: 1;
   visibility: visible;
   transform: translateY(0) scale(1);
 }
-
 .dropdown-item {
   display: flex;
   align-items: center;
@@ -220,36 +156,15 @@ body::before {
   text-align: left;
   font-family: inherit;
 }
-
-.dropdown-item:hover {
-  background: var(--bg-input);
-  color: var(--text-primary);
-}
-
-.dropdown-item svg {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
+.dropdown-item:hover { background: var(--bg-input); color: var(--text-primary); }
+.dropdown-item svg { width: 20px; height: 20px; flex-shrink: 0; }
 .dropdown-item.print svg { color: var(--blue); }
 .dropdown-item.share svg { color: var(--success); }
 .dropdown-item.export svg { color: var(--purple); }
+.dropdown-divider { height: 1px; background: var(--border); margin: 4px 0; }
 
-.dropdown-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 4px 0;
-}
-
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin-bottom: 24px;
-}
-
+/* Stats */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
 .stat-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -260,28 +175,18 @@ body::before {
   overflow: hidden;
   transition: all 0.3s ease;
 }
-
 .stat-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 3px;
 }
-
 .stat-card.today::before { background: linear-gradient(90deg, var(--success), #34d399); }
 .stat-card.week::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
 .stat-card.month::before { background: linear-gradient(90deg, var(--purple), #a78bfa); }
-
-.stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-}
-
+.stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 .stat-icon {
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -289,30 +194,16 @@ body::before {
   margin: 0 auto 12px;
   font-size: 18px;
 }
-
 .stat-card.today .stat-icon { background: rgba(16, 185, 129, 0.15); }
 .stat-card.week .stat-icon { background: rgba(59, 130, 246, 0.15); }
 .stat-card.month .stat-icon { background: rgba(139, 92, 246, 0.15); }
-
-.stat-label {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-}
-
-.stat-value {
-  font-size: 20px;
-  font-weight: 800;
-}
-
+.stat-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.stat-value { font-size: 20px; font-weight: 800; }
 .stat-card.today .stat-value { color: var(--success); }
 .stat-card.week .stat-value { color: var(--blue); }
 .stat-card.month .stat-value { color: var(--purple); }
 
-/* Filter Section */
+/* Filter */
 .filter-section {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -324,16 +215,7 @@ body::before {
   gap: 12px;
   flex-wrap: wrap;
 }
-
-.filter-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
+.filter-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
 .filter-btn {
   padding: 8px 16px;
   border-radius: 10px;
@@ -346,63 +228,27 @@ body::before {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+.filter-btn:hover { border-color: var(--primary); color: var(--text-primary); }
+.filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
 
-.filter-btn:hover {
-  border-color: var(--primary);
-  color: var(--text-primary);
-}
-
-.filter-btn.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-
-/* Summary Bar */
+/* Summary */
 .summary-bar {
   background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
   border: 1px solid var(--border);
-  border-radius: var(--range-md);
+  border-radius: var(--radius-md);
   padding: 16px 20px;
   margin-bottom: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+.summary-text { font-size: 14px; color: var(--text-secondary); }
+.summary-text strong { color: var(--text-primary); }
+.summary-total { font-size: 18px; font-weight: 800; color: var(--accent); }
 
-.summary-text {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.summary-text strong {
-  color: var(--text-primary);
-}
-
-.summary-total {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--accent);
-}
-
-/* Transaction List */
-.list-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-  padding: 0 4px;
-}
-
-.list-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
+/* List */
+.list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px; }
+.list-title { font-size: 16px; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
 .transaction-count {
   background: var(--bg-input);
   padding: 4px 12px;
@@ -411,7 +257,6 @@ body::before {
   font-weight: 600;
   color: var(--text-muted);
 }
-
 .transaction-list {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -419,7 +264,6 @@ body::before {
   max-height: 500px;
   overflow-y: auto;
 }
-
 .transaction-item {
   padding: 16px 20px;
   border-bottom: 1px solid var(--border);
@@ -429,20 +273,9 @@ body::before {
   transition: background 0.2s ease;
   animation: fadeInUp 0.3s ease backwards;
 }
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.transaction-item:last-child {
-  border-bottom: none;
-}
-
-.transaction-item:hover {
-  background: var(--bg-card-hover);
-}
-
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.transaction-item:last-child { border-bottom: none; }
+.transaction-item:hover { background: var(--bg-card-hover); }
 .txn-date {
   background: var(--bg-input);
   padding: 8px 12px;
@@ -451,107 +284,39 @@ body::before {
   flex-shrink: 0;
   min-width: 56px;
 }
-
-.txn-day {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1;
-}
-
-.txn-month {
-  font-size: 10px;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-
-.txn-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.txn-name {
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--text-primary);
-  margin-bottom: 3px;
-}
-
-.txn-service {
-  font-size: 13px;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.service-badge {
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-}
-
+.txn-day { font-size: 18px; font-weight: 800; color: var(--text-primary); line-height: 1; }
+.txn-month { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+.txn-info { flex: 1; min-width: 0; }
+.txn-name { font-weight: 700; font-size: 15px; color: var(--text-primary); margin-bottom: 3px; }
+.txn-service { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+.service-badge { padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
 .badge-printer { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
 .badge-komputer { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
 .badge-install { background: rgba(16, 185, 129, 0.15); color: #34d399; }
 .badge-lainnya { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.txn-amount { font-weight: 800; font-size: 15px; color: var(--success); white-space: nowrap; }
 
-.txn-amount {
-  font-weight: 800;
-  font-size: 15px;
-  color: var(--success);
-  white-space: nowrap;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 60px 24px;
-  color: var(--text-muted);
-}
-
-.empty-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
-  opacity: 0.4;
-}
-
-.empty-state p {
-  font-size: 15px;
-}
-
-.loading {
-  text-align: center;
-  padding: 48px;
-  color: var(--text-muted);
-}
-
+.empty-state { text-align: center; padding: 60px 24px; color: var(--text-muted); }
+.empty-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.4; }
+.empty-state p { font-size: 15px; }
+.loading { text-align: center; padding: 48px; color: var(--text-muted); }
 .spinner {
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   border: 3px solid var(--border);
   border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin: 0 auto 16px;
 }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ==================== MODAL DATE RANGE ==================== */
+/* ==================== MODAL ==================== */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -560,25 +325,21 @@ body::before {
   visibility: hidden;
   transition: all 0.3s ease;
 }
-
-.modal-overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
+.modal-overlay.show { opacity: 1; visibility: visible; }
+.modal-overlay.show .modal-box { transform: translateY(0) scale(1); opacity: 1; }
 
 .modal-box {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   padding: 28px;
-  transform: translateY(20px) scale(0.95);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.modal-overlay.show .modal-box {
-  transform: translateY(0) scale(1);
+  transform: translateY(30px) scale(0.9);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal-header {
@@ -587,18 +348,9 @@ body::before {
   justify-content: space-between;
   margin-bottom: 24px;
 }
-
-.modal-title {
-  font-size: 20px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
+.modal-title { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 .modal-close {
-  width: 36px;
-  height: 36px;
+  width: 36px; height: 36px;
   border-radius: 10px;
   background: var(--bg-input);
   border: 1px solid var(--border);
@@ -609,36 +361,19 @@ body::before {
   justify-content: center;
   transition: all 0.2s ease;
 }
+.modal-close:hover { background: rgba(239, 68, 68, 0.15); color: var(--danger); border-color: var(--danger); }
 
-.modal-close:hover {
-  background: var(--danger-soft);
-  color: var(--danger);
-  border-color: var(--danger);
-}
-
-.modal-body {
-  margin-bottom: 24px;
-}
-
-.date-range-group {
-  margin-bottom: 18px;
-}
-
-.date-range-label {
+.date-group { margin-bottom: 16px; }
+.date-label {
   display: block;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-
-.date-input-wrapper {
-  position: relative;
-}
-
-.date-input-wrapper input {
+.date-input {
   width: 100%;
   padding: 14px 16px;
   background: var(--bg-input);
@@ -649,24 +384,15 @@ body::before {
   color: var(--text-primary);
   transition: all 0.25s ease;
   cursor: pointer;
-}
-
-.date-input-wrapper input:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
 }
+.date-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15); }
+.date-input::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.7; cursor: pointer; }
 
-.date-input-wrapper input::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  opacity: 0.7;
-  cursor: pointer;
-}
-
-.date-arrow {
+.arrow-icon {
   display: flex;
   justify-content: center;
-  padding: 8px 0;
+  padding: 4px 0;
   color: var(--text-muted);
 }
 
@@ -675,9 +401,9 @@ body::before {
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 16px;
+  margin-bottom: 20px;
 }
-
-.quick-filter-btn {
+.quick-btn {
   padding: 8px 14px;
   border-radius: 20px;
   border: 1px solid var(--border);
@@ -689,55 +415,30 @@ body::before {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+.quick-btn:hover { border-color: var(--primary); color: var(--primary-light); background: rgba(13, 148, 136, 0.1); }
+.quick-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
 
-.quick-filter-btn:hover {
-  border-color: var(--primary);
-  color: var(--primary-light);
-}
-
-.preview-section {
+.preview-box {
   background: var(--bg-input);
   border-radius: var(--radius-md);
   padding: 16px;
-  margin-top: 16px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
 }
-
 .preview-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 12px;
 }
+.preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.preview-item { text-align: center; }
+.preview-item-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.preview-item-value { font-size: 18px; font-weight: 800; color: var(--primary-light); }
 
-.preview-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.preview-stat {
-  text-align: center;
-}
-
-.preview-stat-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-
-.preview-stat-value {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--primary-light);
-}
-
-.modal-footer {
-  display: flex;
-  gap: 12px;
-}
-
+.modal-footer { display: flex; gap: 12px; }
 .btn-modal {
   flex: 1;
   padding: 14px 20px;
@@ -753,154 +454,75 @@ body::before {
   gap: 8px;
   border: none;
 }
-
 .btn-cancel {
   background: var(--bg-input);
   border: 1px solid var(--border);
   color: var(--text-secondary);
 }
-
-.btn-cancel:hover {
-  background: var(--bg-card-hover);
-  color: var(--text-primary);
-}
-
+.btn-cancel:hover { background: var(--bg-card-hover); color: var(--text-primary); }
 .btn-process {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
   box-shadow: 0 6px 20px rgba(13, 148, 136, 0.35);
 }
-
-.btn-process:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(13, 148, 136, 0.45);
-}
-
-.btn-process:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Danger soft for close button area */
-.danger-soft { background: rgba(239, 68, 68, 0.1); }
+.btn-process:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(13, 148, 136, 0.45); }
+.btn-process:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 /* Toast */
 .toast {
   position: fixed;
   bottom: 24px;
   left: 50%;
-  transform: translateX(-50%) translateY(100px);
+  transform: translateX(-50%) translateY(120px);
   background: var(--bg-card);
   border: 1px solid var(--border);
   padding: 14px 24px;
-  border-radius: 16px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   gap: 10px;
   font-weight: 600;
   font-size: 14px;
   box-shadow: var(--shadow-lg);
-  z-index: 9999;
+  z-index: 99999;
   opacity: 0;
   transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   font-family: 'Plus Jakarta Sans', sans-serif;
   color: var(--text-primary);
+  max-width: 90vw;
 }
-
-.toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
-/* Print Styles */
-@media print {
-  body {
-    background: white !important;
-    color: black !important;
-    padding: 20px;
-  }
-  
-  body::before,
-  .orb,
-  .header-left .back-btn,
-  .menu-container,
-  .filter-section,
-  .summary-bar,
-  .modal-overlay {
-    display: none !important;
-  }
-  
-  .container { max-width: 100%; }
-  
-  .header { justify-content: center; padding-bottom: 20px; }
-  
-  .stats-grid {
-    grid-template-columns: repeat(3, 1fr);
-    break-inside: avoid;
-  }
-  
-  .stat-card {
-    border: 1px solid #ddd;
-    background: #f9f9f9;
-  }
-  
-  .transaction-list {
-    max-height: none;
-    border: 1px solid #ddd;
-  }
-  
-  .transaction-item { break-inside: avoid; }
-  
-  * {
-    color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-  }
-}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast.success { border-left: 4px solid var(--success); }
+.toast.error { border-left: 4px solid var(--danger); }
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+@media print {
+  body { background: white !important; color: black !important; padding: 20px; }
+  body::before, .orb, .back-btn, .menu-container, .filter-section, .summary-bar, .modal-overlay { display: none !important; }
+  .container { max-width: 100%; }
+  .header { justify-content: center; padding-bottom: 20px; }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); break-inside: avoid; }
+  .stat-card { border: 1px solid #ddd; background: #f9f9f9; }
+  .transaction-list { max-height: none; border: 1px solid #ddd; }
+  .transaction-item { break-inside: avoid; }
+  * { color-adjust: exact !important; -webkit-print-color-adjust: exact !important; }
+}
 
 @media (max-width: 520px) {
   body { padding: 10px; }
-  
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  
-  .stat-card {
-    display: flex;
-    align-items: center;
-    text-align: left;
-    padding: 16px;
-  }
-  
+  .stats-grid { grid-template-columns: 1fr; gap: 10px; }
+  .stat-card { display: flex; align-items: center; text-align: left; padding: 16px; }
   .stat-icon { margin: 0 16px 0 0; }
   .stat-label { margin-bottom: 4px; }
-  
   .filter-section { justify-content: center; }
-  
-  .summary-bar {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-  }
-  
+  .summary-bar { flex-direction: column; gap: 8px; text-align: center; }
   .transaction-item { flex-wrap: wrap; }
-  
-  .txn-amount {
-    width: 100%;
-    text-align: right;
-    padding-top: 8px;
-    border-top: 1px dashed var(--border);
-  }
-  
+  .txn-amount { width: 100%; text-align: right; padding-top: 8px; border-top: 1px dashed var(--border); }
   .modal-box { padding: 20px; }
-  
-  .preview-stats { grid-template-columns: 1fr 1fr; }
+  .preview-grid { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -909,74 +531,63 @@ body::before {
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
 
-<div id="toast" class="toast"><span id="toastIcon"></span><span id="toastMessage"></span></div>
+<!-- Toast -->
+<div id="toast" class="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
 
-<!-- Modal Date Range -->
-<div class="modal-overlay" id="dateRangeModal">
+<!-- MODAL DATE RANGE -->
+<div class="modal-overlay" id="dateModal">
   <div class="modal-box">
     <div class="modal-header">
-      <div class="modal-title">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-        <span id="modalTitle">Pilih Rentang Tanggal</span>
+      <div class="modal-title" id="modalTitle">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Pilih Rentang Tanggal
       </div>
-      <button class="modal-close" onclick="closeModal()">
+      <button class="modal-close" onclick="closeDateModal()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     
-    <div class="modal-body">
-      <div class="date-range-group">
-        <label class="date-range-label">Tanggal Mulai</label>
-        <div class="date-input-wrapper">
-          <input type="date" id="startDate" class="form-control">
+    <div class="date-group">
+      <label class="date-label">Tanggal Mulai</label>
+      <input type="date" id="inputStartDate" class="date-input">
+    </div>
+    
+    <div class="arrow-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+    </div>
+    
+    <div class="date-group">
+      <label class="date-label">Tanggal Akhir</label>
+      <input type="date" id="inputEndDate" class="date-input">
+    </div>
+    
+    <div class="quick-filters">
+      <button class="quick-btn" data-range="today" onclick="selectQuickRange(this)">Hari Ini</button>
+      <button class="quick-btn" data-range="week" onclick="selectQuickRange(this)">Minggu Ini</button>
+      <button class="quick-btn" data-range="month" onclick="selectQuickRange(this)">Bulan Ini</button>
+      <button class="quick-btn" data-range="lastmonth" onclick="selectQuickRange(this)">Bulan Lalu</button>
+      <button class="quick-btn" data-range="all" onclick="selectQuickRange(this)">Semua</button>
+    </div>
+    
+    <div class="preview-box">
+      <div class="preview-title">📊 Preview Hasil</div>
+      <div class="preview-grid">
+        <div class="preview-item">
+          <div class="preview-item-label">Transaksi</div>
+          <div class="preview-item-value" id="previewCount">0</div>
         </div>
-      </div>
-      
-      <div class="date-arrow">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-      </div>
-      
-      <div class="date-range-group">
-        <label class="date-range-label">Tanggal Akhir</label>
-        <div class="date-input-wrapper">
-          <input type="date" id="endDate" class="form-control">
-        </div>
-      </div>
-      
-      <!-- Quick Filters -->
-      <div class="quick-filters">
-        <button class="quick-filter-btn" onclick="setQuickDate('today')">Hari Ini</button>
-        <button class="quick-filter-btn" onclick="setQuickDate('week')">Minggu Ini</button>
-        <button class="quick-filter-btn" onclick="setQuickDate('month')">Bulan Ini</button>
-        <button class="quick-filter-btn" onclick="setQuickDate('lastMonth')">Bulan Lalu</button>
-        <button class="quick-filter-btn" onclick="setQuickDate('all')">Semua Data</button>
-      </div>
-      
-      <!-- Preview -->
-      <div class="preview-section">
-        <div class="preview-title">Preview Hasil</div>
-        <div class="preview-stats">
-          <div class="preview-stat">
-            <div class="preview-stat-label">Jumlah Transaksi</div>
-            <div class="preview-stat-value" id="previewCount">0</div>
-          </div>
-          <div class="preview-stat">
-            <div class="preview-stat-label">Total Pendapatan</div>
-            <div class="preview-stat-value" id="previewTotal">Rp 0</div>
-          </div>
+        <div class="preview-item">
+          <div class="preview-item-label">Total Pendapatan</div>
+          <div class="preview-item-value" id="previewTotal">Rp 0</div>
         </div>
       </div>
     </div>
     
     <div class="modal-footer">
-      <button class="btn-modal btn-cancel" onclick="closeModal()">Batal</button>
-      <button class="btn-modal btn-process" id="processBtn" onclick="processAction()">
+      <button class="btn-modal btn-cancel" onclick="closeDateModal()">Batal</button>
+      <button class="btn-modal btn-process" id="btnProcess" onclick="executeAction()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Proses
+        Proses Sekarang
       </button>
     </div>
   </div>
@@ -987,9 +598,7 @@ body::before {
   <div class="header">
     <div class="header-left">
       <a href="index.html" class="back-btn">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       </a>
       <div class="header-info">
         <h1>Laporan Pendapatan</h1>
@@ -997,56 +606,47 @@ body::before {
       </div>
     </div>
     
-    <!-- Three Dots Menu -->
     <div class="menu-container">
-      <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
-        </svg>
+      <button class="menu-btn" id="btnMenu" onclick="toggleDropdown()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
       </button>
       
       <div class="dropdown-menu" id="dropdownMenu">
-        <button class="dropdown-item print" onclick="openModal('print')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <button class="dropdown-item print" onclick="openDateModal('print')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
           Cetak Laporan
         </button>
-        <button class="dropdown-item share" onclick="openModal('share')">
+        <button class="dropdown-item share" onclick="openDateModal('share')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
           Bagikan Laporan
         </button>
         <div class="dropdown-divider"></div>
-        <button class="dropdown-item export" onclick="openModal('export-csv')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <button class="dropdown-item export" onclick="openDateModal('csv')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export CSV
         </button>
-        <button class="dropdown-item export" onclick="openModal('export-json')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <button class="dropdown-item export" onclick="openDateModal('json')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           Export JSON
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Stats Cards -->
+  <!-- Stats -->
   <div class="stats-grid">
     <div class="stat-card today">
-      <div class="stat-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
+      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <div class="stat-label">Hari Ini</div>
       <div class="stat-value" id="statToday">Rp 0</div>
     </div>
     <div class="stat-card week">
-      <div class="stat-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      </div>
+      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
       <div class="stat-label">Minggu Ini</div>
       <div class="stat-value" id="statWeek">Rp 0</div>
     </div>
     <div class="stat-card month">
-      <div class="stat-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M4 18V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-1z"/><path d="M12 17V7"/><path d="M8 11h8"/></svg>
-      </div>
+      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M4 18V6a2 2 0 012-2h12a2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-1z"/><path d="M12 17V7"/><path d="M8 11h8"/></svg></div>
       <div class="stat-label">Bulan Ini</div>
       <div class="stat-value" id="statMonth">Rp 0</div>
     </div>
@@ -1054,38 +654,27 @@ body::before {
 
   <!-- Filter -->
   <div class="filter-section">
-    <span class="filter-label">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-      Filter:
-    </span>
-    <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Semua</button>
-    <button class="filter-btn" data-filter="today" onclick="setFilter('today')">Hari Ini</button>
-    <button class="filter-btn" data-filter="week" onclick="setFilter('week')">Minggu Ini</button>
-    <button class="filter-btn" data-filter="month" onclick="setFilter('month')">Bulan Ini</button>
+    <span class="filter-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg> Filter:</span>
+    <button class="filter-btn active" data-f="all" onclick="setFilter('all')">Semua</button>
+    <button class="filter-btn" data-f="today" onclick="setFilter('today')">Hari Ini</button>
+    <button class="filter-btn" data-f="week" onclick="setFilter('week')">Minggu Ini</button>
+    <button class="filter-btn" data-f="month" onclick="setFilter('month')">Bulan Ini</button>
   </div>
 
   <!-- Summary -->
   <div class="summary-bar">
-    <div class="summary-text">
-      Menampilkan <strong id="showCount">0</strong> transaksi
-    </div>
+    <div class="summary-text">Menampilkan <strong id="showCount">0</strong> transaksi</div>
     <div class="summary-total" id="summaryTotal">Total: Rp 0</div>
   </div>
 
-  <!-- Transaction List -->
+  <!-- List -->
   <div class="list-header">
-    <div class="list-title">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-      Daftar Transaksi
-    </div>
+    <div class="list-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Daftar Transaksi</div>
     <span class="transaction-count" id="totalCount">0 total</span>
   </div>
   
   <div id="transactionList" class="transaction-list">
-    <div class="loading">
-      <div class="spinner"></div>
-      <p>Memuat data...</p>
-    </div>
+    <div class="loading"><div class="spinner"></div><p>Memuat data...</p></div>
   </div>
 </div>
 
@@ -1093,6 +682,7 @@ body::before {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+// Firebase Init
 const firebaseConfig = {
   apiKey: "AIzaSyD25yifoIuCrqXVKEx7NvALoAJ8PNb8pDg",
   authDomain: "catatan-teknisi-50aef.firebaseapp.com",
@@ -1105,154 +695,140 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Global State
 let allData = [];
 let currentFilter = 'all';
-let pendingAction = null; // 'print', 'share', 'export-csv', 'export-json'
+let pendingAction = null;
 
-function getTodayString() {
-  const now = new Date();
-  return formatDateToString(now);
+// ==================== UTILITIES ====================
+
+function getTodayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
-function formatDateToString(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+function fmtRupiah(n) {
+  return new Intl.NumberFormat('id-ID', {minimumFractionDigits:0, maximumFractionDigits:0}).format(n);
 }
 
-function formatRupiah(angka) {
-  return new Intl.NumberFormat('id-ID', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(angka);
+function fmtDateID(str) {
+  const [y,m,d] = str.split('-');
+  return new Date(y, m-1, d).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'});
 }
 
-function getServiceBadgeClass(service) {
-  const map = {
-    'Printer': 'badge-printer',
-    'Komputer': 'badge-komputer',
-    'Install': 'badge-install',
-    'Lainnya': 'badge-lainnya'
-  };
-  return map[service] || 'badge-lainnya';
+function fmtDateShort(str) {
+  const [y,m,d] = str.split('-');
+  return new Date(y, m-1, d).toLocaleDateString('id-ID', {day:'numeric', month:'short'});
 }
 
-function formatDate(dateStr) {
-  const [year, month, day] = dateStr.split('-');
-  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-  return {
-    day: date.getDate(),
-    month: date.toLocaleDateString('id-ID', { month: 'short' }),
-    year: date.getFullYear()
-  };
+function badgeClass(s) {
+  return {'Printer':'badge-printer','Komputer':'badge-komputer','Install':'badge-install','Lainnya':'badge-lainnya'}[s]||'badge-lainnya';
+}
+
+function getServiceName(item) {
+  return item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
 }
 
 function isInRange(dateStr, range) {
-  const date = new Date(dateStr + 'T00:00:00');
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  
-  switch(range) {
-    case 'today':
-      return dateStr === getTodayString();
-    case 'week': {
-      const startOfWeek = new Date(now);
-      startOfWeek.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1));
-      return date >= startOfWeek;
-    }
-    case 'month':
-      return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
-    default:
-      return true;
-  }
+  const d = new Date(dateStr+'T00:00:00');
+  const now = new Date(); now.setHours(0,0,0,0);
+  if(range==='today') return dateStr === getTodayStr();
+  if(range==='week'){ const s=new Date(now); s.setDate(now.getDate()-now.getDay()+(now.getDay()===0?-6:1)); return d>=s; }
+  if(range==='month') return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
+  return true;
 }
 
-// Filter by date range
-function isInDateRange(dateStr, startDate, endDate) {
-  return dateStr >= startDate && dateStr <= endDate;
+function filterByRange(data, start, end) {
+  return data.filter(x => x.tanggal >= start && x.tanggal <= end);
 }
 
-// Get filtered data by date range
-function getDataByDateRange(startDate, endDate) {
-  return allData.filter(item => isInDateRange(item.tanggal, startDate, endDate));
+// ==================== TOAST ====================
+
+function showToast(msg, type='success') {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = type==='success'?'✅':'❌';
+  document.getElementById('toastMsg').textContent = msg;
+  toast.className = `toast show ${type}`;
+  setTimeout(() => toast.classList.remove('show'), 3000);
 }
+window.showToast = showToast;
 
-// ==================== MENU & MODAL LOGIC ====================
+// ==================== DROPDOWN MENU ====================
 
-window.toggleMenu = function() {
-  const btn = document.getElementById('menuBtn');
+window.toggleDropdown = function() {
+  const btn = document.getElementById('btnMenu');
   const menu = document.getElementById('dropdownMenu');
-  btn.classList.toggle('active');
-  menu.classList.toggle('show');
+  const isOpen = menu.classList.contains('show');
+  closeDropdown();
+  if(!isOpen) { btn.classList.add('active'); menu.classList.add('show'); }
 };
 
-document.addEventListener('click', function(e) {
-  if (!document.querySelector('.menu-container').contains(e.target)) {
-    document.getElementById('menuBtn').classList.remove('active');
-    document.getElementById('dropdownMenu').classList.remove('show');
-  }
+function closeDropdown() {
+  document.getElementById('btnMenu').classList.remove('active');
+  document.getElementById('dropdownMenu').classList.remove('show');
+}
+
+document.addEventListener('click', e => {
+  if(!document.querySelector('.menu-container').contains(e.target)) closeDropdown();
 });
 
-// Open Modal with action
-window.openModal = function(action) {
+// ==================== MODAL LOGIC ====================
+
+window.openDateModal = function(action) {
   pendingAction = action;
+  closeDropdown();
   
-  // Close dropdown first
-  document.getElementById('menuBtn').classList.remove('active');
-  document.getElementById('dropdownMenu').classList.remove('show');
+  // Set title
+  const titles = {'print':'🖨️ Cetak Laporan','share':'📤 Bagikan Laporan','csv':'📥 Export CSV','json':'📄 Export JSON'};
+  document.getElementById('modalTitle').innerHTML = `
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    ${titles[action]||'Pilih Rentang'}
+  `;
   
-  // Set modal title based on action
-  const titles = {
-    'print': '🖨️ Cetak Laporan',
-    'share': '📤 Bagikan Laporan',
-    'export-csv': '📥 Export CSV',
-    'export-json': '📄 Export JSON'
-  };
-  document.getElementById('modalTitle').textContent = titles[action] || 'Pilih Rentang Tanggal';
-  
-  // Set default dates to this week
-  setQuickDate('week');
+  // Default: week range
+  selectQuickRange(document.querySelector('[data-range="week"]'));
   
   // Show modal
-  document.getElementById('dateRangeModal').classList.add('show');
-  
-  // Update preview
-  updatePreview();
+  document.getElementById('dateModal').classList.add('show');
 };
 
-window.closeModal = function() {
-  document.getElementById('dateRangeModal').classList.remove('show');
+window.closeDateModal = function() {
+  document.getElementById('dateModal').classList.remove('show');
   pendingAction = null;
 };
 
-// Quick date presets
-window.setQuickDate = function(preset) {
+// Quick range buttons
+window.selectQuickRange = function(btn) {
+  // Update active state
+  document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  const range = btn.dataset.range;
   const today = new Date();
   let start, end;
   
-  switch(preset) {
+  switch(range) {
     case 'today':
       start = end = today;
       break;
     case 'week':
       start = new Date(today);
-      start.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1));
+      start.setDate(today.getDate()-today.getDay()+(today.getDay()===0?-6:1));
       end = today;
       break;
     case 'month':
       start = new Date(today.getFullYear(), today.getMonth(), 1);
       end = today;
       break;
-    case 'lastMonth':
-      start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    case 'lastmonth':
+      start = new Date(today.getFullYear(), today.getMonth()-1, 1);
       end = new Date(today.getFullYear(), today.getMonth(), 0);
       break;
     case 'all':
-      if (allData.length > 0) {
-        const dates = allData.map(d => d.tanggal).sort();
-        start = new Date(dates[0] + 'T00:00:00');
-        end = new Date(dates[dates.length - 1] + 'T00:00:00');
+      if(allData.length > 0) {
+        const dates = allData.map(d=>d.tanggal).sort();
+        start = new Date(dates[0]+'T00:00:00');
+        end = new Date(dates[dates.length-1]+'T00:00:00');
       } else {
         start = end = today;
       }
@@ -1261,400 +837,237 @@ window.setQuickDate = function(preset) {
       start = end = today;
   }
   
-  document.getElementById('startDate').value = formatDateToString(start);
-  document.getElementById('endDate').value = formatDateToString(end);
+  const toStr = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  document.getElementById('inputStartDate').value = toStr(start);
+  document.getElementById('inputEndDate').value = toStr(end);
   
   updatePreview();
 };
 
-// Update preview in modal
+// Update preview when dates change
+document.getElementById('inputStartDate').addEventListener('change', updatePreview);
+document.getElementById('inputEndDate').addEventListener('change', updatePreview);
+
 function updatePreview() {
-  const startDate = document.getElementById('startDate').value;
-  const endDate = document.getElementById('endDate').value;
+  const start = document.getElementById('inputStartDate').value;
+  const end = document.getElementById('inputEndDate').value;
   
-  if (!startDate || !endDate) {
-    document.getElementById('previewCount').textContent = '0';
-    document.getElementById('previewTotal').textContent = 'Rp 0';
+  if(!start || !end) {
+    document.getElementById('previewCount').textContent = '-';
+    document.getElementById('previewTotal').textContent = '-';
     return;
   }
   
-  const filtered = getDataByDateRange(startDate, endDate);
-  const total = filtered.reduce((sum, item) => sum + item.biaya, 0);
+  const filtered = filterByRange(allData, start, end);
+  const total = filtered.reduce((s,x)=>s+x.biaya, 0);
   
   document.getElementById('previewCount').textContent = filtered.length;
-  document.getElementById('previewTotal').textContent = `Rp ${formatRupiah(total)}`;
+  document.getElementById('previewTotal').textContent = `Rp ${fmtRupiah(total)}`;
 }
 
-// Listen to date changes
-document.getElementById('startDate').addEventListener('change', updatePreview);
-document.getElementById('endDate').addEventListener('change', updatePreview);
-
-// Process the action after date selection
-window.processAction = async function() {
-  const startDate = document.getElementById('startDate').value;
-  const endDate = document.getElementById('endDate').value;
+// Execute the selected action
+window.executeAction = async function() {
+  const start = document.getElementById('inputStartDate').value;
+  const end = document.getElementById('inputEndDate').value;
   
-  if (!startDate || !endDate) {
-    showToast('Mohon pilih tanggal mulai dan akhir!', 'error');
-    return;
-  }
+  // Validation
+  if(!start || !end) { showToast('Mohon pilih tanggal mulai & akhir!', 'error'); return; }
+  if(start > end) { showToast('Tanggal mulai tidak boleh lebih besar dari akhir!', 'error'); return; }
   
-  if (startDate > endDate) {
-    showToast('Tanggal mulai tidak boleh lebih besar dari tanggal akhir!', 'error');
-    return;
-  }
+  const filtered = filterByRange(allData, start, end);
+  if(filtered.length === 0) { showToast('Tidak ada data pada rentang ini!', 'error'); return; }
   
-  const filtered = getDataByDateRange(startDate, endDate);
+  // Close modal first
+  closeDateModal();
   
-  if (filtered.length === 0) {
-    showToast('Tidak ada data pada rentang tanggal ini!', 'error');
-    return;
-  }
-  
-  // Close modal
-  closeModal();
-  
-  // Execute the pending action
-  switch(pendingAction) {
-    case 'print':
-      await executePrint(filtered, startDate, endDate);
-      break;
-    case 'share':
-      await executeShare(filtered, startDate, endDate);
-      break;
-    case 'export-csv':
-      await executeExportCSV(filtered, startDate, endDate);
-      break;
-    case 'export-json':
-      await executeExportJSON(filtered, startDate, endDate);
-      break;
-  }
+  // Small delay then execute
+  setTimeout(async () => {
+    switch(pendingAction) {
+      case 'print': await doPrint(filtered, start, end); break;
+      case 'share': await doShare(filtered, start, end); break;
+      case 'csv': await doExportCSV(filtered, start, end); break;
+      case 'json': await doExportJSON(filtered, start, end); break;
+    }
+  }, 300);
 };
 
-// ==================== ACTION EXECUTORS ====================
+// ==================== ACTIONS ====================
 
-async function executePrint(data, startDate, endDate) {
-  showToast('Mempersiapkan cetakan...', 'success');
+async function doPrint(data, start, end) {
+  showToast('Mempersiapkan cetakan...');
   
-  // Create a temporary print view
-  const printWindow = window.open('', '_blank');
-  const total = data.reduce((sum, item) => sum + item.biaya, 0);
-  const dateRangeLabel = `${formatDateID(startDate)} - ${formatDateID(endDate)}`;
+  const total = data.reduce((s,x)=>s+x.biaya,0);
+  const periode = `${fmtDateID(start)} - ${fmtDateID(end)}`;
   
-  let tableRows = data.map((item, i) => {
-    const namaService = item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
-    return `
-      <tr>
-        <td style="padding: 10px; border-bottom: 1px solid #eee;">${i + 1}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #eee;">${formatDateID(item.tanggal)}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.nama}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #eee;">${namaService}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">Rp ${formatRupiah(item.biaya)}</td>
-      </tr>
-    `;
+  let rows = data.map((item,i) => {
+    return `<tr><td>${i+1}</td><td>${fmtDateID(item.tanggal)}</td><td>${item.nama}</td><td>${getServiceName(item)}</td><td style="text-align:right">Rp ${fmtRupiah(item.biaya)}</td></tr>`;
   }).join('');
   
-  printWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Laporan Pendapatan Teknisi</title>
-      <style>
-        body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
-        h1 { text-align: center; color: #0d9488; margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #666; margin-bottom: 20px; }
-        .info-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
-        .info-row { display: flex; justify-content: space-between; margin: 5px 0; }
-        .total-box { background: #0d9488; color: white; padding: 15px; border-radius: 8px; text-align: center; margin: 20px 0; }
-        .total-label { font-size: 14px; opacity: 0.9; }
-        .total-value { font-size: 28px; font-weight: bold; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { background: #1e293b; color: white; padding: 12px; text-align: left; }
-        td { padding: 10px; border-bottom: 1px solid #eee; }
-        tr:nth-child(even) { background: #f8fafc; }
-        .footer { text-align: center; margin-top: 30px; color: #999; font-size: 12px; }
-        @media print { body { padding: 0; } }
-      </style>
-    </head>
-    <body>
-      <h1>📊 LAPORAN PENDAPATAN TEKNISI</h1>
-      <p class="subtitle">Periode: ${dateRangeLabel}</p>
-      
-      <div class="info-box">
-        <div class="info-row"><span>Tanggal Cetak:</span> <strong>${formatDateID(getTodayString())}</strong></div>
-        <div class="info-row"><span>Jumlah Transaksi:</span> <strong>${data.length} transaksi</strong></div>
-      </div>
-      
-      <table>
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>Tanggal</th>
-            <th>Pelanggan</th>
-            <th>Service</th>
-            <th>Biaya</th>
-          </tr>
-        </thead>
-        <tbody>${tableRows}</tbody>
-      </table>
-      
-      <div class="total-box">
-        <div class="total-label">TOTAL PENDAPATAN</div>
-        <div class="total-value">Rp ${formatRupiah(total)}</div>
-      </div>
-      
-      <p class="footer">Dicetak dari Catatan Teknisi App</p>
-      
-      <script>window.onload = function() { window.print(); }<\/script>
-    </body>
-    </html>
-  `);
-  printWindow.document.close();
+  const printContent = `
+<!DOCTYPE html><html><head><title>Laporan</title>
+<style>
+body{font-family:Arial,sans-serif;padding:20px;color:#333}
+h1{text-align:center;color:#0d9488;margin-bottom:5px}
+.sub{text-align:center;color:#666;margin-bottom:20px;font-size:14px}
+.info{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:15px;margin-bottom:20px}
+.info div{display:flex;justifyify-content:space-between;margin:4px 0}
+.total{background:#0d9488;color:white;padding:18px;border-radius:8px;text-align:center;margin:20px 0}
+.total .lbl{font-size:14px;opacity:.9}
+.total .val{font-size:32px;font-weight:bold}
+table{width:100%;border-collapse:collapse;margin-top:16px}
+th{background:#1e293b;color:white;padding:12px;text-align:left}
+td{padding:10px;border-bottom:1px solid #eee}
+tr:nth-child(even){background:#f8fafc}
+.ft{text-align:center;margin-top:24px;color:#999;font-size:12px}
+</style></head><body>
+<h1>📊 LAPORAN PENDAPATAN TEKNISI</h1>
+<p class="sub">Periode: ${periode}</p>
+<div class="info"><div><span>Tanggal Cetak:</span><strong>${fmtDateID(getTodayStr())}</strong></div><div><span>Jumlah:</span><strong>${data.length} transaksi</strong></div></div>
+<table><thead><tr><th>No</th><th>Tanggal</th><th>Pelanggan</th><th>Service</th><th>Biaya</th></tr></thead><tbody>${rows}</tbody></table>
+<div class="total"><div class="lbl">TOTAL PENDAPATAN</div><div class="val">Rp ${fmtRupiah(total)}</div></div>
+<p class="ft">Catatan Teknisi App</p>
+<script>window.onload=function(){window.print()}<\/script></body></html>`;
+  
+  const w = window.open('','_blank');
+  w.document.write(printContent);
+  w.document.close();
 }
 
-async function executeShare(data, startDate, endDate) {
-  const total = data.reduce((sum, item) => sum + item.biaya, 0);
-  const dateRangeLabel = `${formatDateID(startDate)} - ${formatDateID(endDate)}`;
+async function doShare(data, start, end) {
+  const total = data.reduce((s,x)=>s+x.biaya,0);
+  const periode = `${fmtDateShort(start)} - ${fmtDateShort(end)}`;
   
-  const shareText = `📊 *LAPORAN PENDAPATAN TEKNISI*
-━━━━━━━━━━━━━━━━━━━
-📅 Periode: ${dateRangeLabel}
-📝 Jumlah: ${data.length} transaksi
-💰 Total: Rp ${formatRupiah(total)}
-━━━━━━━━━━━━━━━━━━━
-
-Detail Transaksi:
- ${data.slice(0, 10).map((item, i) => {
-  const namaService = item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
-  return `${i+1}. ${item.nama} - ${namaService} (Rp ${formatRupiah(item.biaya)})`;
-}).join('\n')}
- ${data.length > 10 ? `\n...dan ${data.length - 10} transaksi lainnya` : ''}
-━━━━━━━━━━━━━━━━━━━
-📆 Dicatat: ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+  let txt = `📊 *LAPORAN PENDAPATAN TEKNISI*\n`;
+  txt += `━━━━━━━━━━━━━━━━\n`;
+  txt += `📅 Periode: ${periode}\n`;
+  txt += `📝 Jumlah: ${data.length} transaksi\n`;
+  txt += `💰 Total: Rp ${fmtRupiah(total)}\n`;
+  txt += `━━━━━━━━━━━━━━━━\n\n`;
   
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: `Laporan Teknisi (${dateRangeLabel})`,
-        text: shareText
-      });
-    } catch (err) {
-      if (err.name !== 'AbortError') copyToClipboard(shareText);
-    }
-  } else {
-    copyToClipboard(shareText);
+  data.slice(0,15).forEach((item,i) => {
+    txt += `${i+1}. ${item.nama} - ${getServiceName(item)} (Rp ${fmtRupiah(item.biaya)})\n`;
+  });
+  if(data.length > 15) txt += `\n...dan ${data.length-15} transaksi lainnya`;
+  
+  try {
+    if(navigator.share) {
+      await navigator.share({title:`Laporan (${periode})`, text:txt});
+    } else { throw new Error('no share'); }
+  } catch(e) {
+    await navigator.clipboard.writeText(txt);
+    showToast('Laporan disalin ke clipboard!');
   }
 }
 
-async function executeExportCSV(data, startDate, endDate) {
-  const headers = ['No', 'Tanggal', 'Nama Pelanggan', 'Jenis Service', 'Keterangan', 'Biaya (Rp)'];
-  const rows = data.map((item, i) => [
-    i + 1,
-    item.tanggal,
-    item.nama,
-    item.service,
-    item.keterangan || '-',
-    item.biaya
-  ]);
+async function doExportCSV(data, start, end) {
+  const hdr = ['No','Tanggal','Pelanggan','Service','Keterangan','Biaya'];
+  const rows = data.map((item,i) => [i+1,item.tanggal,item.nama,item.service,item.keterangan||'-',item.biaya]);
+  const csv = [hdr,...rows].map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
   
-  const content = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
-  const filename = `laporan-teknisi-${startDate}_to_${endDate}.csv`;
-  
-  downloadFile(content, filename, 'text/csv');
-  showToast(`File "${filename}" berhasil didownload!`, 'success');
+  downloadFile(csv, `laporan-${start}_${end}.csv`, 'text/csv');
+  showToast('File CSV berhasil didownload!');
 }
 
-async function executeExportJSON(data, startDate, endDate) {
-  const total = data.reduce((sum, item) => sum + item.biaya, 0);
-  
-  const exportData = {
-    meta: {
-      title: 'Laporan Pendapatan Teknisi',
-      periode: { start: startDate, end: endDate },
-      generatedAt: new Date().toISOString(),
-      generatedAtFormatted: new Date().toLocaleDateString('id-ID', { 
-        day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
-      })
-    },
-    summary: {
-      totalTransactions: data.length,
-      totalPendapatan: total,
-      totalPendapatanFormatted: `Rp ${formatRupiah(total)}`
-    },
-    transactions: data.map((item, i) => ({
-      no: i + 1,
-      tanggal: item.tanggal,
-      pelanggan: item.nama,
-      service: item.service,
-      keterangan: item.keterangan || null,
-      biaya: item.biaya,
-      biayaFormatted: `Rp ${formatRupiah(item.biaya)}`
+async function doExportJSON(data, start, end) {
+  const total = data.reduce((s,x)=>s+x.biaya,0);
+  const json = {
+    meta:{title:'Laporan Pendapatan Teknisi',periode:{start,end},generatedAt:new Date().toISOString()},
+    summary:{count:data.length,total,totalFmt:`Rp ${fmtRupiah(total)}`},
+    transactions:data.map((item,i)=>({
+      no:i+1, tanggal:item.tanggal, pelanggan:item.nama,
+      service:item.service, keterangan:item.keterangan||null,
+      biaya:item.biaya, biayaFmt:`Rp ${fmtRupiah(item.biaya)}`
     }))
   };
   
-  const content = JSON.stringify(exportData, null, 2);
-  const filename = `laporan-teknisi-${startDate}_to_${endDate}.json`;
-  
-  downloadFile(content, filename, 'application/json');
-  showToast(`File "${filename}" berhasil didownload!`, 'success');
+  downloadFile(JSON.stringify(json,null,2), `laporan-${start}_${end}.json`, 'application/json');
+  showToast('File JSON berhasil didownload!');
 }
 
-// Helper: Format date to Indonesian
-function formatDateID(dateStr) {
-  const [year, month, day] = dateStr.split('-');
-  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-  return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-}
-
-// Helper: Copy to clipboard
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    showToast('Laporan berhasil disalin ke clipboard!', 'success');
-  }).catch(() => {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    showToast('Laporan berhasil disalin!', 'success');
-  });
-}
-
-// Helper: Download file
-function downloadFile(content, filename, type) {
-  const blob = new Blob(['\ufeff' + content], { type: type + ';charset=utf-8;' });
+function downloadFile(content, filename, mime) {
+  const blob = new Blob(['\ufeff'+content], {type:mime});
   const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  link.style.display = 'none';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  const a = document.createElement('a');
+  a.href=url; a.download=filename; a.style.display='none';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
-// Toast notification
-window.showToast = function(message, type = 'success') {
-  const toast = document.getElementById('toast');
-  const icon = type === 'success' ? '✅' : '❌';
-  toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
-  toast.style.borderColor = type === 'success' ? 'var(--success)' : 'var(--danger)';
-  toast.classList.add('show');
-  toast.style.transform = 'translateX(-50%) translateY(0)';
-  toast.style.opacity = '1';
-  
-  setTimeout(() => {
-    toast.style.transform = 'translateX(-50%) translateY(100px)';
-    toast.style.opacity = '0';
-  }, 3000);
-};
+// Close on overlay click / Escape
+document.getElementById('dateModal').addEventListener('click', e => { if(e.target.id==='dateModal') closeDateModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeDateModal(); });
 
-// Set Filter
-window.setFilter = function(filter) {
-  currentFilter = filter;
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.filter === filter);
-  });
+// ==================== LIST RENDERING ====================
+
+window.setFilter = function(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.f===f));
   renderList();
 };
 
 function renderList() {
-  const filteredData = allData.filter(item => isInRange(item.tanggal, currentFilter));
-  const total = filteredData.reduce((sum, item) => sum + item.biaya, 0);
+  const filtered = allData.filter(x => isInRange(x.tanggal, currentFilter));
+  const total = filtered.reduce((s,x)=>s+x.biaya,0);
   
-  document.getElementById('showCount').textContent = filteredData.length;
-  document.getElementById('summaryTotal').textContent = `Total: Rp ${formatRupiah(total)}`;
-  
-  filteredData.sort((a, b) => b.tanggal.localeCompare(a.tanggal));
+  document.getElementById('showCount').textContent = filtered.length;
+  document.getElementById('summaryTotal').textContent = `Total: Rp ${fmtRupiah(total)}`;
   
   const container = document.getElementById('transactionList');
   
-  if (filteredData.length === 0) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><p>Tidak ada transaksi untuk periode ini</p></div>`;
+  if(filtered.length===0) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><p>Tidak ada transaksi</p></div>`;
     return;
   }
   
-  let html = '';
-  filteredData.forEach((item, index) => {
-    const namaService = item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
-    const dateInfo = formatDate(item.tanggal);
-    
-    html += `
-      <div class="transaction-item" style="animation-delay: ${Math.min(index * 0.03, 0.3)}s">
-        <div class="txn-date">
-          <div class="txn-day">${dateInfo.day}</div>
-          <div class="txn-month">${dateInfo.month}</div>
-        </div>
-        <div class="txn-info">
-          <div class="txn-name">${item.nama}</div>
-          <div class="txn-service">
-            <span class="service-badge ${getServiceBadgeClass(item.service)}">${namaService}</span>
-          </div>
-        </div>
-        <div class="txn-amount">Rp ${formatRupiah(item.biaya)}</div>
-      </div>
-    `;
-  });
+  filtered.sort((a,b) => b.tanggal.localeCompare(a.tanggal));
   
-  container.innerHTML = html;
+  container.innerHTML = filtered.map((item,i) => {
+    const [y,m,d] = item.tanggal.split('-');
+    const dt = new Date(y,m-1,d);
+    return `
+    <div class="transaction-item" style="animation-delay:${Math.min(i*0.03,0.3)}s">
+      <div class="txn-date"><div class="txn-day">${dt.getDate()}</div><div class="txn-month">${dt.toLocaleDateString('id-ID',{month:'short'})}</div></div>
+      <div class="txn-info"><div class="txn-name">${item.nama}</div><div class="txn-service"><span class="service-badge ${badgeClass(item.service)}">${getServiceName(item)}</span></div></div>
+      <div class="txn-amount">Rp ${fmtRupiah(item.biaya)}</div>
+    </div>`;
+  }).join('');
 }
+
+// ==================== LOAD DATA ====================
 
 async function loadReport() {
   try {
-    const querySnapshot = await getDocs(collection(db, "data"));
-    
+    const snap = await getDocs(collection(db,'data'));
     allData = [];
-    let totalToday = 0, totalWeek = 0, totalMonth = 0;
+    let tToday=0, tWeek=0, tMonth=0;
     
     const now = new Date();
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1));
-    startOfWeek.setHours(0, 0, 0, 0);
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const sDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const sWeek = new Date(now); sWeek.setDate(now.getDate()-now.getDay()+(now.getDay()===0?-6:1)); sWeek.setHours(0,0,0,0);
+    const sMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     
-    querySnapshot.forEach((docSnap) => {
-      const d = docSnap.data();
-      allData.push({
-        nama: d.nama,
-        service: d.service,
-        keterangan: d.keterangan,
-        biaya: d.biaya,
-        tanggal: d.tanggal
-      });
-      
-      const tanggal = new Date(d.tanggal + 'T00:00:00');
-      if (tanggal >= startOfDay && d.tanggal === getTodayString()) totalToday += d.biaya;
-      if (tanggal >= startOfWeek) totalWeek += d.biaya;
-      if (tanggal >= startOfMonth) totalMonth += d.biaya;
+    snap.forEach(doc => {
+      const d = doc.data();
+      allData.push({nama:d.nama, service:d.service, keterangan:d.keterangan, biaya:d.biaya, tanggal:d.tanggal});
+      const td = new Date(d.tanggal+'T00:00:00');
+      if(td>=sDay && d.tanggal===getTodayStr()) tToday+=d.biaya;
+      if(td>=sWeek) tWeek+=d.biaya;
+      if(td>=sMonth) tMonth+=d.biaya;
     });
     
-    document.getElementById('statToday').textContent = `Rp ${formatRupiah(totalToday)}`;
-    document.getElementById('statWeek').textContent = `Rp ${formatRupiah(totalWeek)}`;
-    document.getElementById('statMonth').textContent = `Rp ${formatRupiah(totalMonth)}`;
+    document.getElementById('statToday').textContent = `Rp ${fmtRupiah(tToday)}`;
+    document.getElementById('statWeek').textContent = `Rp ${fmtRupiah(tWeek)}`;
+    document.getElementById('statMonth').textContent = `Rp ${fmtRupiah(tMonth)}`;
     document.getElementById('totalCount').textContent = `${allData.length} total`;
     
     renderList();
-    
-  } catch (error) {
-    console.error('Error:', error);
+  } catch(e) {
+    console.error(e);
     document.getElementById('transactionList').innerHTML = `<div class="empty-state"><div class="empty-icon">❌</div><p>Gagal memuat data</p></div>`;
   }
 }
 
 loadReport();
-
-// Close modal on overlay click
-document.getElementById('dateRangeModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-// Close modal on Escape key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeModal();
-});
 </script>
 </body>
 </html>
