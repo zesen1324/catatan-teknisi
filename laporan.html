@@ -105,8 +105,14 @@ body::before {
 .header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
   padding: 24px 0 28px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .back-btn {
@@ -122,6 +128,7 @@ body::before {
   justify-content: center;
   transition: all 0.25s ease;
   flex-shrink: 0;
+  text-decoration: none;
 }
 
 .back-btn:hover {
@@ -141,6 +148,98 @@ body::before {
 .header-info p {
   color: var(--text-muted);
   font-size: 14px;
+}
+
+/* Three Dots Menu */
+.menu-container {
+  position: relative;
+}
+
+.menu-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.menu-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border-color: var(--primary);
+}
+
+.menu-btn.active {
+  background: var(--bg-card-hover);
+  border-color: var(--primary);
+  color: var(--primary-light);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.95);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 100;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.dropdown-item:hover {
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+.dropdown-item svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.dropdown-item.print svg { color: var(--blue); }
+.dropdown-item.share svg { color: var(--success); }
+.dropdown-item.export svg { color: var(--purple); }
+
+.dropdown-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
 }
 
 /* Stats Grid */
@@ -263,7 +362,7 @@ body::before {
 .summary-bar {
   background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--range-md);
   padding: 16px 20px;
   margin-bottom: 16px;
   display: flex;
@@ -423,7 +522,6 @@ body::before {
   font-size: 15px;
 }
 
-/* Loading */
 .loading {
   text-align: center;
   padding: 48px;
@@ -444,13 +542,327 @@ body::before {
   to { transform: rotate(360deg); }
 }
 
-/* Scrollbar */
+/* ==================== MODAL DATE RANGE ==================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.show .modal-box {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.modal-body {
+  margin-bottom: 24px;
+}
+
+.date-range-group {
+  margin-bottom: 18px;
+}
+
+.date-range-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.date-input-wrapper {
+  position: relative;
+}
+
+.date-input-wrapper input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg-input);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text-primary);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.date-input-wrapper input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
+}
+
+.date-input-wrapper input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.date-arrow {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+  color: var(--text-muted);
+}
+
+.quick-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.quick-filter-btn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-filter-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary-light);
+}
+
+.preview-section {
+  background: var(--bg-input);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.preview-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.preview-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.preview-stat {
+  text-align: center;
+}
+
+.preview-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.preview-stat-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--primary-light);
+}
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-modal {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+}
+
+.btn-cancel {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.btn-cancel:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.btn-process {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.35);
+}
+
+.btn-process:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(13, 148, 136, 0.45);
+}
+
+.btn-process:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Danger soft for close button area */
+.danger-soft { background: rgba(239, 68, 68, 0.1); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 14px 24px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: var(--shadow-lg);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-primary);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    padding: 20px;
+  }
+  
+  body::before,
+  .orb,
+  .header-left .back-btn,
+  .menu-container,
+  .filter-section,
+  .summary-bar,
+  .modal-overlay {
+    display: none !important;
+  }
+  
+  .container { max-width: 100%; }
+  
+  .header { justify-content: center; padding-bottom: 20px; }
+  
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+    break-inside: avoid;
+  }
+  
+  .stat-card {
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+  }
+  
+  .transaction-list {
+    max-height: none;
+    border: 1px solid #ddd;
+  }
+  
+  .transaction-item { break-inside: avoid; }
+  
+  * {
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+}
+
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* Responsive */
 @media (max-width: 520px) {
   body { padding: 10px; }
   
@@ -466,17 +878,10 @@ body::before {
     padding: 16px;
   }
   
-  .stat-icon {
-    margin: 0 16px 0 0;
-  }
+  .stat-icon { margin: 0 16px 0 0; }
+  .stat-label { margin-bottom: 4px; }
   
-  .stat-label {
-    margin-bottom: 4px;
-  }
-  
-  .filter-section {
-    justify-content: center;
-  }
+  .filter-section { justify-content: center; }
   
   .summary-bar {
     flex-direction: column;
@@ -484,9 +889,7 @@ body::before {
     text-align: center;
   }
   
-  .transaction-item {
-    flex-wrap: wrap;
-  }
+  .transaction-item { flex-wrap: wrap; }
   
   .txn-amount {
     width: 100%;
@@ -494,6 +897,10 @@ body::before {
     padding-top: 8px;
     border-top: 1px dashed var(--border);
   }
+  
+  .modal-box { padding: 20px; }
+  
+  .preview-stats { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -502,17 +909,121 @@ body::before {
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
 
+<div id="toast" class="toast"><span id="toastIcon"></span><span id="toastMessage"></span></div>
+
+<!-- Modal Date Range -->
+<div class="modal-overlay" id="dateRangeModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span id="modalTitle">Pilih Rentang Tanggal</span>
+      </div>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="date-range-group">
+        <label class="date-range-label">Tanggal Mulai</label>
+        <div class="date-input-wrapper">
+          <input type="date" id="startDate" class="form-control">
+        </div>
+      </div>
+      
+      <div class="date-arrow">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </div>
+      
+      <div class="date-range-group">
+        <label class="date-range-label">Tanggal Akhir</label>
+        <div class="date-input-wrapper">
+          <input type="date" id="endDate" class="form-control">
+        </div>
+      </div>
+      
+      <!-- Quick Filters -->
+      <div class="quick-filters">
+        <button class="quick-filter-btn" onclick="setQuickDate('today')">Hari Ini</button>
+        <button class="quick-filter-btn" onclick="setQuickDate('week')">Minggu Ini</button>
+        <button class="quick-filter-btn" onclick="setQuickDate('month')">Bulan Ini</button>
+        <button class="quick-filter-btn" onclick="setQuickDate('lastMonth')">Bulan Lalu</button>
+        <button class="quick-filter-btn" onclick="setQuickDate('all')">Semua Data</button>
+      </div>
+      
+      <!-- Preview -->
+      <div class="preview-section">
+        <div class="preview-title">Preview Hasil</div>
+        <div class="preview-stats">
+          <div class="preview-stat">
+            <div class="preview-stat-label">Jumlah Transaksi</div>
+            <div class="preview-stat-value" id="previewCount">0</div>
+          </div>
+          <div class="preview-stat">
+            <div class="preview-stat-label">Total Pendapatan</div>
+            <div class="preview-stat-value" id="previewTotal">Rp 0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn-modal btn-cancel" onclick="closeModal()">Batal</button>
+      <button class="btn-modal btn-process" id="processBtn" onclick="processAction()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Proses
+      </button>
+    </div>
+  </div>
+</div>
+
 <div class="container">
   <!-- Header -->
   <div class="header">
-    <a href="index.html" class="back-btn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
-      </svg>
-    </a>
-    <div class="header-info">
-      <h1>Laporan Pendapatan</h1>
-      <p>Riwayat semua transaksi</p>
+    <div class="header-left">
+      <a href="index.html" class="back-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <div class="header-info">
+        <h1>Laporan Pendapatan</h1>
+        <p>Riwayat semua transaksi</p>
+      </div>
+    </div>
+    
+    <!-- Three Dots Menu -->
+    <div class="menu-container">
+      <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
+        </svg>
+      </button>
+      
+      <div class="dropdown-menu" id="dropdownMenu">
+        <button class="dropdown-item print" onclick="openModal('print')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Cetak Laporan
+        </button>
+        <button class="dropdown-item share" onclick="openModal('share')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Bagikan Laporan
+        </button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item export" onclick="openModal('export-csv')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+        <button class="dropdown-item export" onclick="openModal('export-json')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Export JSON
+        </button>
+      </div>
     </div>
   </div>
 
@@ -596,9 +1107,18 @@ const db = getFirestore(app);
 
 let allData = [];
 let currentFilter = 'all';
+let pendingAction = null; // 'print', 'share', 'export-csv', 'export-json'
 
-function today() {
-  return new Date().toISOString().split("T")[0];
+function getTodayString() {
+  const now = new Date();
+  return formatDateToString(now);
+}
+
+function formatDateToString(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 function formatRupiah(angka) {
@@ -619,11 +1139,13 @@ function getServiceBadgeClass(service) {
 }
 
 function formatDate(dateStr) {
-  const date = new Date(dateStr + 'T00:00:00');
-  const day = date.getDate();
-  const month = date.toLocaleDateString('id-ID', { month: 'short' });
-  const year = date.getFullYear();
-  return { day, month, year };
+  const [year, month, day] = dateStr.split('-');
+  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  return {
+    day: date.getDate(),
+    month: date.toLocaleDateString('id-ID', { month: 'short' }),
+    year: date.getFullYear()
+  };
 }
 
 function isInRange(dateStr, range) {
@@ -633,11 +1155,12 @@ function isInRange(dateStr, range) {
   
   switch(range) {
     case 'today':
-      return dateStr === today();
-    case 'week':
+      return dateStr === getTodayString();
+    case 'week': {
       const startOfWeek = new Date(now);
       startOfWeek.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1));
       return date >= startOfWeek;
+    }
     case 'month':
       return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
     default:
@@ -645,37 +1168,411 @@ function isInRange(dateStr, range) {
   }
 }
 
+// Filter by date range
+function isInDateRange(dateStr, startDate, endDate) {
+  return dateStr >= startDate && dateStr <= endDate;
+}
+
+// Get filtered data by date range
+function getDataByDateRange(startDate, endDate) {
+  return allData.filter(item => isInDateRange(item.tanggal, startDate, endDate));
+}
+
+// ==================== MENU & MODAL LOGIC ====================
+
+window.toggleMenu = function() {
+  const btn = document.getElementById('menuBtn');
+  const menu = document.getElementById('dropdownMenu');
+  btn.classList.toggle('active');
+  menu.classList.toggle('show');
+};
+
+document.addEventListener('click', function(e) {
+  if (!document.querySelector('.menu-container').contains(e.target)) {
+    document.getElementById('menuBtn').classList.remove('active');
+    document.getElementById('dropdownMenu').classList.remove('show');
+  }
+});
+
+// Open Modal with action
+window.openModal = function(action) {
+  pendingAction = action;
+  
+  // Close dropdown first
+  document.getElementById('menuBtn').classList.remove('active');
+  document.getElementById('dropdownMenu').classList.remove('show');
+  
+  // Set modal title based on action
+  const titles = {
+    'print': '🖨️ Cetak Laporan',
+    'share': '📤 Bagikan Laporan',
+    'export-csv': '📥 Export CSV',
+    'export-json': '📄 Export JSON'
+  };
+  document.getElementById('modalTitle').textContent = titles[action] || 'Pilih Rentang Tanggal';
+  
+  // Set default dates to this week
+  setQuickDate('week');
+  
+  // Show modal
+  document.getElementById('dateRangeModal').classList.add('show');
+  
+  // Update preview
+  updatePreview();
+};
+
+window.closeModal = function() {
+  document.getElementById('dateRangeModal').classList.remove('show');
+  pendingAction = null;
+};
+
+// Quick date presets
+window.setQuickDate = function(preset) {
+  const today = new Date();
+  let start, end;
+  
+  switch(preset) {
+    case 'today':
+      start = end = today;
+      break;
+    case 'week':
+      start = new Date(today);
+      start.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1));
+      end = today;
+      break;
+    case 'month':
+      start = new Date(today.getFullYear(), today.getMonth(), 1);
+      end = today;
+      break;
+    case 'lastMonth':
+      start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+      end = new Date(today.getFullYear(), today.getMonth(), 0);
+      break;
+    case 'all':
+      if (allData.length > 0) {
+        const dates = allData.map(d => d.tanggal).sort();
+        start = new Date(dates[0] + 'T00:00:00');
+        end = new Date(dates[dates.length - 1] + 'T00:00:00');
+      } else {
+        start = end = today;
+      }
+      break;
+    default:
+      start = end = today;
+  }
+  
+  document.getElementById('startDate').value = formatDateToString(start);
+  document.getElementById('endDate').value = formatDateToString(end);
+  
+  updatePreview();
+};
+
+// Update preview in modal
+function updatePreview() {
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  
+  if (!startDate || !endDate) {
+    document.getElementById('previewCount').textContent = '0';
+    document.getElementById('previewTotal').textContent = 'Rp 0';
+    return;
+  }
+  
+  const filtered = getDataByDateRange(startDate, endDate);
+  const total = filtered.reduce((sum, item) => sum + item.biaya, 0);
+  
+  document.getElementById('previewCount').textContent = filtered.length;
+  document.getElementById('previewTotal').textContent = `Rp ${formatRupiah(total)}`;
+}
+
+// Listen to date changes
+document.getElementById('startDate').addEventListener('change', updatePreview);
+document.getElementById('endDate').addEventListener('change', updatePreview);
+
+// Process the action after date selection
+window.processAction = async function() {
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  
+  if (!startDate || !endDate) {
+    showToast('Mohon pilih tanggal mulai dan akhir!', 'error');
+    return;
+  }
+  
+  if (startDate > endDate) {
+    showToast('Tanggal mulai tidak boleh lebih besar dari tanggal akhir!', 'error');
+    return;
+  }
+  
+  const filtered = getDataByDateRange(startDate, endDate);
+  
+  if (filtered.length === 0) {
+    showToast('Tidak ada data pada rentang tanggal ini!', 'error');
+    return;
+  }
+  
+  // Close modal
+  closeModal();
+  
+  // Execute the pending action
+  switch(pendingAction) {
+    case 'print':
+      await executePrint(filtered, startDate, endDate);
+      break;
+    case 'share':
+      await executeShare(filtered, startDate, endDate);
+      break;
+    case 'export-csv':
+      await executeExportCSV(filtered, startDate, endDate);
+      break;
+    case 'export-json':
+      await executeExportJSON(filtered, startDate, endDate);
+      break;
+  }
+};
+
+// ==================== ACTION EXECUTORS ====================
+
+async function executePrint(data, startDate, endDate) {
+  showToast('Mempersiapkan cetakan...', 'success');
+  
+  // Create a temporary print view
+  const printWindow = window.open('', '_blank');
+  const total = data.reduce((sum, item) => sum + item.biaya, 0);
+  const dateRangeLabel = `${formatDateID(startDate)} - ${formatDateID(endDate)}`;
+  
+  let tableRows = data.map((item, i) => {
+    const namaService = item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
+    return `
+      <tr>
+        <td style="padding: 10px; border-bottom: 1px solid #eee;">${i + 1}</td>
+        <td style="padding: 10px; border-bottom: 1px solid #eee;">${formatDateID(item.tanggal)}</td>
+        <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.nama}</td>
+        <td style="padding: 10px; border-bottom: 1px solid #eee;">${namaService}</td>
+        <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">Rp ${formatRupiah(item.biaya)}</td>
+      </tr>
+    `;
+  }).join('');
+  
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Laporan Pendapatan Teknisi</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 20px; color: #333; }
+        h1 { text-align: center; color: #0d9488; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 20px; }
+        .info-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .info-row { display: flex; justify-content: space-between; margin: 5px 0; }
+        .total-box { background: #0d9488; color: white; padding: 15px; border-radius: 8px; text-align: center; margin: 20px 0; }
+        .total-label { font-size: 14px; opacity: 0.9; }
+        .total-value { font-size: 28px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #1e293b; color: white; padding: 12px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .footer { text-align: center; margin-top: 30px; color: #999; font-size: 12px; }
+        @media print { body { padding: 0; } }
+      </style>
+    </head>
+    <body>
+      <h1>📊 LAPORAN PENDAPATAN TEKNISI</h1>
+      <p class="subtitle">Periode: ${dateRangeLabel}</p>
+      
+      <div class="info-box">
+        <div class="info-row"><span>Tanggal Cetak:</span> <strong>${formatDateID(getTodayString())}</strong></div>
+        <div class="info-row"><span>Jumlah Transaksi:</span> <strong>${data.length} transaksi</strong></div>
+      </div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Tanggal</th>
+            <th>Pelanggan</th>
+            <th>Service</th>
+            <th>Biaya</th>
+          </tr>
+        </thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+      
+      <div class="total-box">
+        <div class="total-label">TOTAL PENDAPATAN</div>
+        <div class="total-value">Rp ${formatRupiah(total)}</div>
+      </div>
+      
+      <p class="footer">Dicetak dari Catatan Teknisi App</p>
+      
+      <script>window.onload = function() { window.print(); }<\/script>
+    </body>
+    </html>
+  `);
+  printWindow.document.close();
+}
+
+async function executeShare(data, startDate, endDate) {
+  const total = data.reduce((sum, item) => sum + item.biaya, 0);
+  const dateRangeLabel = `${formatDateID(startDate)} - ${formatDateID(endDate)}`;
+  
+  const shareText = `📊 *LAPORAN PENDAPATAN TEKNISI*
+━━━━━━━━━━━━━━━━━━━
+📅 Periode: ${dateRangeLabel}
+📝 Jumlah: ${data.length} transaksi
+💰 Total: Rp ${formatRupiah(total)}
+━━━━━━━━━━━━━━━━━━━
+
+Detail Transaksi:
+ ${data.slice(0, 10).map((item, i) => {
+  const namaService = item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
+  return `${i+1}. ${item.nama} - ${namaService} (Rp ${formatRupiah(item.biaya)})`;
+}).join('\n')}
+ ${data.length > 10 ? `\n...dan ${data.length - 10} transaksi lainnya` : ''}
+━━━━━━━━━━━━━━━━━━━
+📆 Dicatat: ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+  
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: `Laporan Teknisi (${dateRangeLabel})`,
+        text: shareText
+      });
+    } catch (err) {
+      if (err.name !== 'AbortError') copyToClipboard(shareText);
+    }
+  } else {
+    copyToClipboard(shareText);
+  }
+}
+
+async function executeExportCSV(data, startDate, endDate) {
+  const headers = ['No', 'Tanggal', 'Nama Pelanggan', 'Jenis Service', 'Keterangan', 'Biaya (Rp)'];
+  const rows = data.map((item, i) => [
+    i + 1,
+    item.tanggal,
+    item.nama,
+    item.service,
+    item.keterangan || '-',
+    item.biaya
+  ]);
+  
+  const content = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+  const filename = `laporan-teknisi-${startDate}_to_${endDate}.csv`;
+  
+  downloadFile(content, filename, 'text/csv');
+  showToast(`File "${filename}" berhasil didownload!`, 'success');
+}
+
+async function executeExportJSON(data, startDate, endDate) {
+  const total = data.reduce((sum, item) => sum + item.biaya, 0);
+  
+  const exportData = {
+    meta: {
+      title: 'Laporan Pendapatan Teknisi',
+      periode: { start: startDate, end: endDate },
+      generatedAt: new Date().toISOString(),
+      generatedAtFormatted: new Date().toLocaleDateString('id-ID', { 
+        day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      })
+    },
+    summary: {
+      totalTransactions: data.length,
+      totalPendapatan: total,
+      totalPendapatanFormatted: `Rp ${formatRupiah(total)}`
+    },
+    transactions: data.map((item, i) => ({
+      no: i + 1,
+      tanggal: item.tanggal,
+      pelanggan: item.nama,
+      service: item.service,
+      keterangan: item.keterangan || null,
+      biaya: item.biaya,
+      biayaFormatted: `Rp ${formatRupiah(item.biaya)}`
+    }))
+  };
+  
+  const content = JSON.stringify(exportData, null, 2);
+  const filename = `laporan-teknisi-${startDate}_to_${endDate}.json`;
+  
+  downloadFile(content, filename, 'application/json');
+  showToast(`File "${filename}" berhasil didownload!`, 'success');
+}
+
+// Helper: Format date to Indonesian
+function formatDateID(dateStr) {
+  const [year, month, day] = dateStr.split('-');
+  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+// Helper: Copy to clipboard
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Laporan berhasil disalin ke clipboard!', 'success');
+  }).catch(() => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    showToast('Laporan berhasil disalin!', 'success');
+  });
+}
+
+// Helper: Download file
+function downloadFile(content, filename, type) {
+  const blob = new Blob(['\ufeff' + content], { type: type + ';charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+// Toast notification
+window.showToast = function(message, type = 'success') {
+  const toast = document.getElementById('toast');
+  const icon = type === 'success' ? '✅' : '❌';
+  toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
+  toast.style.borderColor = type === 'success' ? 'var(--success)' : 'var(--danger)';
+  toast.classList.add('show');
+  toast.style.transform = 'translateX(-50%) translateY(0)';
+  toast.style.opacity = '1';
+  
+  setTimeout(() => {
+    toast.style.transform = 'translateX(-50%) translateY(100px)';
+    toast.style.opacity = '0';
+  }, 3000);
+};
+
+// Set Filter
 window.setFilter = function(filter) {
   currentFilter = filter;
-  
-  // Update button states
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.filter === filter);
   });
-  
   renderList();
 };
 
 function renderList() {
   const filteredData = allData.filter(item => isInRange(item.tanggal, currentFilter));
-  
-  // Update summary
   const total = filteredData.reduce((sum, item) => sum + item.biaya, 0);
+  
   document.getElementById('showCount').textContent = filteredData.length;
   document.getElementById('summaryTotal').textContent = `Total: Rp ${formatRupiah(total)}`;
   
-  // Sort by date descending
   filteredData.sort((a, b) => b.tanggal.localeCompare(a.tanggal));
   
   const container = document.getElementById('transactionList');
   
   if (filteredData.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">📊</div>
-        <p>Tidak ada transaksi untuk periode ini</p>
-      </div>
-    `;
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><p>Tidak ada transaksi untuk periode ini</p></div>`;
     return;
   }
   
@@ -709,9 +1606,7 @@ async function loadReport() {
     const querySnapshot = await getDocs(collection(db, "data"));
     
     allData = [];
-    let totalToday = 0;
-    let totalWeek = 0;
-    let totalMonth = 0;
+    let totalToday = 0, totalWeek = 0, totalMonth = 0;
     
     const now = new Date();
     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -722,8 +1617,6 @@ async function loadReport() {
     
     querySnapshot.forEach((docSnap) => {
       const d = docSnap.data();
-      const tanggal = new Date(d.tanggal + 'T00:00:00');
-      
       allData.push({
         nama: d.nama,
         service: d.service,
@@ -732,18 +1625,12 @@ async function loadReport() {
         tanggal: d.tanggal
       });
       
-      if (tanggal >= startOfDay && d.tanggal === today()) {
-        totalToday += d.biaya;
-      }
-      if (tanggal >= startOfWeek) {
-        totalWeek += d.biaya;
-      }
-      if (tanggal >= startOfMonth) {
-        totalMonth += d.biaya;
-      }
+      const tanggal = new Date(d.tanggal + 'T00:00:00');
+      if (tanggal >= startOfDay && d.tanggal === getTodayString()) totalToday += d.biaya;
+      if (tanggal >= startOfWeek) totalWeek += d.biaya;
+      if (tanggal >= startOfMonth) totalMonth += d.biaya;
     });
     
-    // Update stats
     document.getElementById('statToday').textContent = `Rp ${formatRupiah(totalToday)}`;
     document.getElementById('statWeek').textContent = `Rp ${formatRupiah(totalWeek)}`;
     document.getElementById('statMonth').textContent = `Rp ${formatRupiah(totalMonth)}`;
@@ -752,18 +1639,22 @@ async function loadReport() {
     renderList();
     
   } catch (error) {
-    console.error('Error loading report:', error);
-    document.getElementById('transactionList').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">❌</div>
-        <p>Gagal memuat data laporan</p>
-      </div>
-    `;
+    console.error('Error:', error);
+    document.getElementById('transactionList').innerHTML = `<div class="empty-state"><div class="empty-icon">❌</div><p>Gagal memuat data</p></div>`;
   }
 }
 
-// Load on page ready
 loadReport();
+
+// Close modal on overlay click
+document.getElementById('dateRangeModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
 </script>
 </body>
 </html>
