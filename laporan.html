@@ -9,69 +9,146 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --primary: #0d9488;
-  --primary-dark: #0f766e;
-  --primary-light: #14b8a6;
+  --primary: #0891b2;
+  --primary-dark: #0e7490;
+  --primary-light: #22d3ee;
   --accent: #f59e0b;
-  --success: #10b981;
-  --purple: #8b5cf6;
-  --blue: #3b82f6;
-  --danger: #ef4444;
-  --bg-main: #0c1222;
-  --bg-card: #151d2e;
-  --bg-card-hover: #1a2540;
-  --bg-input: #0f172a;
-  --border: #1e293b;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
-  --radius-md: 16px;
-  --radius-lg: 24px;
+  --success: #059669;
+  --danger: #dc2626;
+  --purple: #7c3aed;
+  
+  /* Light Theme - Sama seperti index.html */
+  --bg-body: #f0f4f8;
+  --bg-card: #ffffff;
+  --bg-input: #f8fafc;
+  --border: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: var(--bg-main);
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  background: var(--bg-body);
   min-height: 100vh;
   padding: 16px;
   color: var(--text-primary);
   position: relative;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
+/* ============================================== */
+/* ============ CIRCUIT BOARD BACKGROUND (SAMA) == */
+/* ============================================== */
 body::before {
   content: '';
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
-              radial-gradient(ellipse at 80% 100%, rgba(13, 148, 136, 0.1) 0%, transparent 50%);
-  pointer-events: none; z-index: 0;
+  background: linear-gradient(180deg, #e8f4f8 0%, #f0f4f8 30%, #f8fafb 70%, #eef2f7 100%);
+  z-index: -2;
 }
 
-.orb {
+body::after {
+  content: '';
   position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  opacity: 0.4;
+  background-image: 
+    linear-gradient(90deg, transparent 49.5%, rgba(8, 145, 178, 0.25) 49.5%, rgba(8, 145, 178, 0.25) 50.5%, transparent 50.5%),
+    linear-gradient(90deg, transparent 19.5%, rgba(8, 145, 178, 0.15) 19.5%, rgba(8, 145, 178, 0.15) 20.5%, transparent 20.5%),
+    linear-gradient(90deg, transparent 79.5%, rgba(8, 145, 178, 0.15) 79.5%, rgba(8, 145, 178, 0.15) 80.5%, transparent 80.5%),
+    linear-gradient(0deg, transparent 29.5%, rgba(8, 145, 178, 0.18) 29.5%, rgba(8, 145, 178, 0.18) 30.5%, transparent 30.5%),
+    linear-gradient(0deg, transparent 69.5%, rgba(8, 145, 178, 0.18) 69.5%, rgba(8, 145, 178, 0.18) 70.5%, transparent 70.5%),
+    linear-gradient(45deg, transparent 48%, rgba(124, 58, 237, 0.12) 48%, rgba(124, 58, 237, 0.12) 52%, transparent 52%),
+    linear-gradient(135deg, transparent 48%, rgba(8, 145, 178, 0.1) 48%, rgba(8, 145, 178, 0.1) 52%, transparent 52%),
+    linear-gradient(60deg, transparent 88%, rgba(8, 145, 178, 0.12) 88%, rgba(8, 145, 178, 0.12) 92%, transparent 92%),
+    linear-gradient(-45deg, transparent 85%, rgba(124, 58, 237, 0.1) 85%, rgba(124, 58, 237, 0.1) 89%, transparent 89%),
+    radial-gradient(circle at center, rgba(8, 145, 178, 0.2) 1px, transparent 1px);
+  
+  background-size: 120px 80px, 80px 40px, 80px 40px, 60px 100px, 60px 100px, 200px 150px, 180px 140px, 160px 200px, 140px 180px, 24px 24px;
+  background-position: 0 0, 0 20px, 0 60px, 30px 0, 30px 50px, -20px -30px, 100% 10%, 10% 100%, 90% 85%, 0 0;
+  animation: circuitPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes circuitPulse {
+  0% { opacity: 0.35; }
+  100% { opacity: 0.55; }
+}
+
+/* IC Chips */
+.ic-chip {
+  position: fixed;
+  z-index: -1;
+  opacity: 0.25;
+  filter: drop-shadow(0 0 8px rgba(8, 145, 178, 0.3));
+}
+.ic-chip.top-right {
+  top: 8%; right: -20px;
+  width: 100px; height: 60px;
+  transform: rotate(-5deg);
+  animation: icGlow 4s ease-in-out infinite alternate;
+}
+.ic-chip.bottom-left {
+  bottom: 15%; left: -30px;
+  width: 120px; height: 70px;
+  transform: rotate(12deg);
+  animation: icGlow 5s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes icGlow {
+  0% { opacity: 0.2; filter: drop-shadow(0 0 5px rgba(8, 145, 178, 0.2)); }
+  100% { opacity: 0.35; filter: drop-shadow(0 0 15px rgba(8, 145, 178, 0.4)); }
+}
+
+/* Circuit Nodes */
+.circuit-node {
+  position: fixed;
+  width: 12px; height: 12px;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.3;
-  animation: float 25s ease-in-out infinite;
-  pointer-events: none; z-index: 0;
+  z-index: -1;
+  animation: nodeBlink 3s ease-in-out infinite;
 }
-.orb-1 { width: 350px; height: 350px; background: linear-gradient(135deg, var(--purple), transparent); top: -120px; right: -120px; }
-.orb-2 { width: 280px; height: 280px; background: linear-gradient(135deg, var(--primary), transparent); bottom: -100px; left: -100px; animation-delay: -10s; }
+.circuit-node.n1 { top: 25%; left: 8%; background: radial-gradient(circle, var(--primary-light), var(--primary)); box-shadow: 0 0 12px rgba(34, 211, 238, 0.5); animation-delay: 0s; }
+.circuit-node.n2 { top: 60%; right: 12%; background: radial-gradient(circle, var(--purple), #a78bfa); box-shadow: 0 0 12px rgba(167, 139, 250, 0.5); animation-delay: 1s; }
+.circuit-node.n3 { bottom: 20%; left: 15%; background: radial-gradient(circle, var(--accent), #fcd34d); box-shadow: 0 0 12px rgba(245, 158, 11, 0.5); animation-delay: 2s; }
+.circuit-node.n4 { top: 15%; left: 45%; width: 8px; height: 8px; background: var(--success); box-shadow: 0 0 8px rgba(5, 150, 105, 0.5); animation-delay: 0.5s; }
 
-@keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -30px) scale(1.05); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
+@keyframes nodeBlink {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; }
 }
 
-.container { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+/* Data Particles */
+.data-particle {
+  position: fixed;
+  width: 4px; height: 4px;
+  background: var(--primary-light);
+  border-radius: 50%;
+  z-index: -1;
+  box-shadow: 0 0 6px var(--primary-light);
+  animation: dataFlow 6s linear infinite;
+}
+.data-particle.p1 { top: 20%; left: 0; animation-delay: 0s; }
+.data-particle.p2 { top: 50%; left: 0; animation-delay: 2s; }
+.data-particle.p3 { top: 80%; left: 0; animation-delay: 4s; }
 
-/* Header */
+@keyframes dataFlow {
+  0% { transform: translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+
+.container { max-width: 520px; margin: 0 auto; position: relative; z-index: 1; }
+
+/* ============ HEADER (SAMA STYLE) ============ */
 .header {
   display: flex;
   align-items: center;
@@ -83,7 +160,7 @@ body::before {
   width: 46px; height: 46px;
   border-radius: 14px;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   color: var(--text-secondary);
   cursor: pointer;
   display: flex;
@@ -94,13 +171,38 @@ body::before {
   text-decoration: none;
 }
 .back-btn:hover {
-  background: var(--bg-card-hover);
-  color: var(--text-primary);
+  background: linear-gradient(135deg, rgba(8,145,178,0.1), rgba(124,58,237,0.1));
+  color: var(--primary);
   border-color: var(--primary);
   transform: translateX(-3px);
+  box-shadow: 0 0 15px rgba(8,145,178,0.15);
 }
-.header-info h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
-.header-info p { color: var(--text-muted); font-size: 14px; }
+.header-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light), var(--purple));
+  padding: 3px;
+  box-shadow: 0 6px 20px rgba(8, 145, 178, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.header-icon-inner {
+  width: 100%; height: 100%;
+  background: white;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.header-icon-inner img {
+  width: 85%; height: 85%;
+  object-fit: contain;
+}
+.header-info h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; color: var(--text-primary); }
+.header-info p { color: var(--text-muted); font-size: 13px; font-weight: 500; }
 
 /* Menu Button */
 .menu-container { position: relative; }
@@ -108,7 +210,7 @@ body::before {
   width: 44px; height: 44px;
   border-radius: 14px;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   color: var(--text-secondary);
   cursor: pointer;
   display: flex;
@@ -116,8 +218,12 @@ body::before {
   justify-content: center;
   transition: all 0.25s ease;
 }
-.menu-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--primary); }
-.menu-btn.active { background: var(--bg-card-hover); border-color: var(--primary); color: var(--primary-light); }
+.menu-btn:hover { 
+  background: linear-gradient(135deg, rgba(8,145,178,0.1), rgba(124,58,237,0.1)); 
+  color: var(--primary); 
+  border-color: var(--primary); 
+}
+.menu-btn.active { background: var(--bg-input); border-color: var(--primary); color: var(--primary); }
 
 .dropdown-menu {
   position: absolute;
@@ -125,9 +231,9 @@ body::before {
   right: 0;
   min-width: 220px;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
@@ -144,8 +250,8 @@ body::before {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 18px;
-  font-size: 14px;
+  padding: 13px 16px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-secondary);
   cursor: pointer;
@@ -157,19 +263,24 @@ body::before {
   font-family: inherit;
 }
 .dropdown-item:hover { background: var(--bg-input); color: var(--text-primary); }
-.dropdown-item svg { width: 20px; height: 20px; flex-shrink: 0; }
-.dropdown-item.print svg { color: var(--blue); }
+.dropdown-item svg { width: 18px; height: 18px; flex-shrink: 0; stroke-width: 2; }
+.dropdown-item.print svg { color: var(--primary); }
 .dropdown-item.share svg { color: var(--success); }
 .dropdown-item.export svg { color: var(--purple); }
 .dropdown-divider { height: 1px; background: var(--border); margin: 4px 0; }
 
-/* Stats */
-.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+/* ============ STATS GRID (LIGHT THEME) ============ */
+.stats-grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 12px; 
+  margin-bottom: 20px; 
+}
 .stat-card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 20px 16px;
+  padding: 18px 14px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -182,139 +293,227 @@ body::before {
   height: 3px;
 }
 .stat-card.today::before { background: linear-gradient(90deg, var(--success), #34d399); }
-.stat-card.week::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+.stat-card.week::before { background: linear-gradient(90deg, var(--primary), var(--primary-light)); }
 .stat-card.month::before { background: linear-gradient(90deg, var(--purple), #a78bfa); }
-.stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.stat-card:hover { 
+  transform: translateY(-4px); 
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08); 
+  border-color: var(--primary);
+}
 .stat-icon {
-  width: 40px; height: 40px;
+  width: 38px; height: 38px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 12px;
-  font-size: 18px;
+  margin: 0 auto 10px;
+  font-size: 17px;
 }
-.stat-card.today .stat-icon { background: rgba(16, 185, 129, 0.15); }
-.stat-card.week .stat-icon { background: rgba(59, 130, 246, 0.15); }
-.stat-card.month .stat-icon { background: rgba(139, 92, 246, 0.15); }
-.stat-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-.stat-value { font-size: 20px; font-weight: 800; }
+.stat-card.today .stat-icon { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+.stat-card.week .stat-icon { background: linear-gradient(135deg, #cffafe, #a5f3fc); }
+.stat-card.month .stat-icon { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+.stat-label { 
+  font-size: 11px; 
+  color: var(--text-muted); 
+  font-weight: 700; 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px; 
+  margin-bottom: 6px; 
+}
+.stat-value { 
+  font-size: 17px; 
+  font-weight: 800; 
+}
 .stat-card.today .stat-value { color: var(--success); }
-.stat-card.week .stat-value { color: var(--blue); }
+.stat-card.week .stat-value { color: var(--primary); }
 .stat-card.month .stat-value { color: var(--purple); }
 
-/* Filter */
+/* ============ FILTER SECTION ============ */
 .filter-section {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 16px 20px;
-  margin-bottom: 20px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
-.filter-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+.filter-label { 
+  font-size: 12px; 
+  font-weight: 700; 
+  color: var(--text-secondary); 
+  display: flex; 
+  align-items: center; 
+  gap: 5px; 
+}
+.filter-label svg { width: 14px; height: 14px; stroke: var(--primary); }
 .filter-btn {
-  padding: 8px 16px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--bg-input);
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.filter-btn:hover { border-color: var(--primary); color: var(--text-primary); }
-.filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+.filter-btn:hover { 
+  border-color: var(--primary); 
+  color: var(--primary); 
+  background: rgba(8,145,178,0.05);
+}
+.filter-btn.active { 
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+  border-color: var(--primary); 
+  color: white; 
+  box-shadow: 0 4px 12px rgba(8,145,178,0.25);
+}
 
-/* Summary */
+/* ============ SUMMARY BAR ============ */
 .summary-bar {
-  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
-  border: 1px solid var(--border);
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 16px 20px;
+  padding: 14px 18px;
   margin-bottom: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
-.summary-text { font-size: 14px; color: var(--text-secondary); }
-.summary-text strong { color: var(--text-primary); }
-.summary-total { font-size: 18px; font-weight: 800; color: var(--accent); }
+.summary-text { font-size: 13px; color: var(--text-secondary); }
+.summary-text strong { color: var(--text-primary); font-weight: 700; }
+.summary-total { 
+  font-size: 17px; 
+  font-weight: 800; 
+  color: var(--accent); 
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 
-/* List */
-.list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px; }
-.list-title { font-size: 16px; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+/* ============ LIST HEADER ============ */
+.list-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  margin-bottom: 12px; 
+  padding: 0 2px; 
+}
+.list-title { 
+  font-size: 15px; 
+  font-weight: 700; 
+  color: var(--text-secondary); 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+.list-title svg { stroke: var(--text-muted); }
 .transaction-count {
   background: var(--bg-input);
   padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
+  border-radius: 16px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-muted);
 }
+
+/* ============ TRANSACTION LIST ============ */
 .transaction-list {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
-  max-height: 500px;
+  max-height: 480px;
   overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 .transaction-item {
-  padding: 16px 20px;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 14px;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
   animation: fadeInUp 0.3s ease backwards;
 }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 .transaction-item:last-child { border-bottom: none; }
-.transaction-item:hover { background: var(--bg-card-hover); }
+.transaction-item:hover { 
+  background: linear-gradient(135deg, rgba(8,145,178,0.03), rgba(124,58,237,0.03)); 
+  border-left: 3px solid var(--primary);
+  padding-left: 15px;
+}
 .txn-date {
-  background: var(--bg-input);
-  padding: 8px 12px;
+  background: linear-gradient(135deg, var(--bg-input), #f1f5f9);
+  padding: 8px 10px;
   border-radius: 10px;
   text-align: center;
   flex-shrink: 0;
-  min-width: 56px;
+  min-width: 52px;
+  border: 1px solid var(--border);
 }
 .txn-day { font-size: 18px; font-weight: 800; color: var(--text-primary); line-height: 1; }
-.txn-month { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+.txn-month { font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 2px; letter-spacing: 0.3px; }
 .txn-info { flex: 1; min-width: 0; }
-.txn-name { font-weight: 700; font-size: 15px; color: var(--text-primary); margin-bottom: 3px; }
-.txn-service { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
-.service-badge { padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
-.badge-printer { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
-.badge-komputer { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
-.badge-install { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-.badge-lainnya { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
-.txn-amount { font-weight: 800; font-size: 15px; color: var(--success); white-space: nowrap; }
+.txn-name { font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 3px; }
+.txn-service { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+.service-badge { 
+  padding: 2px 8px; 
+  border-radius: 6px; 
+  font-size: 10px; 
+  font-weight: 700; 
+}
+.badge-printer { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #2563eb; }
+.badge-komputer { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #7c3aed; }
+.badge-install { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #059669; }
+.badge-lainnya { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #d97706; }
+.txn-amount { 
+  font-weight: 800; 
+  font-size: 14px; 
+  color: var(--success); 
+  white-space: nowrap; 
+}
 
-.empty-state { text-align: center; padding: 60px 24px; color: var(--text-muted); }
-.empty-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.4; }
-.empty-state p { font-size: 15px; }
-.loading { text-align: center; padding: 48px; color: var(--text-muted); }
+/* Empty State */
+.empty-state { 
+  text-align: center; 
+  padding: 50px 24px; 
+  color: var(--text-muted); 
+}
+.empty-icon { 
+  font-size: 56px; 
+  margin-bottom: 14px; 
+  opacity: 0.35; 
+}
+.empty-state p { 
+  font-size: 14px; 
+  font-weight: 500;
+}
+.loading { 
+  text-align: center; 
+  padding: 44px; 
+  color: var(--text-muted); 
+}
 .spinner {
-  width: 40px; height: 40px;
+  width: 36px; height: 36px;
   border: 3px solid var(--border);
   border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  margin: 0 auto 16px;
+  margin: 0 auto 14px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ==================== MODAL ==================== */
+/* ==================== MODAL (LIGHT THEME) ==================== */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(15, 23, 42, 0.4);
   backdrop-filter: blur(6px);
   z-index: 9999;
   display: flex;
@@ -330,30 +529,41 @@ body::before {
 
 .modal-box {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 440px;
-  padding: 28px;
-  transform: translateY(30px) scale(0.9);
+  max-width: 420px;
+  padding: 26px;
+  transform: translateY(30px) scale(0.92);
   opacity: 0;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
 }
 
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(8,145,178,0.2);
 }
-.modal-title { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+.modal-title { 
+  font-size: 16px; 
+  font-weight: 800; 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  color: var(--primary-dark);
+}
+.modal-title svg { stroke: var(--primary); }
 .modal-close {
-  width: 36px; height: 36px;
+  width: 34px; height: 34px;
   border-radius: 10px;
   background: var(--bg-input);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   color: var(--text-secondary);
   cursor: pointer;
   display: flex;
@@ -361,38 +571,46 @@ body::before {
   justify-content: center;
   transition: all 0.2s ease;
 }
-.modal-close:hover { background: rgba(239, 68, 68, 0.15); color: var(--danger); border-color: var(--danger); }
+.modal-close:hover { 
+  background: #fef2f2; 
+  color: var(--danger); 
+  border-color: #fecaca; 
+}
 
-.date-group { margin-bottom: 16px; }
+.date-group { margin-bottom: 14px; }
 .date-label {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-muted);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
 }
+.date-label svg { width: 12px; height: 12px; stroke: var(--primary); margin-right: 4px; }
 .date-input {
   width: 100%;
-  padding: 14px 16px;
-  background: var(--bg-input);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-md);
-  font-size: 15px;
+  padding: 13px 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border: 1.8px solid #cbd5e1;
+  border-radius: 11px;
+  font-size: 14px;
   font-family: inherit;
   color: var(--text-primary);
   transition: all 0.25s ease;
   cursor: pointer;
   outline: none;
 }
-.date-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15); }
-.date-input::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.7; cursor: pointer; }
+.date-input:focus { 
+  border-color: var(--primary); 
+  box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1); 
+}
+.date-input::-webkit-calendar-picker-indicator { opacity: 0.6; cursor: pointer; }
 
 .arrow-icon {
   display: flex;
   justify-content: center;
-  padding: 4px 0;
+  padding: 2px 0;
   color: var(--text-muted);
 }
 
@@ -400,50 +618,59 @@ body::before {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 16px;
-  margin-bottom: 20px;
+  margin-top: 14px;
+  margin-bottom: 18px;
 }
 .quick-btn {
-  padding: 8px 14px;
+  padding: 7px 13px;
   border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--bg-input);
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.quick-btn:hover { border-color: var(--primary); color: var(--primary-light); background: rgba(13, 148, 136, 0.1); }
-.quick-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+.quick-btn:hover { 
+  border-color: var(--primary); 
+  color: var(--primary); 
+  background: rgba(8,145,178,0.05); 
+}
+.quick-btn.active { 
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+  border-color: var(--primary); 
+  color: white; 
+  box-shadow: 0 4px 10px rgba(8,145,178,0.25);
+}
 
 .preview-box {
-  background: var(--bg-input);
+  background: linear-gradient(135deg, var(--bg-input), #f1f5f9);
   border-radius: var(--radius-md);
   padding: 16px;
-  margin-bottom: 20px;
-  border: 1px solid var(--border);
+  margin-bottom: 18px;
+  border: 1.5px solid var(--border);
 }
 .preview-title {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   margin-bottom: 12px;
 }
 .preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .preview-item { text-align: center; }
-.preview-item-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
-.preview-item-value { font-size: 18px; font-weight: 800; color: var(--primary-light); }
+.preview-item-label { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+.preview-item-value { font-size: 18px; font-weight: 800; color: var(--primary); }
 
-.modal-footer { display: flex; gap: 12px; }
+.modal-footer { display: flex; gap: 10px; }
 .btn-modal {
   flex: 1;
-  padding: 14px 20px;
-  border-radius: var(--radius-md);
-  font-size: 14px;
+  padding: 13px 18px;
+  border-radius: 12px;
+  font-size: 13px;
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
@@ -456,16 +683,19 @@ body::before {
 }
 .btn-cancel {
   background: var(--bg-input);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   color: var(--text-secondary);
 }
-.btn-cancel:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+.btn-cancel:hover { background: var(--border); color: var(--text-primary); }
 .btn-process {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
-  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.35);
+  box-shadow: 0 4px 16px rgba(8, 145, 178, 0.3);
 }
-.btn-process:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(13, 148, 136, 0.45); }
+.btn-process:hover:not(:disabled) { 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 24px rgba(8, 145, 178, 0.4); 
+}
 .btn-process:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 /* Toast */
@@ -475,15 +705,15 @@ body::before {
   left: 50%;
   transform: translateX(-50%) translateY(120px);
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  padding: 14px 24px;
-  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  padding: 13px 22px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 10px;
   font-weight: 600;
-  font-size: 14px;
-  box-shadow: var(--shadow-lg);
+  font-size: 13px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
   z-index: 99999;
   opacity: 0;
   transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -495,13 +725,13 @@ body::before {
 .toast.success { border-left: 4px solid var(--success); }
 .toast.error { border-left: 4px solid var(--danger); }
 
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
 @media print {
   body { background: white !important; color: black !important; padding: 20px; }
-  body::before, .orb, .back-btn, .menu-container, .filter-section, .summary-bar, .modal-overlay { display: none !important; }
+  body::before, .ic-chip, .circuit-node, .data-particle, .back-btn, .menu-container, .filter-section, .summary-bar, .modal-overlay { display: none !important; }
   .container { max-width: 100%; }
   .header { justify-content: center; padding-bottom: 20px; }
   .stats-grid { grid-template-columns: repeat(3, 1fr); break-inside: avoid; }
@@ -513,23 +743,65 @@ body::before {
 
 @media (max-width: 520px) {
   body { padding: 10px; }
+  .header { padding: 18px 0 22px; }
+  .header-info h1 { font-size: 19px; }
   .stats-grid { grid-template-columns: 1fr; gap: 10px; }
-  .stat-card { display: flex; align-items: center; text-align: left; padding: 16px; }
-  .stat-icon { margin: 0 16px 0 0; }
-  .stat-label { margin-bottom: 4px; }
+  .stat-card { display: flex; align-items: center; text-align: left; padding: 14px; }
+  .stat-icon { margin: 0 14px 0 0; }
+  .stat-label { margin-bottom: 2px; }
   .filter-section { justify-content: center; }
   .summary-bar { flex-direction: column; gap: 8px; text-align: center; }
   .transaction-item { flex-wrap: wrap; }
   .txn-amount { width: 100%; text-align: right; padding-top: 8px; border-top: 1px dashed var(--border); }
   .modal-box { padding: 20px; }
   .preview-grid { grid-template-columns: 1fr 1fr; }
+  .ic-chip { display: none; }
+  .circuit-node.n1, .circuit-node.n2 { display: none; }
 }
 </style>
 </head>
 
 <body>
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
+
+<!-- Circuit Board Elements -->
+<svg class="ic-chip top-right" viewBox="0 0 100 60" fill="none">
+  <rect x="10" y="10" width="80" height="40" rx="4" fill="#1e293b" stroke="var(--primary)" stroke-width="1.5"/>
+  <circle cx="25" cy="20" r="3" fill="var(--primary-light)"/>
+  <circle cx="25" cy="40" r="3" fill="var(--primary-light)"/>
+  <circle cx="75" cy="20" r="3" fill="var(--primary-light)"/>
+  <circle cx="75" cy="40" r="3" fill="var(--primary-light)"/>
+  <rect x="30" y="22" width="40" height="16" rx="2" fill="#334155"/>
+  <line x1="10" y1="20" x2="0" y2="20" stroke="var(--primary)" stroke-width="2"/>
+  <line x1="10" y1="30" x2="0" y2="30" stroke="var(--primary)" stroke-width="2"/>
+  <line x1="10" y1="40" x2="0" y2="40" stroke="var(--primary)" stroke-width="2"/>
+  <line x1="90" y1="20" x2="100" y2="20" stroke="var(--primary)" stroke-width="2"/>
+  <line x1="90" y1="30" x2="100" y2="30" stroke="var(--primary)" stroke-width="2"/>
+  <line x1="90" y1="40" x2="100" y2="40" stroke="var(--primary)" stroke-width="2"/>
+</svg>
+
+<svg class="ic-chip bottom-left" viewBox="0 0 120 70" fill="none">
+  <rect x="15" y="10" width="90" height="50" rx="5" fill="#1e293b" stroke="var(--purple)" stroke-width="1.5"/>
+  <circle cx="28" cy="22" r="3" fill="#a78bfa"/>
+  <circle cx="28" cy="48" r="3" fill="#a78bfa"/>
+  <circle cx="92" cy="22" r="3" fill="#a78bfa"/>
+  <circle cx="92" cy="48" r="3" fill="#a78bfa"/>
+  <rect x="38" y="25" width="44" height="20" rx="3" fill="#334155"/>
+  <line x1="15" y1="22" x2="0" y2="15" stroke="var(--purple)" stroke-width="2"/>
+  <line x1="15" y1="35" x2="0" y2="35" stroke="var(--purple)" stroke-width="2"/>
+  <line x1="15" y1="48" x2="0" y2="55" stroke="var(--purple)" stroke-width="2"/>
+  <line x1="105" y1="22" x2="120" y2="15" stroke="var(--purple)" stroke-width="2"/>
+  <line x1="105" y1="35" x2="120" y2="35" stroke="var(--purple)" stroke-width="2"/>
+  <line x1="105" y1="48" x2="120" y2="55" stroke="var(--purple)" stroke-width="2"/>
+</svg>
+
+<div class="circuit-node n1"></div>
+<div class="circuit-node n2"></div>
+<div class="circuit-node n3"></div>
+<div class="circuit-node n4"></div>
+
+<div class="data-particle p1"></div>
+<div class="data-particle p2"></div>
+<div class="data-particle p3"></div>
 
 <!-- Toast -->
 <div id="toast" class="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
@@ -539,32 +811,38 @@ body::before {
   <div class="modal-box">
     <div class="modal-header">
       <div class="modal-title" id="modalTitle">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Pilih Rentang Tanggal
       </div>
       <button class="modal-close" onclick="closeDateModal()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     
     <div class="date-group">
-      <label class="date-label">Tanggal Mulai</label>
+      <label class="date-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Tanggal Mulai
+      </label>
       <input type="date" id="inputStartDate" class="date-input">
     </div>
     
     <div class="arrow-icon">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     
     <div class="date-group">
-      <label class="date-label">Tanggal Akhir</label>
+      <label class="date-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Tanggal Akhir
+      </label>
       <input type="date" id="inputEndDate" class="date-input">
     </div>
     
     <div class="quick-filters">
       <button class="quick-btn" data-range="today" onclick="selectQuickRange(this)">Hari Ini</button>
       <button class="quick-btn" data-range="week" onclick="selectQuickRange(this)">Minggu Ini</button>
-      <button class="quick-btn" data-range="month" onclick="selectQuickRange(this)">Bulan Ini</button>
+      <button class="quick-btn active" data-range="month" onclick="selectQuickRange(this)">Bulan Ini</button>
       <button class="quick-btn" data-range="lastmonth" onclick="selectQuickRange(this)">Bulan Lalu</button>
       <button class="quick-btn" data-range="all" onclick="selectQuickRange(this)">Semua</button>
     </div>
@@ -577,7 +855,7 @@ body::before {
           <div class="preview-item-value" id="previewCount">0</div>
         </div>
         <div class="preview-item">
-          <div class="preview-item-label">Total Pendapatan</div>
+          <div class="preview-item-label">Total</div>
           <div class="preview-item-value" id="previewTotal">Rp 0</div>
         </div>
       </div>
@@ -586,7 +864,7 @@ body::before {
     <div class="modal-footer">
       <button class="btn-modal btn-cancel" onclick="closeDateModal()">Batal</button>
       <button class="btn-modal btn-process" id="btnProcess" onclick="executeAction()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         Proses Sekarang
       </button>
     </div>
@@ -598,8 +876,14 @@ body::before {
   <div class="header">
     <div class="header-left">
       <a href="index.html" class="back-btn">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       </a>
+      <!-- Icon PNG sama seperti index.html -->
+      <div class="header-icon">
+        <div class="header-icon-inner">
+          <img src="icon.png" alt="Logo">
+        </div>
+      </div>
       <div class="header-info">
         <h1>Laporan Pendapatan</h1>
         <p>Riwayat semua transaksi</p>
@@ -608,7 +892,7 @@ body::before {
     
     <div class="menu-container">
       <button class="menu-btn" id="btnMenu" onclick="toggleDropdown()">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
       </button>
       
       <div class="dropdown-menu" id="dropdownMenu">
@@ -636,17 +920,23 @@ body::before {
   <!-- Stats -->
   <div class="stats-grid">
     <div class="stat-card today">
-      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
       <div class="stat-label">Hari Ini</div>
       <div class="stat-value" id="statToday">Rp 0</div>
     </div>
     <div class="stat-card week">
-      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div class="stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0891b2" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
       <div class="stat-label">Minggu Ini</div>
       <div class="stat-value" id="statWeek">Rp 0</div>
     </div>
     <div class="stat-card month">
-      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M4 18V6a2 2 0 012-2h12a2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-1z"/><path d="M12 17V7"/><path d="M8 11h8"/></svg></div>
+      <div class="stat-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5"><path d="M4 18V6a2 2 0 012-2h12a2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-1z"/><path d="M12 17V7"/><path d="M8 11h8"/></svg>
+      </div>
       <div class="stat-label">Bulan Ini</div>
       <div class="stat-value" id="statMonth">Rp 0</div>
     </div>
@@ -654,7 +944,9 @@ body::before {
 
   <!-- Filter -->
   <div class="filter-section">
-    <span class="filter-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg> Filter:</span>
+    <span class="filter-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg> Filter:
+    </span>
     <button class="filter-btn active" data-f="all" onclick="setFilter('all')">Semua</button>
     <button class="filter-btn" data-f="today" onclick="setFilter('today')">Hari Ini</button>
     <button class="filter-btn" data-f="week" onclick="setFilter('week')">Minggu Ini</button>
@@ -664,15 +956,18 @@ body::before {
   <!-- Summary -->
   <div class="summary-bar">
     <div class="summary-text">Menampilkan <strong id="showCount">0</strong> transaksi</div>
-    <div class="summary-total" id="summaryTotal">Total: Rp 0</div>
+    <div class="summary-total" id="summaryTotal">Rp 0</div>
   </div>
 
-  <!-- List -->
+  <!-- List Header -->
   <div class="list-header">
-    <div class="list-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Daftar Transaksi</div>
+    <div class="list-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Daftar Transaksi
+    </div>
     <span class="transaction-count" id="totalCount">0 total</span>
   </div>
   
+  <!-- Transaction List -->
   <div id="transactionList" class="transaction-list">
     <div class="loading"><div class="spinner"></div><p>Memuat data...</p></div>
   </div>
@@ -682,7 +977,7 @@ body::before {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Firebase Init
+// Firebase Init (sama config)
 const firebaseConfig = {
   apiKey: "AIzaSyD25yifoIuCrqXVKEx7NvALoAJ8PNb8pDg",
   authDomain: "catatan-teknisi-50aef.firebaseapp.com",
@@ -778,17 +1073,13 @@ window.openDateModal = function(action) {
   pendingAction = action;
   closeDropdown();
   
-  // Set title
   const titles = {'print':'🖨️ Cetak Laporan','share':'📤 Bagikan Laporan','csv':'📥 Export CSV','json':'📄 Export JSON'};
   document.getElementById('modalTitle').innerHTML = `
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     ${titles[action]||'Pilih Rentang'}
   `;
   
-  // Default: week range
-  selectQuickRange(document.querySelector('[data-range="week"]'));
-  
-  // Show modal
+  selectQuickRange(document.querySelector('[data-range="month"]'));
   document.getElementById('dateModal').classList.add('show');
 };
 
@@ -797,9 +1088,7 @@ window.closeDateModal = function() {
   pendingAction = null;
 };
 
-// Quick range buttons
 window.selectQuickRange = function(btn) {
-  // Update active state
   document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   
@@ -808,9 +1097,7 @@ window.selectQuickRange = function(btn) {
   let start, end;
   
   switch(range) {
-    case 'today':
-      start = end = today;
-      break;
+    case 'today': start = end = today; break;
     case 'week':
       start = new Date(today);
       start.setDate(today.getDate()-today.getDay()+(today.getDay()===0?-6:1));
@@ -829,58 +1116,42 @@ window.selectQuickRange = function(btn) {
         const dates = allData.map(d=>d.tanggal).sort();
         start = new Date(dates[0]+'T00:00:00');
         end = new Date(dates[dates.length-1]+'T00:00:00');
-      } else {
-        start = end = today;
-      }
+      } else { start = end = today; }
       break;
-    default:
-      start = end = today;
+    default: start = end = today;
   }
   
   const toStr = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   document.getElementById('inputStartDate').value = toStr(start);
   document.getElementById('inputEndDate').value = toStr(end);
-  
   updatePreview();
 };
 
-// Update preview when dates change
 document.getElementById('inputStartDate').addEventListener('change', updatePreview);
 document.getElementById('inputEndDate').addEventListener('change', updatePreview);
 
 function updatePreview() {
   const start = document.getElementById('inputStartDate').value;
   const end = document.getElementById('inputEndDate').value;
-  
   if(!start || !end) {
     document.getElementById('previewCount').textContent = '-';
     document.getElementById('previewTotal').textContent = '-';
     return;
   }
-  
   const filtered = filterByRange(allData, start, end);
   const total = filtered.reduce((s,x)=>s+x.biaya, 0);
-  
   document.getElementById('previewCount').textContent = filtered.length;
   document.getElementById('previewTotal').textContent = `Rp ${fmtRupiah(total)}`;
 }
 
-// Execute the selected action
 window.executeAction = async function() {
   const start = document.getElementById('inputStartDate').value;
   const end = document.getElementById('inputEndDate').value;
-  
-  // Validation
   if(!start || !end) { showToast('Mohon pilih tanggal mulai & akhir!', 'error'); return; }
-  if(start > end) { showToast('Tanggal mulai tidak boleh lebih besar dari akhir!', 'error'); return; }
-  
+  if(start > end) { showToast('Tanggal mulai tidak boleh lebih besar!', 'error'); return; }
   const filtered = filterByRange(allData, start, end);
   if(filtered.length === 0) { showToast('Tidak ada data pada rentang ini!', 'error'); return; }
-  
-  // Close modal first
   closeDateModal();
-  
-  // Small delay then execute
   setTimeout(async () => {
     switch(pendingAction) {
       case 'print': await doPrint(filtered, start, end); break;
@@ -895,30 +1166,25 @@ window.executeAction = async function() {
 
 async function doPrint(data, start, end) {
   showToast('Mempersiapkan cetakan...');
-  
   const total = data.reduce((s,x)=>s+x.biaya,0);
   const periode = `${fmtDateID(start)} - ${fmtDateID(end)}`;
-  
-  let rows = data.map((item,i) => {
-    return `<tr><td>${i+1}</td><td>${fmtDateID(item.tanggal)}</td><td>${item.nama}</td><td>${getServiceName(item)}</td><td style="text-align:right">Rp ${fmtRupiah(item.biaya)}</td></tr>`;
-  }).join('');
-  
+  let rows = data.map((item,i) => `<tr><td>${i+1}</td><td>${fmtDateID(item.tanggal)}</td><td>${item.nama}</td><td>${getServiceName(item)}</td><td style="text-align:right">Rp ${fmtRupiah(item.biaya)}</td></tr>`).join('');
   const printContent = `
 <!DOCTYPE html><html><head><title>Laporan</title>
 <style>
-body{font-family:Arial,sans-serif;padding:20px;color:#333}
-h1{text-align:center;color:#0d9488;margin-bottom:5px}
-.sub{text-align:center;color:#666;margin-bottom:20px;font-size:14px}
-.info{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:15px;margin-bottom:20px}
-.info div{display:flex;justifyify-content:space-between;margin:4px 0}
-.total{background:#0d9488;color:white;padding:18px;border-radius:8px;text-align:center;margin:20px 0}
-.total .lbl{font-size:14px;opacity:.9}
-.total .val{font-size:32px;font-weight:bold}
-table{width:100%;border-collapse:collapse;margin-top:16px}
-th{background:#1e293b;color:white;padding:12px;text-align:left}
-td{padding:10px;border-bottom:1px solid #eee}
+body{font-family:'Plus Jakarta Sans',sans-serif;padding:20px;color:#0f172a;background:#f8fafc}
+h1{text-align:center;color:#0891b2;margin-bottom:5px;font-size:22px}
+.sub{text-align:center:#64748b;margin-bottom:20px;font-size:13px}
+.info{background:#ecfdf5;border:1px solid #a7f3d0;border-radius:12px;padding:16px;margin-bottom:20px}
+.info div{display:flex;justify-content:space-between;margin:5px 0;font-size:14px}
+.total{background:linear-gradient(135deg,#0891b2,#0e7490);color:white;padding:20px;border-radius:14px;text-align:center;margin:20px 0}
+.total .lbl{font-size:13px;opacity:.9}
+.total .val{font-size:32px;font-weight:800}
+table{width:100%;border-collapse:collapse;margin-top:16px;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+th{background:#0891b2;color:white;padding:12px 14px;text-align:left;font-size:13px;font-weight:700}
+td{padding:11px 14px;border-bottom:1px solid #e2e8f0;font-size:13px}
 tr:nth-child(even){background:#f8fafc}
-.ft{text-align:center;margin-top:24px;color:#999;font-size:12px}
+.ft{text-align:center;margin-top:24px;color:#94a3b8;font-size:12px}
 </style></head><body>
 <h1>📊 LAPORAN PENDAPATAN TEKNISI</h1>
 <p class="sub">Periode: ${periode}</p>
@@ -927,7 +1193,6 @@ tr:nth-child(even){background:#f8fafc}
 <div class="total"><div class="lbl">TOTAL PENDAPATAN</div><div class="val">Rp ${fmtRupiah(total)}</div></div>
 <p class="ft">Catatan Teknisi App</p>
 <script>window.onload=function(){window.print()}<\/script></body></html>`;
-  
   const w = window.open('','_blank');
   w.document.write(printContent);
   w.document.close();
@@ -936,34 +1201,22 @@ tr:nth-child(even){background:#f8fafc}
 async function doShare(data, start, end) {
   const total = data.reduce((s,x)=>s+x.biaya,0);
   const periode = `${fmtDateShort(start)} - ${fmtDateShort(end)}`;
-  
   let txt = `📊 *LAPORAN PENDAPATAN TEKNISI*\n`;
   txt += `━━━━━━━━━━━━━━━━\n`;
   txt += `📅 Periode: ${periode}\n`;
   txt += `📝 Jumlah: ${data.length} transaksi\n`;
   txt += `💰 Total: Rp ${fmtRupiah(total)}\n`;
   txt += `━━━━━━━━━━━━━━━━\n\n`;
-  
-  data.slice(0,15).forEach((item,i) => {
-    txt += `${i+1}. ${item.nama} - ${getServiceName(item)} (Rp ${fmtRupiah(item.biaya)})\n`;
-  });
+  data.slice(0,15).forEach((item,i) => { txt += `${i+1}. ${item.nama} - ${getServiceName(item)} (Rp ${fmtRupiah(item.biaya)})\n`; });
   if(data.length > 15) txt += `\n...dan ${data.length-15} transaksi lainnya`;
-  
-  try {
-    if(navigator.share) {
-      await navigator.share({title:`Laporan (${periode})`, text:txt});
-    } else { throw new Error('no share'); }
-  } catch(e) {
-    await navigator.clipboard.writeText(txt);
-    showToast('Laporan disalin ke clipboard!');
-  }
+  try { if(navigator.share) await navigator.share({title:`Laporan (${periode})`, text:txt}); else throw new Error('no share'); }
+  catch(e) { await navigator.clipboard.writeText(txt); showToast('Laporan disalin ke clipboard!'); }
 }
 
 async function doExportCSV(data, start, end) {
   const hdr = ['No','Tanggal','Pelanggan','Service','Keterangan','Biaya'];
   const rows = data.map((item,i) => [i+1,item.tanggal,item.nama,item.service,item.keterangan||'-',item.biaya]);
   const csv = [hdr,...rows].map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
-  
   downloadFile(csv, `laporan-${start}_${end}.csv`, 'text/csv');
   showToast('File CSV berhasil didownload!');
 }
@@ -973,13 +1226,8 @@ async function doExportJSON(data, start, end) {
   const json = {
     meta:{title:'Laporan Pendapatan Teknisi',periode:{start,end},generatedAt:new Date().toISOString()},
     summary:{count:data.length,total,totalFmt:`Rp ${fmtRupiah(total)}`},
-    transactions:data.map((item,i)=>({
-      no:i+1, tanggal:item.tanggal, pelanggan:item.nama,
-      service:item.service, keterangan:item.keterangan||null,
-      biaya:item.biaya, biayaFmt:`Rp ${fmtRupiah(item.biaya)}`
-    }))
+    transactions:data.map((item,i)=>({no:i+1,tanggal:item.tanggal,pelanggan:item.nama,service:item.service,keterangan:item.keterangan||null,biaya:item.biaya,biayaFmt:`Rp ${fmtRupiah(item.biaya)}`}))
   };
-  
   downloadFile(JSON.stringify(json,null,2), `laporan-${start}_${end}.json`, 'application/json');
   showToast('File JSON berhasil didownload!');
 }
@@ -993,7 +1241,6 @@ function downloadFile(content, filename, mime) {
   document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
-// Close on overlay click / Escape
 document.getElementById('dateModal').addEventListener('click', e => { if(e.target.id==='dateModal') closeDateModal(); });
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeDateModal(); });
 
@@ -1008,24 +1255,15 @@ window.setFilter = function(f) {
 function renderList() {
   const filtered = allData.filter(x => isInRange(x.tanggal, currentFilter));
   const total = filtered.reduce((s,x)=>s+x.biaya,0);
-  
   document.getElementById('showCount').textContent = filtered.length;
-  document.getElementById('summaryTotal').textContent = `Total: Rp ${fmtRupiah(total)}`;
-  
+  document.getElementById('summaryTotal').textContent = `Rp ${fmtRupiah(total)}`;
   const container = document.getElementById('transactionList');
-  
-  if(filtered.length===0) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><p>Tidak ada transaksi</p></div>`;
-    return;
-  }
-  
+  if(filtered.length===0) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><p>Tidak ada transaksi</p></div>`; return; }
   filtered.sort((a,b) => b.tanggal.localeCompare(a.tanggal));
-  
   container.innerHTML = filtered.map((item,i) => {
     const [y,m,d] = item.tanggal.split('-');
     const dt = new Date(y,m-1,d);
-    return `
-    <div class="transaction-item" style="animation-delay:${Math.min(i*0.03,0.3)}s">
+    return `<div class="transaction-item" style="animation-delay:${Math.min(i*0.03,0.3)}s">
       <div class="txn-date"><div class="txn-day">${dt.getDate()}</div><div class="txn-month">${dt.toLocaleDateString('id-ID',{month:'short'})}</div></div>
       <div class="txn-info"><div class="txn-name">${item.nama}</div><div class="txn-service"><span class="service-badge ${badgeClass(item.service)}">${getServiceName(item)}</span></div></div>
       <div class="txn-amount">Rp ${fmtRupiah(item.biaya)}</div>
@@ -1040,7 +1278,6 @@ async function loadReport() {
     const snap = await getDocs(collection(db,'data'));
     allData = [];
     let tToday=0, tWeek=0, tMonth=0;
-    
     const now = new Date();
     const sDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const sWeek = new Date(now); sWeek.setDate(now.getDate()-now.getDay()+(now.getDay()===0?-6:1)); sWeek.setHours(0,0,0,0);
@@ -1059,7 +1296,6 @@ async function loadReport() {
     document.getElementById('statWeek').textContent = `Rp ${fmtRupiah(tWeek)}`;
     document.getElementById('statMonth').textContent = `Rp ${fmtRupiah(tMonth)}`;
     document.getElementById('totalCount').textContent = `${allData.length} total`;
-    
     renderList();
   } catch(e) {
     console.error(e);
