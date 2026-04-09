@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Laporan Pendapatan - Catatan Teknisi</title>
 
-<!-- html2pdf.js Library -->
+<!-- html2pdf.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
@@ -14,30 +14,23 @@
 :root {
   --primary: #0d9488;
   --primary-dark: #0f766e;
-  --primary-light: #14b8a6;
   --accent: #f59e0b;
   --success: #059669;
   --purple: #7c3aed;
   --blue: #2563eb;
   --danger: #dc2626;
-  
-  /* LIGHT THEME */
   --bg-main: #f8fafc;
   --bg-card: #ffffff;
   --bg-card-hover: #f1f5f9;
   --bg-input: #f1f5f9;
   --border: #e2e8f0;
-  --border-light: #f1f5f9;
-  
   --text-primary: #1e293b;
   --text-secondary: #475569;
   --text-muted: #94a3b8;
-  
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
   --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
   --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
-  
   --radius-md: 16px;
   --radius-lg: 24px;
 }
@@ -50,47 +43,22 @@ body {
   min-height: 100vh;
   padding: 16px;
   color: var(--text-primary);
-  position: relative;
-  overflow-x: hidden;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: 
-    radial-gradient(circle at 20% 20%, rgba(13,148,136,0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(124,58,237,0.06) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
 }
 
 .orb {
   position: fixed;
   border-radius: 50%;
   filter: blur(100px);
-  opacity: 0.35;
-  animation: floatLight 30s ease-in-out infinite;
+  opacity: 0.3;
+  animation: float 25s ease-in-out infinite;
   pointer-events: none;
-  z-index: 0;
 }
+.orb-1 { width: 350px; height: 350px; background: linear-gradient(135deg, var(--primary), transparent); top: -120px; right: -120px; }
+.orb-2 { width: 280px; height: 280px; background: linear-gradient(135deg, var(--purple), transparent); bottom: -100px; left: -100px; animation-delay: -10s; }
 
-.orb-1 {
-  width: 400px; height: 400px;
-  background: linear-gradient(135deg, rgba(13,148,136,0.15), rgba(52,211,153,0.1));
-  top: -150px; right: -150px;
-}
-.orb-2 {
-  width: 350px; height: 350px;
-  background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(167,139,250,0.08));
-  bottom: -120px; left: -120px;
-  animation-delay: -15s;
-}
-
-@keyframes floatLight {
-  0%, 100% { transform: translate(0,0) scale(1); }
-  33% { transform: translate(40px,-40px) scale(1.08); }
-  66% { transform: translate(-30px,30px) scale(0.95); }
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -30px) scale(1.05); }
 }
 
 .container { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
@@ -101,11 +69,10 @@ body::before {
   justify-content: space-between;
   padding: 24px 0 28px;
 }
-
 .header-left { display: flex; align-items: center; gap: 16px; }
 
 .back-btn {
-  width: 48px; height: 48px;
+  width: 46px; height: 46px;
   border-radius: 14px;
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -116,14 +83,8 @@ body::before {
   justify-content: center;
   transition: all 0.25s ease;
   text-decoration: none;
-  box-shadow: var(--shadow-sm);
 }
-
-.back-btn:hover {
-  background: var(--bg-card-hover);
-  color: var(--primary);
-  transform: translateX(-3px);
-}
+.back-btn:hover { background: var(--bg-card-hover); color: var(--primary); transform: translateX(-3px); }
 
 .header-info h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
 .header-info p { color: var(--text-muted); font-size: 14px; }
@@ -141,153 +102,85 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
 }
-
-.menu-btn:hover {
-  background: var(--bg-card-hover);
-  color: var(--primary);
-  transform: rotate(90deg) scale(1.06);
-}
-
-.menu-btn.active {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-color: var(--primary);
-  color: white;
-  transform: rotate(90deg) scale(1.04);
-  box-shadow: var(--shadow-lg);
-}
+.menu-btn:hover { background: var(--bg-card-hover); color: var(--primary); transform: rotate(90deg) scale(1.06); }
+.menu-btn.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; transform: rotate(90deg); }
 
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 12px);
   right: 0;
-  min-width: 280px;
+  min-width: 260px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
-  overflow: hidden;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-12px) scale(0.96);
-  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  transform: translateY(-10px);
+  transition: all 0.25s ease;
   z-index: 100;
 }
-
-.dropdown-menu.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0) scale(1);
-}
+.dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
 .menu-header {
-  padding: 18px 20px 14px;
-  border-bottom: 1px solid var(--border-light);
-  background: linear-gradient(135deg, rgba(13,148,136,0.05), rgba(124,58,237,0.03));
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(13,148,136,0.05);
 }
-
-.menu-header-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--primary);
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.menu-header-title { font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
 
 .dropdown-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 20px;
+  gap: 12px;
+  padding: 13px 18px;
   font-size: 14px;
   font-weight: 600;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   border: none;
   background: none;
   width: 100%;
   text-align: left;
   font-family: inherit;
-  position: relative;
 }
-
-.dropdown-item::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: currentColor;
-  transform: scaleY(0);
-  transition: transform 0.2s ease;
-}
-
-.dropdown-item:hover {
-  background: var(--bg-input);
-  color: var(--text-primary);
-  padding-left: 24px;
-}
-
-.dropdown-item:hover::before { transform: scaleY(1); }
+.dropdown-item:hover { background: var(--bg-input); color: var(--text-primary); }
 .dropdown-item svg { width: 20px; height: 20px; flex-shrink: 0; }
-.dropdown-item .item-text { flex: 1; }
-.dropdown-item .item-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 .dropdown-item.print { color: var(--blue); }
 .dropdown-item.share { color: var(--success); }
 .dropdown-item.export { color: var(--purple); }
-
-.dropdown-divider { height: 1px; background: var(--border-light); margin: 6px 0; }
-.menu-footer { padding: 12px 20px; border-top: 1px solid var(--border-light); background: var(--bg-input); }
+.dropdown-divider { height: 1px; background: var(--border); margin: 4px 0; }
+.menu-footer { padding: 10px 18px; border-top: 1px solid var(--border); background: var(--bg-input); }
 .menu-footer-text { font-size: 11px; color: var(--text-muted); text-align: center; }
 
 /* STATS */
-.stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 24px; }
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
 
 .stat-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 20px 16px;
+  padding: 18px 14px;
   text-align: center;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
-  box-shadow: var(--shadow-sm);
 }
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.stat-card.today::before { background: linear-gradient(90deg, var(--success), #34d399); }
+.stat-card.week::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+.stat-card.month::before { background: linear-gradient(90deg, var(--purple), #a78bfa); }
+.stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-}
-
-.stat-card.today::before { background: linear-gradient(90deg,#10b981,#34d399); }
-.stat-card.week::before { background: linear-gradient(90deg,#2563eb,#60a5fa); }
-.stat-card.month::before { background: linear-gradient(90deg,#7c3aed,#a78bfa); }
-
-.stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-
-.stat-icon {
-  width: 44px; height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 12px;
-}
-
-.stat-card.today .stat-icon { background: linear-gradient(135deg,rgba(16,185,129,0.12),rgba(52,211,153,0.08)); }
-.stat-card.week .stat-icon { background: linear-gradient(135deg,rgba(37,99,235,0.12),rgba(96,165,250,0.08)); }
-.stat-card.month .stat-icon { background: linear-gradient(135deg,rgba(124,58,237,0.12),rgba(167,139,250,0.08)); }
-
-.stat-label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
-.stat-value { font-size: 18px; font-weight: 800; }
+.stat-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+.stat-card.today .stat-icon { background: rgba(16,185,129,0.12); }
+.stat-card.week .stat-icon { background: rgba(37,99,235,0.12); }
+.stat-card.month .stat-icon { background: rgba(124,58,237,0.12); }
+.stat-label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.stat-value { font-size: 17px; font-weight: 800; }
 .stat-card.today .stat-value { color: var(--success); }
 .stat-card.week .stat-value { color: var(--blue); }
 .stat-card.month .stat-value { color: var(--purple); }
@@ -297,119 +190,103 @@ body::before {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 16px 20px;
-  margin-bottom: 20px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  box-shadow: var(--shadow-sm);
 }
-
 .filter-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
 
 .filter-btn {
-  padding: 8px 16px;
+  padding: 8px 14px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--bg-input);
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
 .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
-.filter-btn.active { background: linear-gradient(135deg,var(--primary),var(--primary-dark)); border-color: var(--primary); color: white; box-shadow: 0 4px 12px rgba(13,148,136,0.25); }
+.filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
 
 /* SUMMARY */
 .summary-bar {
-  background: linear-gradient(135deg,var(--bg-card),#fefce8);
+  background: linear-gradient(135deg, var(--bg-card), #fefce8);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 16px 20px;
-  margin-bottom: 16px;
+  padding: 14px 18px;
+  margin-bottom: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: var(--shadow-sm);
 }
-
-.summary-text { font-size: 14px; color: var(--text-secondary); }
-.summary-text strong { color: var(--text-primary); font-weight: 700; }
-.summary-total { font-size: 18px; font-weight: 800; color: var(--accent); }
+.summary-text { font-size: 13px; color: var(--text-secondary); }
+.summary-text strong { color: var(--text-primary); }
+.summary-total { font-size: 17px; font-weight: 800; color: var(--accent); }
 
 /* LIST */
-.list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding: 0 4px; }
-.list-title { font-size: 16px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
-.transaction-count { background: var(--bg-input); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--text-muted); border: 1px solid var(--border-light); }
+.list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.list-title { font-size: 15px; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.transaction-count { background: var(--bg-input); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; color: var(--text-muted); }
 
 .transaction-list {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  max-height: 500px;
+  max-height: 480px;
   overflow-y: auto;
-  box-shadow: var(--shadow-sm);
 }
 
 .transaction-item {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-light);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 14px;
-  transition: all 0.2s ease;
+  gap: 12px;
+  transition: background 0.2s ease;
   animation: fadeInUp 0.3s ease backwards;
 }
-
-@keyframes fadeInUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .transaction-item:last-child { border-bottom: none; }
 .transaction-item:hover { background: var(--bg-card-hover); }
 
 .txn-date {
-  background: linear-gradient(135deg,var(--bg-input),#e2e8f0);
-  padding: 10px 12px;
-  border-radius: 12px;
+  background: var(--bg-input);
+  padding: 8px 10px;
+  border-radius: 10px;
   text-align: center;
   flex-shrink: 0;
-  min-width: 56px;
-  border: 1px solid var(--border-light);
+  min-width: 52px;
 }
-
-.txn-day { font-size: 20px; font-weight: 800; color: var(--text-primary); line-height: 1; }
-.txn-month { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 3px; letter-spacing: 0.5px; }
+.txn-day { font-size: 18px; font-weight: 800; color: var(--text-primary); line-height: 1; }
+.txn-month { font-size: 9px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
 .txn-info { flex: 1; min-width: 0; }
-.txn-name { font-weight: 700; font-size: 15px; color: var(--text-primary); margin-bottom: 4px; }
-.txn-service { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+.txn-name { font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 2px; }
+.txn-service { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
 
-.service-badge {
-  padding: 3px 10px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  border: 1px solid transparent;
-}
+.service-badge { padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+.badge-printer { background: rgba(59,130,246,0.12); color: #3b82f6; }
+.badge-komputer { background: rgba(139,92,246,0.12); color: #8b5cf6; }
+.badge-install { background: rgba(16,185,129,0.12); color: #10b981; }
+.badge-lainnya { background: rgba(245,158,11,0.12); color: #f59e0b; }
+.txn-amount { font-weight: 800; font-size: 14px; color: var(--success); white-space: nowrap; }
 
-.badge-printer { background: rgba(37,99,235,0.1); color: var(--blue); border-color: rgba(37,99,235,0.15); }
-.badge-komputer { background: rgba(124,58,237,0.1); color: var(--purple); border-color: rgba(124,58,237,0.15); }
-.badge-install { background: rgba(5,150,105,0.1); color: var(--success); border-color: rgba(5,150,105,0.15); }
-.badge-lainnya { background: rgba(245,158,11,0.1); color: var(--accent); border-color: rgba(245,158,11,0.15); }
-.txn-amount { font-weight: 800; font-size: 15px; color: var(--success); white-space: nowrap; }
+.empty-state { text-align: center; padding: 50px 20px; color: var(--text-muted); }
+.empty-icon { font-size: 56px; margin-bottom: 12px; opacity: 0.4; }
+.loading { text-align: center; padding: 40px; color: var(--text-muted); }
+.spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.empty-state { text-align: center; padding: 60px 24px; color: var(--text-muted); }
-.empty-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
-.loading { text-align: center; padding: 48px; color: var(--text-muted); }
-.spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
-@keyframes spin { to{transform:rotate(360deg)} }
-
-/* MODAL DATE RANGE */
+/* MODAL */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(15,23,42,0.4);
-  backdrop-filter: blur(8px);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -419,7 +296,6 @@ body::before {
   visibility: hidden;
   transition: all 0.3s ease;
 }
-
 .modal-overlay.show { opacity: 1; visibility: visible; }
 
 .modal-box {
@@ -427,19 +303,19 @@ body::before {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 420px;
-  padding: 28px;
-  transform: translateY(20px) scale(0.96);
-  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  max-width: 400px;
+  padding: 24px;
+  transform: scale(0.95);
+  transition: all 0.3s ease;
   box-shadow: var(--shadow-xl);
 }
+.modal-overlay.show .modal-box { transform: scale(1); }
 
-.modal-overlay.show .modal-box { transform: translateY(0) scale(1); }
-.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-.modal-title { font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; color: var(--text-primary); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.modal-title { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 
 .modal-close {
-  width: 38px; height: 38px;
+  width: 34px; height: 34px;
   border-radius: 10px;
   background: var(--bg-input);
   border: 1px solid var(--border);
@@ -450,72 +326,64 @@ body::before {
   justify-content: center;
   transition: all 0.2s ease;
 }
-
 .modal-close:hover { background: rgba(220,38,38,0.1); color: var(--danger); }
-.modal-body { margin-bottom: 24px; }
-.date-range-group { margin-bottom: 18px; }
-.date-range-label { display: block; font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.modal-body { margin-bottom: 20px; }
+.date-range-group { margin-bottom: 14px; }
+.date-range-label { display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
 
 .date-input-wrapper input {
   width: 100%;
-  padding: 14px 16px;
+  padding: 12px 14px;
   background: var(--bg-input);
   border: 2px solid var(--border);
   border-radius: var(--radius-md);
-  font-size: 15px;
+  font-size: 14px;
   font-family: inherit;
   color: var(--text-primary);
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
 }
+.date-input-wrapper input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,148,136,0.15); }
 
-.date-input-wrapper input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(13,148,136,0.12);
-}
-
-.date-arrow { display: flex; justify-content: center; padding: 8px 0; color: var(--text-muted); }
-.quick-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.date-arrow { display: flex; justify-content: center; padding: 6px 0; color: var(--text-muted); }
+.quick-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
 
 .quick-filter-btn {
-  padding: 8px 14px;
-  border-radius: 20px;
+  padding: 7px 12px;
+  border-radius: 18px;
   border: 1px solid var(--border);
   background: var(--bg-card);
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
 .quick-filter-btn:hover { border-color: var(--primary); color: var(--primary); }
 
 .preview-section {
-  background: linear-gradient(135deg,var(--bg-input),#f8fafc);
+  background: var(--bg-input);
   border-radius: var(--radius-md);
-  padding: 16px;
-  margin-top: 16px;
-  border: 1px solid var(--border-light);
+  padding: 14px;
+  margin-top: 14px;
 }
+.preview-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
+.preview-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.preview-stat { text-align: center; background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border); }
+.preview-stat-label { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
+.preview-stat-value { font-size: 15px; font-weight: 800; color: var(--primary); }
 
-.preview-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
-.preview-stats { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
-.preview-stat { text-align: center; background: var(--bg-card); padding: 12px; border-radius: 10px; border: 1px solid var(--border-light); }
-.preview-stat-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
-.preview-stat-value { font-size: 17px; font-weight: 800; color: var(--primary); }
-
-.modal-footer { display: flex; gap: 12px; }
+.modal-footer { display: flex; gap: 10px; }
 
 .btn-modal {
   flex: 1;
-  padding: 14px 20px;
+  padding: 12px 16px;
   border-radius: var(--radius-md);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -523,244 +391,59 @@ body::before {
   border: none;
   font-family: inherit;
 }
-
 .btn-cancel { background: var(--bg-input); border: 1px solid var(--border); color: var(--text-secondary); }
-.btn-cancel:hover { background: var(--bg-card-hover); color: var(--text-primary); }
-.btn-process { background: linear-gradient(135deg,var(--primary),var(--primary-dark)); color: white; box-shadow: 0 6px 20px rgba(13,148,136,0.3); }
-.btn-process:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(13,148,136,0.4); }
-.btn-process:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn-cancel:hover { background: var(--bg-card-hover); }
+.btn-process { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(13,148,136,0.3); }
+.btn-process:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,148,136,0.4); }
 
 /* TOAST */
 .toast {
   position: fixed;
-  bottom: 24px;
+  bottom: 20px;
   left: 50%;
-  transform: translateX(-50%) translateY(100px);
+  transform: translateX(-50%) translateY(80px);
   background: var(--bg-card);
   border: 1px solid var(--border);
-  padding: 14px 24px;
-  border-radius: 16px;
+  padding: 12px 20px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-weight: 600;
-  font-size: 14px;
-  box-shadow: var(--shadow-xl);
+  font-size: 13px;
+  box-shadow: var(--shadow-lg);
   z-index: 9999;
   opacity: 0;
-  transition: all 0.35s cubic-bezier(0.68,-0.55,0.265,1.55);
+  transition: all 0.3s ease;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  color: var(--text-primary);
-  max-width: 90%;
 }
-
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-/* ==================== PDF RESULT MODAL ==================== */
-.pdf-result-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(15,23,42,0.6);
-  backdrop-filter: blur(10px);
-  z-index: 1100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-}
-
-.pdf-result-overlay.show { opacity: 1; visibility: visible; }
-
-.pdf-result-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  width: 100%;
-  max-width: 480px;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: 28px;
-  transform: translateY(30px) scale(0.95);
-  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
-  box-shadow: var(--shadow-xl);
-}
-
-.pdf-result-overlay.show .pdf-result-box { transform: translateY(0) scale(1); }
-
-.pdf-success-header {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.pdf-success-icon {
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(220,38,38,0.1), rgba(239,68,68,0.05));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 16px;
-  animation: pdfBounce 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
-}
-
-@keyframes pdfBounce {
-  0% { transform: scale(0) rotate(-10deg); }
-  50% { transform: scale(1.15) rotate(5deg); }
-  100% { transform: scale(1) rotate(0); }
-}
-
-.pdf-success-icon svg { width: 40px; height: 40px; color: #dc2626; }
-
-.pdf-result-title {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-}
-
-.pdf-result-subtitle {
-  font-size: 14px;
-  color: var(--text-muted);
-}
-
-/* PDF Info Card */
-.pdf-info-card {
-  background: linear-gradient(135deg, #fef2f2, #fff7ed);
-  border: 1px solid #fecaca;
-  border-radius: var(--radius-md);
-  padding: 16px;
-  margin-bottom: 20px;
-}
-
-.pdf-info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px dashed #fecaca;
-}
-
-.pdf-info-row:last-child { border-bottom: none; }
-
-.pdf-info-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
-.pdf-info-value { font-size: 14px; font-weight: 700; color: var(--text-primary); }
-
-/* PDF Actions */
-.pdf-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.pdf-action-btn {
-  padding: 16px 20px;
-  border-radius: var(--radius-md);
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  border: none;
-  font-family: inherit;
-}
-
-.pdf-action-btn.primary {
-  background: linear-gradient(135deg, #dc2626, #b91c1c);
-  color: white;
-  box-shadow: 0 4px 16px rgba(220,38,38,0.3);
-}
-
-.pdf-action-btn.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(220,38,38,0.4);
-}
-
-.pdf-action-btn.secondary {
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-}
-
-.pdf-action-btn.secondary:hover {
-  background: var(--bg-card-hover);
-  color: var(--text-primary);
-}
-
-.pdf-action-btn.whatsapp {
-  background: linear-gradient(135deg, #25D366, #128C7E);
-  color: white;
-  box-shadow: 0 4px 16px rgba(37,211,102,0.3);
-}
-
-.pdf-action-btn.whatsapp:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(37,211,102,0.4);
-}
-
-/* Loading spinner for PDF generation */
-.pdf-generating {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.pdf-spinner {
-  width: 48px; height: 48px;
-  border: 4px solid var(--border);
-  border-top-color: #dc2626;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 16px;
-}
-
-.pdf-generating-text {
-  font-size: 14px;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-/* Hidden PDF Template */
+/* PDF TEMPLATE (Hidden) */
 #pdfTemplate {
   position: absolute;
   left: -9999px;
   top: 0;
-  width: 210mm;
-  padding: 20mm;
+  width: A4;
+  padding: 15mm;
   background: white;
   font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  font-size: 11pt;
 }
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-
-@media print {
-  body { background: white !important; color: black !important; padding: 20px; }
-  body::before, .orb, .back-btn, .menu-container, .filter-section, .summary-bar, .modal-overlay, .pdf-result-overlay { display: none !important; }
-  .container { max-width: 100%; }
-  .header { justify-content: center; padding-bottom: 20px; }
-  .stats-grid { grid-template-columns: repeat(3,1fr); break-inside: avoid; }
-  .stat-card { border: 1px solid #ddd; background: #f9f9f9; }
-  .transaction-list { max-height: none; border: 1px solid #ddd; }
-  .transaction-item { break-inside: avoid; }
-}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
 
 @media (max-width: 520px) {
   body { padding: 10px; }
-  .stats-grid { grid-template-columns: 1fr; gap: 10px; }
-  .stat-card { display: flex; align-items: center; text-align: left; padding: 16px; }
-  .stat-icon { margin: 0 16px 0 0; }
-  .stat-label { margin-bottom: 4px; }
+  .stats-grid { grid-template-columns: 1fr; gap: 8px; }
+  .stat-card { display: flex; align-items: center; text-align: left; padding: 14px; }
+  .stat-icon { margin: 0 14px 0 0; }
   .filter-section { justify-content: center; }
   .summary-bar { flex-direction: column; gap: 8px; text-align: center; }
   .transaction-item { flex-wrap: wrap; }
   .txn-amount { width: 100%; text-align: right; padding-top: 8px; border-top: 1px dashed var(--border); }
-  .modal-box, .pdf-result-box { padding: 20px; }
+  .modal-box { padding: 18px; }
 }
 </style>
 </head>
@@ -771,69 +454,48 @@ body::before {
 
 <div id="toast" class="toast"><span id="toastIcon"></span><span id="toastMessage"></span></div>
 
-<!-- HIDDEN PDF TEMPLATE -->
+<!-- PDF Template (Hidden - untuk generate PDF) -->
 <div id="pdfTemplate">
-  <div style="text-align:center; margin-bottom: 30px;">
-    <h1 style="color:#0d9488; font-size:28px; margin-bottom:5px;">LAPORAN PENDAPATAN TEKNISI</h1>
-    <p style="color:#666; font-size:14px;" id="pdfPeriod">-</p>
+  <div style="text-align:center; margin-bottom: 20px;">
+    <h1 style="color:#0d9488; font-size:22pt; margin:0;">LAPORAN PENDAPATAN TEKNISI</h1>
+    <p style="color:#666; font-size:10pt;" id="pdfPeriod">-</p>
   </div>
   
-  <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:16px; margin-bottom:24px;">
-    <div style="display:flex; justify-content:space-between; margin:6px 0; font-size:13px;">
-      <span style="color:#666;">Tanggal Cetak:</span>
-      <strong id="pdfPrintDate">-</strong>
-    </div>
-    <div style="display:flex; justify-content:space-between; margin:6px 0; font-size:13px;">
-      <span style="color:#666;">Jumlah Transaksi:</span>
-      <strong id="pdfTotalTx">0</strong>
-    </div>
-    <div style="display:flex; justify-content:space-between; margin:6px 0; font-size:13px;">
-      <span style="color:#666;">Total Pendapatan:</span>
-      <strong style="color:#0d9488; font-size:16px;" id="pdfTotalAmount">Rp 0</strong>
-    </div>
+  <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:12px; margin-bottom:16px; font-size:10pt;">
+    <div style="display:flex; justify-content:space-between; margin:4px 0;"><span>Tanggal Cetak:</span><strong id="pdfPrintDate">-</strong></div>
+    <div style="display:flex; justify-content:space-between; margin:4px 0;"><span>Jumlah Transaksi:</span><strong id="pdfTotalTx">0</strong></div>
+    <div style="display:flex; justify-content:space-between; margin:4px 0;"><span>Total Pendapatan:</span><strong style="color:#0d9488;" id="pdfTotalAmount">Rp 0</strong></div>
   </div>
   
-  <table style="width:100%; border-collapse:collapse; margin-top:16px;" id="pdfTable">
-    <thead>
-      <tr style="background:#1e293b; color:white;">
-        <th style="padding:12px 8px; text-align:left; font-size:12px;">No</th>
-        <th style="padding:12px 8px; text-align:left; font-size:12px;">Tanggal</th>
-        <th style="padding:12px 8px; text-align:left; font-size:12px;">Pelanggan</th>
-        <th style="padding:12px 8px; text-align:left; font-size:12px;">Service</th>
-        <th style="padding:12px 8px; text-align:right; font-size:12px;">Biaya</th>
-      </tr>
-    </thead>
+  <table style="width:100%; border-collapse:collapse; font-size:9pt;" id="pdfTable">
+    <thead><tr style="background:#1e293b; color:white;">
+      <th style="padding:8px 4px; text-align:left;">No</th>
+      <th style="padding:8px 4px; text-align:left;">Tanggal</th>
+      <th style="padding:8px 4px; text-align:left;">Pelanggan</th>
+      <th style="padding:8px 4px; text-align:left;">Service</th>
+      <th style="padding:8px 4px; text-align:right;">Biaya</th>
+    </tr></thead>
     <tbody id="pdfTableBody"></tbody>
   </table>
   
-  <div style="margin-top:30px; padding:16px; background:#0d9488; color:white; border-radius:10px; text-align:center;">
-    <div style="font-size:12px; opacity:0.9;">TOTAL PENDAPATAN</div>
-    <div style="font-size:32px; font-weight:800;" id="pdfGrandTotal">Rp 0</div>
+  <div style="margin-top:20px; padding:14px; background:#0d9488; color:white; border-radius:8px; text-align:center;">
+    <div style="font-size:9pt; opacity:0.9;">TOTAL PENDAPATAN</div>
+    <div style="font-size:24pt; font-weight:800;" id="pdfGrandTotal">Rp 0</div>
   </div>
   
-  <div style="margin-top:24px; text-align:center; color:#999; font-size:11px;">
-    Dicetak dari Catatan Teknisi App
-  </div>
+  <div style="margin-top:16px; text-align:center; color:#999; font-size:8pt;">Dicetak dari Catatan Teknisi App</div>
 </div>
 
-<!-- PDF RESULT MODAL -->
-<div class="pdf-result-overlay" id="pdfResultModal">
-  <div class="pdf-result-box">
-    <!-- Content will be injected by JS -->
-    <div id="pdfResultContent"></div>
-  </div>
-</div>
-
-<!-- DATE RANGE MODAL -->
+<!-- Modal -->
 <div class="modal-overlay" id="dateRangeModal">
   <div class="modal-box">
     <div class="modal-header">
-      <div class="modal-title">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <span id="modalTitle">Pilih Rentang Tanggal</span>
+      <div class="modal-title" id="modalTitle">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Pilih Rentang Tanggal
       </div>
       <button class="modal-close" onclick="closeModal()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     
@@ -844,7 +506,7 @@ body::before {
       </div>
       
       <div class="date-arrow">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
       </div>
       
       <div class="date-range-group">
@@ -856,7 +518,6 @@ body::before {
         <button class="quick-filter-btn" onclick="setQuickDate('today')">Hari Ini</button>
         <button class="quick-filter-btn" onclick="setQuickDate('week')">Minggu Ini</button>
         <button class="quick-filter-btn" onclick="setQuickDate('month')">Bulan Ini</button>
-        <button class="quick-filter-btn" onclick="setQuickDate('lastMonth')">Bulan Lalu</button>
         <button class="quick-filter-btn" onclick="setQuickDate('all')">Semua Data</button>
       </div>
       
@@ -864,11 +525,11 @@ body::before {
         <div class="preview-title">Preview Hasil</div>
         <div class="preview-stats">
           <div class="preview-stat">
-            <div class="preview-stat-label">Jumlah Transaksi</div>
+            <div class="preview-stat-label">Transaksi</div>
             <div class="preview-stat-value" id="previewCount">0</div>
           </div>
           <div class="preview-stat">
-            <div class="preview-stat-label">Total Pendapatan</div>
+            <div class="preview-stat-label">Total</div>
             <div class="preview-stat-value" id="previewTotal">Rp 0</div>
           </div>
         </div>
@@ -877,8 +538,8 @@ body::before {
     
     <div class="modal-footer">
       <button class="btn-modal btn-cancel" onclick="closeModal()">Batal</button>
-      <button class="btn-modal btn-process" id="processBtn" onclick="processAction()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <button class="btn-modal btn-process" onclick="processAction()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         Proses
       </button>
     </div>
@@ -890,7 +551,7 @@ body::before {
   <div class="header">
     <div class="header-left">
       <a href="index.html" class="back-btn">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       </a>
       <div class="header-info">
         <h1>Laporan Pendapatan</h1>
@@ -898,42 +559,34 @@ body::before {
       </div>
     </div>
     
+    <!-- Menu -->
     <div class="menu-container" id="menuContainer">
       <button class="menu-btn" id="menuBtn" onclick="toggleMenu(event)">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
       </button>
       
-      <div class="dropdown-menu" id="dropdownMenu" role="menu">
+      <div class="dropdown-menu" id="dropdownMenu">
         <div class="menu-header">
-          <div class="menu-header-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
-            Opsi Laporan
-          </div>
+          <div class="menu-header-title">Opsi Laporan</div>
         </div>
         
-        <button class="dropdown-item print" onclick="openModal('print')" role="menuitem">
+        <button class="dropdown-item print" onclick="openModal('print')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          <div class="item-text">Cetak Laporan<div class="item-desc">Print ke printer atau PDF</div></div>
+          Cetak / Download PDF
         </button>
         
-        <button class="dropdown-item share" onclick="openModal('share')" role="menuitem">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <div class="item-text">Bagikan PDF<div class="item-desc">Generate & share file PDF</div></div>
-        </button>
-        
-        <div class="dropdown-divider"></div>
-        
-        <button class="dropdown-item export" onclick="openModal('export-csv')" role="menuitem">
+        <button class="dropdown-item share" onclick="openModal('share')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <div class="item-text">Export CSV<div class="item-desc">Format spreadsheet Excel</div></div>
+          Export CSV
         </button>
         
-        <button class="dropdown-item export" onclick="openModal('export-json')" role="menuitem">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          <div class="item-text">Export JSON<div class="item-desc">Format data terstruktur</div></div>
+        <button class="dropdown-item export" onclick="openModal('export-json')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Export JSON
         </button>
         
-        <div class="menu-footer"><div class="menu-footer-text">Catatan Teknisi v2.0</div></div>
+        <div class="menu-divider"></div>
+        <div class="menu-footer"><div class="menu-footer-text">v2.1 - Fixed</div></div>
       </div>
     </div>
   </div>
@@ -941,17 +594,17 @@ body::before {
   <!-- Stats -->
   <div class="stats-grid">
     <div class="stat-card today">
-      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <div class="stat-label">Hari Ini</div>
       <div class="stat-value" id="statToday">Rp 0</div>
     </div>
     <div class="stat-card week">
-      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
       <div class="stat-label">Minggu Ini</div>
       <div class="stat-value" id="statWeek">Rp 0</div>
     </div>
     <div class="stat-card month">
-      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M4 18V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-1z"/><path d="M12 17V7"/><path d="M8 11h8"/></svg></div>
+      <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M4 18V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-1z"/><path d="M12 17V7"/><path d="M8 11h8"/></svg></div>
       <div class="stat-label">Bulan Ini</div>
       <div class="stat-value" id="statMonth">Rp 0</div>
     </div>
@@ -959,7 +612,7 @@ body::before {
 
   <!-- Filter -->
   <div class="filter-section">
-    <span class="filter-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg> Filter:</span>
+    <span class="filter-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg> Filter:</span>
     <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Semua</button>
     <button class="filter-btn" data-filter="today" onclick="setFilter('today')">Hari Ini</button>
     <button class="filter-btn" data-filter="week" onclick="setFilter('week')">Minggu Ini</button>
@@ -972,9 +625,9 @@ body::before {
     <div class="summary-total" id="summaryTotal">Total: Rp 0</div>
   </div>
 
-  <!-- List Header -->
+  <!-- List -->
   <div class="list-header">
-    <div class="list-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Daftar Transaksi</div>
+    <div class="list-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg> Daftar Transaksi</div>
     <span class="transaction-count" id="totalCount">0 total</span>
   </div>
   
@@ -987,6 +640,7 @@ body::before {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyD25yifoIuCrqXVKEx7NvALoAJ8PNb8pDg",
   authDomain: "catatan-teknisi-50aef.firebaseapp.com",
@@ -1003,480 +657,395 @@ let allData = [];
 let currentFilter = 'all';
 let pendingAction = null;
 
-// Store generated PDF blob
-let generatedPdfBlob = null;
-let generatedPdfFilename = '';
-
 const menuBtn = document.getElementById('menuBtn');
 const dropdownMenu = document.getElementById('dropdownMenu');
 const menuContainer = document.getElementById('menuContainer');
 
-// ==================== UTILITY FUNCTIONS ====================
+// ============================================
+// 🔧 FUNGSI TANGGAL YANG BENAR
+// ============================================
+
+/**
+ * Format tanggal standar: YYYY-MM-DD
+ * Firebase menyimpan sebagai STRING dalam format ini
+ * Date input HTML juga menghasilkan format ini
+ * Jadi bandingkan string saja, tidak perlu convert ke Date object!
+ */
 
 function getTodayString() {
   const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  // Format: YYYY-MM-DD (sama seperti Firebase & date input)
+  return now.getFullYear() + '-' + 
+         String(now.getMonth()+1).padStart(2,'0') + '-' + 
+         String(now.getDate()).padStart(2,'0');
 }
 
 function formatDateToString(date) {
-  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+  return date.getFullYear() + '-' + 
+         String(date.getMonth()+1).padStart(2,'0') + '-' + 
+         String(date.getDate()).padStart(2,'0');
 }
 
-function formatRupiah(angka) {
-  return new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(angka);
+/**
+ * ✅ FILTER PRESET (today/week/month)
+ * Bandingkan string langsung karena format sama!
+ */
+function isInRange(dateStr, range) {
+  const today = getTodayString(); // "2024-01-15"
+  
+  switch(range) {
+    case 'today':
+      return dateStr === today;
+      
+    case 'week': {
+      // Hitung start of week dari today
+      const d = new Date(today + 'T00:00:00');
+      const day = d.getDay();
+      const diff = day === 0 ? 6 : day - 1; // Monday = 0
+      d.setDate(d.getDate() - diff);
+      const startOfWeek = formatDateToString(d);
+      return dateStr >= startOfWeek && dateStr <= today;
+    }
+    
+    case 'month':
+      // Bandingkan YYYY-MM saja
+      return dateStr.substring(0, 7) === today.substring(0, 7);
+      
+    default:
+      return true;
+  }
 }
 
-function getServiceBadgeClass(service) {
-  const map = { 'Printer': 'badge-printer', 'Komputer': 'badge-komputer', 'Install': 'badge-install', 'Lainnya': 'badge-lainnya' };
-  return map[service] || 'badge-lainnya';
+/**
+ * ✅ FILTER RANGE (start - end)
+ * Bandingkan string langsung! Karena format sama: YYYY-MM-DD
+ * String comparison works for dates in this format!
+ */
+function isInDateRange(dateStr, startDate, endDate) {
+  // Semua string "YYYY-MM-DD" bisa dibandingkan langsung
+  return dateStr >= startDate && dateStr <= endDate;
+}
+
+function getDataByDateRange(start, end) {
+  return allData.filter(item => isInDateRange(item.tanggal, start, end));
+}
+
+// Utility functions
+function formatRupiah(num) {
+  if (!num || isNaN(num)) return '0';
+  return new Intl.NumberFormat('id-ID').format(Math.round(num));
+}
+
+function formatDateID(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  return parseInt(d) + ' ' + months[parseInt(m)-1] + ' ' + y;
+}
+
+function getServiceBadgeClass(svc) {
+  return {'Printer':'badge-printer','Komputer':'badge-komputer','Install':'badge-install','Lainnya':'badge-lainnya'}[svc] || 'badge-lainnya';
 }
 
 function formatDate(dateStr) {
   const [y,m,d] = dateStr.split('-');
-  const date = new Date(y,m-1,d);
-  return { day: date.getDate(), month: date.toLocaleDateString('id-ID',{month:'short'}), year: date.getFullYear() };
+  const dt = new Date(y, m-1, d);
+  return { day: dt.getDate(), month: dt.toLocaleDateString('id-ID',{month:'short'}) };
 }
 
-function isInRange(dateStr, range) {
-  const date = new Date(dateStr+'T00:00:00');
-  const now = new Date(); now.setHours(0,0,0,0);
-  if(range==='today') return dateStr === getTodayString();
-  if(range==='week') { const s=new Date(now); s.setDate(now.getDate()-now.getDay()+(now.getDay()===0?-6:1)); return date>=s; }
-  if(range==='month') return date.getMonth()===now.getMonth() && date.getFullYear()===now.getFullYear();
-  return true;
-}
-
-function isInDateRange(dateStr,start,end) { return dateStr>=start && dateStr<=end; }
-function getDataByDateRange(start,end) { return allData.filter(item=>isInRange(item.tanggal,start,end)); }
-
-function formatDateID(dateStr) {
-  const [y,m,d] = dateStr.split('-');
-  return new Date(y,m-1,d).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
-}
-
-// ==================== TOAST ====================
-
-window.showToast = function(message,type='success') {
+// Toast
+window.showToast = function(msg, type='success') {
   const toast = document.getElementById('toast');
-  const icon = type==='success'?'✅':type==='warning'?'⚠️':'❌';
-  toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
-  toast.style.borderColor = type==='success'?'var(--success)':type==='warning'?'var(--accent)':'var(--danger)';
+  toast.innerHTML = `<span>${type==='success'?'✅':'❌'}</span><span>${msg}</span>`;
+  toast.style.borderColor = type==='success'?'var(--success)':'var(--danger)';
   toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'),3500);
+  setTimeout(() => toast.classList.remove('show'), 2500);
 };
 
-// ==================== MENU ====================
-
+// Menu
 window.toggleMenu = function(e) {
   if(e) e.stopPropagation();
-  const isOpen = dropdownMenu.classList.contains('show');
-  menuBtn.classList.toggle('active',!isOpen);
-  dropdownMenu.classList.toggle('show',!isOpen);
+  menuBtn.classList.toggle('active');
+  dropdownMenu.classList.toggle('show');
 };
+document.addEventListener('click', e => { if(!menuContainer.contains(e.target)) { menuBtn.classList.remove('active'); dropdownMenu.classList.remove('show'); }});
 
-document.addEventListener('click', e => { if(menuContainer && !menuContainer.contains(e.target)) closeMenu(); });
-
-function closeMenu() {
-  menuBtn.classList.remove('active');
-  dropdownMenu.classList.remove('show');
-}
-
-// ==================== MODAL DATE RANGE ====================
-
+// Modal
 window.openModal = function(action) {
   pendingAction = action;
-  closeMenu();
+  menuBtn.classList.remove('active');
+  dropdownMenu.classList.remove('show');
+  
   setTimeout(() => {
-    const titles = {'print':'Cetak Laporan','share':'Bagikan PDF','export-csv':'Export CSV','export-json':'Export JSON'};
-    document.getElementById('modalTitle').textContent = titles[action]||'Pilih Rentang Tanggal';
+    const titles = {'print':'Cetak / Download PDF','share':'Export CSV','export-json':'Export JSON'};
+    document.getElementById('modalTitle').innerHTML = titles[action] || 'Pilih Tanggal';
     setQuickDate('week');
     document.getElementById('dateRangeModal').classList.add('show');
     updatePreview();
-  },200);
+  }, 150);
 };
 
-window.closeModal = function() { document.getElementById('dateRangeModal').classList.remove('show'); pendingAction=null; };
+window.closeModal = function() { document.getElementById('dateRangeModal').classList.remove('show'); };
 
 window.setQuickDate = function(preset) {
   const today = new Date();
-  let start,end;
+  let s, e;
+  
   switch(preset) {
-    case 'today': start=end=today; break;
-    case 'week': start=new Date(today); start.setDate(today.getDate()-today.getDay()+(today.getDay()===0?-6:1)); end=today; break;
-    case 'month': start=new Date(today.getFullYear(),today.getMonth(),1); end=today; break;
-    case 'lastMonth': start=new Date(today.getFullYear(),today.getMonth()-1,1); end=new Date(today.getFullYear(),today.getMonth(),0); break;
-    case 'all':
-      if(allData.length>0) { const dates=allData.map(d=>d.tanggal).sort(); start=new Date(dates[0]); end=new Date(dates[dates.length-1]); }
-      else start=end=today;
+    case 'today':
+      s = e = today;
       break;
-    default: start=end=today;
+    case 'week':
+      s = new Date(today);
+      const dow = s.getDay();
+      s.setDate(today.getDate() - (dow === 0 ? 6 : dow - 1));
+      e = today;
+      break;
+    case 'month':
+      s = new Date(today.getFullYear(), today.getMonth(), 1);
+      e = today;
+      break;
+    case 'all':
+      if (allData.length > 0) {
+        const dates = allData.map(d => d.tanggal).sort();
+        s = new Date(dates[0]);
+        e = new Date(dates[dates.length-1]);
+      } else {
+        s = e = today;
+      }
+      break;
+    default:
+      s = e = today;
   }
-  document.getElementById('startDate').value=formatDateToString(start);
-  document.getElementById('endDate').value=formatDateToString(end);
+  
+  document.getElementById('startDate').value = formatDateToString(s);
+  document.getElementById('endDate').value = formatDateToString(e);
   updatePreview();
 };
 
 function updatePreview() {
-  const s=document.getElementById('startDate').value,e=document.getElementById('endDate').value;
-  if(!s||!e){document.getElementById('previewCount').textContent='0';document.getElementById('previewTotal').textContent='Rp 0';return;}
-  const f=getDataByDateRange(s,e),t=f.reduce((sum,i)=>sum+i.biaya,0);
-  document.getElementById('previewCount').textContent=f.length;
-  document.getElementById('previewTotal').textContent=`Rp ${formatRupiah(t)}`;
+  const s = document.getElementById('startDate').value;
+  const e = document.getElementById('endDate').value;
+  
+  if (!s || !e) {
+    document.getElementById('previewCount').textContent = '0';
+    document.getElementById('previewTotal').textContent = 'Rp 0';
+    return;
+  }
+  
+  // ✅ Pakai fungsi yang benar!
+  const filtered = getDataByDateRange(s, e);
+  const total = filtered.reduce((sum, item) => sum + (Number(item.biaya) || 0), 0);
+  
+  document.getElementById('previewCount').textContent = filtered.length;
+  document.getElementById('previewTotal').textContent = 'Rp ' + formatRupiah(total);
 }
 
-document.getElementById('startDate').addEventListener('change',updatePreview);
-document.getElementById('endDate').addEventListener('change',updatePreview);
+document.getElementById('startDate').addEventListener('change', updatePreview);
+document.getElementById('endDate').addEventListener('change', updatePreview);
 
-// ==================== PROCESS ACTION ====================
-
+// Process Action
 window.processAction = async function() {
-  const s=document.getElementById('startDate').value,e=document.getElementById('endDate').value;
-  if(!s||!e){showToast('Mohon pilih tanggal!','error');return;}
-  if(s>e){showToast('Tanggal mulai > akhir!','error');return;}
-  const f=getDataByDateRange(s,e);
-  if(f.length===0){showToast('Tidak ada data!','error');return;}
+  const s = document.getElementById('startDate').value;
+  const e = document.getElementById('endDate').value;
+  
+  if (!s || !e) { showToast('Pilih tanggal!', 'error'); return; }
+  if (s > e) { showToast('Tanggal mulai > akhir!', 'error'); return; }
+  
+  // ✅ Filter dengan fungsi yang benar
+  const data = getDataByDateRange(s, e);
+  
+  if (data.length === 0) { showToast('Tidak ada data!', 'error'); return; }
+  
   closeModal();
   
   switch(pendingAction) {
-    case 'print': await executePrint(f,s,e); break;
-    case 'share': await generateAndShowPDF(f,s,e); break;
-    case 'export-csv': await executeExportCSV(f,s,e); break;
-    case 'export-json': await executeExportJSON(f,s,e); break;
+    case 'print': await generatePDF(data, s, e); break;
+    case 'share': await exportCSV(data, s, e); break;
+    case 'export-json': await exportJSON(data, s, e); break;
   }
 };
 
-// ==================== PDF GENERATION - CORE FUNCTION ====================
+// ============================================
+// 📄 PDF GENERATION (FIXED)
+// ============================================
 
-async function generateAndShowPDF(data, startDate, endDate) {
-  // Show generating state
-  showPdfGeneratingState();
+async function generatePDF(data, startDate, endDate) {
+  showToast('Membuat PDF...', 'success');
   
   try {
-    // Prepare data
-    const total = data.reduce((sum,i)=>sum+i.biaya,0);
-    const dateLabel = `${formatDateID(startDate)} - ${formatDateID(endDate)}`;
+    // Delay sedikit biar DOM siap
+    await new Promise(r => setTimeout(r, 200));
     
-    // Fill PDF template
-    document.getElementById('pdfPeriod').textContent = `Periode: ${dateLabel}`;
+    const total = data.reduce((sum, i) => sum + (Number(i.biaya)||0), 0);
+    const period = formatDateID(startDate) + ' - ' + formatDateID(endDate);
+    
+    // Fill template
+    document.getElementById('pdfPeriod').textContent = 'Periode: ' + period;
     document.getElementById('pdfPrintDate').textContent = formatDateID(getTodayString());
-    document.getElementById('pdfTotalTx').textContent = `${data.length} transaksi`;
-    document.getElementById('pdfTotalAmount').textContent = `Rp ${formatRupiah(total)}`;
-    document.getElementById('pdfGrandTotal').textContent = `Rp ${formatRupiah(total)}`;
+    document.getElementById('pdfTotalTx').textContent = data.length + ' transaksi';
+    document.getElementById('pdfTotalAmount').textContent = 'Rp ' + formatRupiah(total);
+    document.getElementById('pdfGrandTotal').textContent = 'Rp ' + formatRupiah(total);
     
-    // Build table rows
-    let tableHTML = '';
-    data.forEach((item,idx) => {
-      const svc = item.service==='Lainnya'?(item.keterangan||'Lainnya'):item.service;
-      const rowClass = idx%2===0?'background:white':'background:#f8fafc';
-      tableHTML += `<tr style="${rowClass}">
-        <td style="padding:10px 8px;font-size:12px;border-bottom:1px solid #eee">${idx+1}</td>
-        <td style="padding:10px 8px;font-size:12px;border-bottom:1px solid #eee">${formatDateID(item.tanggal)}</td>
-        <td style="padding:10px 8px;font-size:12px;border-bottom:1px solid #eee;font-weight:600">${item.nama}</td>
-        <td style="padding:10px 8px;font-size:12px;border-bottom:1px solid #eee">${svc}</td>
-        <td style="padding:10px 8px;font-size:12px;border-bottom:1px solid #eee;text-align:right;font-weight:700;color:#0d9488">Rp ${formatRupiah(item.biaya)}</td>
+    // Build table
+    let rows = '';
+    data.forEach((item, idx) => {
+      const svc = item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
+      const bg = idx % 2 === 0 ? '#fff' : '#f8fafc';
+      rows += `<tr style="background:${bg}">
+        <td style="padding:6px 4px">${idx+1}</td>
+        <td style="padding:6px 4px">${formatDateID(item.tanggal)}</td>
+        <td style="padding:6px 4px;font-weight:600">${item.nama||'-'}</td>
+        <td style="padding:6px 4px">${svc}</td>
+        <td style="padding:6px 4px;text-align:right;font-weight:700;color:#0d9488">Rp ${formatRupiah(item.biaya||0)}</td>
       </tr>`;
     });
-    document.getElementById('pdfTableBody').innerHTML = tableHTML;
+    document.getElementById('pdfTableBody').innerHTML = rows;
     
-    // Generate PDF using html2pdf
+    // Generate PDF
     const element = document.getElementById('pdfTemplate');
-    const filename = `Laporan_Pendapatan_${startDate}_${endDate}.pdf`;
+    const filename = `Laporan_Teknisi_${startDate}_${endDate}.pdf`;
     
     const opt = {
-      margin: 0,
+      margin: 10,
       filename: filename,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: 2,
-        useCORS: true,
-        letterRendering: true
-      },
-      jsPDF: { 
-        unit: 'mm', 
-        format: 'a4', 
-        orientation: 'portrait'
-      },
+      image: { type: 'jpeg', quality: 0.95 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
     
-    // Generate and store blob
-    const blob = await html2pdf().set(opt).from(element).outputPdf('blob');
-    generatedPdfBlob = blob;
-    generatedPdfFilename = filename;
+    await html2pdf().set(opt).from(element).save();
+    showToast('PDF berhasil didownload!', 'success');
     
-    // Show result modal with options
-    showPdfResultModal(data.length, total, dateLabel, filename);
-    
-  } catch(error) {
-    console.error('PDF Generation Error:', error);
-    showToast('Gagal membuat PDF! Silakan coba lagi.','error');
-    closePdfModal();
+  } catch(err) {
+    console.error('PDF Error:', err);
+    showToast('Gagal membuat PDF!', 'error');
   }
 }
 
-function showPdfGeneratingState() {
-  document.getElementById('pdfResultContent').innerHTML = `
-    <div class="pdf-generating">
-      <div class="pdf-spinner"></div>
-      <div class="pdf-generating-text">Sedang membuat PDF...</div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:8px;">Mohon tunggu sebentar</div>
-    </div>
-  `;
-  document.getElementById('pdfResultModal').classList.add('show');
+// Export CSV
+async function exportCSV(data, s, e) {
+  const headers = ['No','Tanggal','Pelanggan','Service','Keterangan','Biaya'];
+  const rows = data.map((i, idx) => [
+    idx+1, i.tanggal, i.nama||'-', i.service||'-', i.keterangan||'-', Number(i.biaya)||0
+  ]);
+  const csv = [headers,...rows].map(r => r.map(c=>`"${c}"`).join(',')).join('\n');
+  
+  downloadFile(csv, `laporan_${s}_${e}.csv`, 'text/csv');
+  showToast('CSV berhasil didownload!', 'success');
 }
 
-function showPdfResultModal(txCount, totalAmount, periodLabel, filename) {
-  document.getElementById('pdfResultContent').innerHTML = `
-    <div class="pdf-success-header">
-      <div class="pdf-success-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-          <polyline points="10 9 9 9 8 9"/>
-        </svg>
-      </div>
-      <div class="pdf-result-title">PDF Berhasil Dibuat!</div>
-      <div class="pdf-result-subtitle">File siap untuk didownload atau dibagikan</div>
-    </div>
-    
-    <div class="pdf-info-card">
-      <div class="pdf-info-row">
-        <span class="pdf-info-label">Nama File</span>
-        <span class="pdf-info-value" style="font-size:12px;color:var(--primary)">${filename}</span>
-      </div>
-      <div class="pdf-info-row">
-        <span class="pdf-info-label">Periode</span>
-        <span class="pdf-info-value">${periodLabel}</span>
-      </div>
-      <div class="pdf-info-row">
-        <span class="pdf-info-label">Transaksi</span>
-        <span class="pdf-info-value">${txCount} data</span>
-      </div>
-      <div class="pdf-info-row">
-        <span class="pdf-info-label">Total</span>
-        <span class="pdf-info-value" style="color:var(--success)">Rp ${formatRupiah(totalAmount)}</span>
-      </div>
-    </div>
-    
-    <div class="pdf-actions">
-      <button class="pdf-action-btn primary" onclick="downloadGeneratedPDF()">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        Download PDF
-      </button>
-      
-      <button class="pdf-action-btn whatsapp" onclick="sharePdfToWhatsApp()">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
-        Kirim via WhatsApp
-      </button>
-      
-      <button class="pdf-action-btn secondary" onclick="sharePdfNative()">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="18" cy="5" r="3"/>
-          <circle cx="6" cy="12" r="3"/>
-          <circle cx="18" cy="19" r="3"/>
-          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-        </svg>
-        Bagikan (Share API)
-      </button>
-      
-      <button class="pdf-action-btn secondary" onclick="closePdfModal()" style="margin-top:8px;">
-        Tutup
-      </button>
-    </div>
-  `;
-}
-
-window.closePdfModal = function() {
-  document.getElementById('pdfResultModal').classList.remove('show');
-};
-
-// ==================== PDF ACTIONS ====================
-
-window.downloadGeneratedPDF = function() {
-  if(!generatedPdfBlob) {
-    showToast('PDF belum tersedia!','error');
-    return;
-  }
-  
-  // Create download link
-  const url = URL.createObjectURL(generatedPdfBlob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = generatedPdfFilename;
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  
-  showToast(`✅ ${generatedPdfFilename} berhasil didownload!`,'success');
-};
-
-window.sharePdfToWhatsApp = function() {
-  if(!generatedPdfBlob) {
-    showToast('PDF belum tersedia!','error');
-    return;
-  }
-  
-  // For WhatsApp, we need to upload the file first or use a different approach
-  // Since we can't directly send files via WhatsApp URL scheme easily,
-  // we'll download first then inform user
-  
-  showToast('📱 Membuka WhatsApp...','success');
-  
-  // Option 1: Download + open WhatsApp with message
-  const msg = encodeURIComponent(`📊 *Laporan Pendapatan Teknisi*\n\nSaya telah membuat laporan pendapatan dalam format PDF.\n\nFile: ${generatedPdfFilename}\n\nSilakan download file yang baru saja saya kirim.`);
-  
-  // Open WhatsApp
-  window.open(`https://wa.me/?text=${msg}`,'_blank');
-  
-  // Also trigger download
-  setTimeout(() => downloadGeneratedPDF(), 500);
-};
-
-window.sharePdfNative = async function() {
-  if(!generatedPdfBlob) {
-    showToast('PDF belum tersedia!','error');
-    return;
-  }
-  
-  // Check if Web Share API supports files
-  if(navigator.canShare && navigator.canShare({files:[generatedPdfBlob]})) {
-    try {
-      const file = new File([generatedPdfBlob], generatedPdfFilename, {type:'application/pdf'});
-      await navigator.share({
-        title: 'Laporan Pendapatan Teknisi',
-        text: 'Berikut adalah laporan pendapatan saya',
-        files: [file]
-      });
-      showToast('PDF berhasil dibagikan!','success');
-    } catch(err) {
-      if(err.name !== 'AbortError') {
-        showToast('Gagal membagikan. Coba download manual.','warning');
-      }
-    }
-  } else {
-    // Fallback: copy message + download
-    showToast('Browser tidak support share file. File didownload otomatis...','warning');
-    downloadGeneratedPDF();
-  }
-};
-
-// ==================== OTHER EXPORT FUNCTIONS ====================
-
-async function executePrint(data,startDate,endDate) {
-  showToast('Mempersiapkan cetakan...','success');
-  // Reuse PDF generation for print too
-  await generateAndShowPDF(data,startDate,endDate);
-  // Auto-download after showing
-  setTimeout(() => downloadGeneratedPDF(), 500);
-}
-
-async function executeExportCSV(data,startDate,endDate) {
-  const headers=['No','Tanggal','Nama Pelanggan','Jenis Service','Keterangan','Biaya'];
-  const rows=data.map((item,i)=>[i+1,item.tanggal,item.nama,item.service,item.keterangan||'-',item.biaya]);
-  const csv=[headers,...rows].map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
-  downloadFile(csv,`laporan-${startDate}_${endDate}.csv`,'text/csv');
-  showToast('CSV berhasil didownload!','success');
-}
-
-async function executeExportJSON(data,startDate,endDate) {
-  const total=data.reduce((s,i)=>s+i.biaya,0);
-  const json={
-    meta:{title:'Laporan Pendapatan Teknisi',periode:{start:startDate,end:endDate},generatedAt:new Date().toISOString()},
-    summary:{totalTransactions:data.length,totalPendapatan:total},
-    transactions:data.map((item,i)=>({no:i+1,tanggal:item.tanggal,pelanggan:item.nama,service:item.service,keterangan:item.keterangan||null,biaya:item.biaya}))
+// Export JSON
+async function exportJSON(data, s, e) {
+  const total = data.reduce((sum,i)=>sum+(Number(i.biaya)||0),0);
+  const json = {
+    meta: { title: 'Laporan Pendapatan Teknisi', periode: {start:s,end:e}, generatedAt: new Date().toISOString() },
+    summary: { totalTransactions: data.length, totalPendapatan: total },
+    transactions: data.map((i,idx) => ({
+      no: idx+1, tanggal: i.tanggal, pelanggan: i.nama||'-',
+      service: i.service||'-', keterangan: i.keterangan||null, biaya: Number(i.biaya)||0
+    }))
   };
-  downloadFile(JSON.stringify(json,null,2),`laporan-${startDate}_${endDate}.json`,'application/json');
-  showToast('JSON berhasil didownload!','success');
+  
+  downloadFile(JSON.stringify(json,null,2), `laporan_${s}_${e}.json`, 'application/json');
+  showToast('JSON berhasil didownload!', 'success');
 }
 
-function downloadFile(content,filename,type) {
-  const blob=new Blob(['\ufeff'+content],{type:type+';charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download=filename;a.style.display='none';
-  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+function downloadFile(content, filename, type) {
+  const blob = new Blob(['\ufeff'+content], {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=filename;
+  a.style.display='none'; document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
-// ==================== FILTER & RENDER ====================
-
-window.setFilter=function(filter){
-  currentFilter=filter;
-  document.querySelectorAll('.filter-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.filter===filter));
+// Filter
+window.setFilter = function(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter===f));
   renderList();
 };
 
-function renderList(){
-  const filtered=allData.filter(item=>isInRange(item.tanggal,currentFilter));
-  const total=filtered.reduce((s,i)=>s+i.biaya,0);
-  document.getElementById('showCount').textContent=filtered.length;
-  document.getElementById('summaryTotal').textContent=`Total: Rp ${formatRupiah(total)}`;
-  filtered.sort((a,b)=>b.tanggal.localeCompare(a.tanggal));
-  const container=document.getElementById('transactionList');
+function renderList() {
+  const filtered = allData.filter(item => isInRange(item.tanggal, currentFilter));
+  const total = filtered.reduce((s,i) => s+(Number(i.biaya)||0),0);
   
-  if(filtered.length===0){
-    container.innerHTML=`<div class="empty-state"><div class="empty-icon">📊</div><p>Tidak ada transaksi</p></div>`;
+  document.getElementById('showCount').textContent = filtered.length;
+  document.getElementById('summaryTotal').textContent = 'Total: Rp ' + formatRupiah(total);
+  
+  filtered.sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+  const container = document.getElementById('transactionList');
+  
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><p>Tidak ada transaksi</p></div>';
     return;
   }
   
-  container.innerHTML=filtered.map((item,idx)=>{
-    const svc=item.service==='Lainnya'?(item.keterangan||'Lainnya'):item.service;
-    const dt=formatDate(item.tanggal);
-    return `<div class="transaction-item" style="animation-delay:${Math.min(idx*0.03,0.3)}s">
+  container.innerHTML = filtered.map((item, idx) => {
+    const svc = item.service==='Lainnya'?(item.keterangan||'Lainnya'):item.service;
+    const dt = formatDate(item.tanggal);
+    return `<div class="transaction-item" style="animation-delay:${idx*30}ms">
       <div class="txn-date"><div class="txn-day">${dt.day}</div><div class="txn-month">${dt.month}</div></div>
-      <div class="txn-info"><div class="txn-name">${item.nama}</div><div class="txn-service"><span class="service-badge ${getServiceBadgeClass(item.service)}">${svc}</span></div></div>
-      <div class="txn-amount">Rp ${formatRupiah(item.biaya)}</div>
+      <div class="txn-info"><div class="txn-name">${item.nama||'-'}</div><div class="txn-service"><span class="service-badge ${getServiceBadgeClass(item.service)}">${svc}</span></div></div>
+      <div class="txn-amount">Rp ${formatRupiah(item.biaya||0)}</div>
     </div>`;
   }).join('');
 }
 
-// ==================== LOAD DATA ====================
-
-async function loadReport(){
-  try{
-    const snap=await getDocs(collection(db,"data"));
-    allData=[];
-    let tT=0,tW=0,tM=0;
-    const now=new Date();
-    const sD=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-    const sW=new Date(now);sW.setDate(now.getDate()-now.getDay()+(now.getDay()===0?-6:1));sW.setHours(0,0,0,0);
-    const sM=new Date(now.getFullYear(),now.getMonth(),1);
+// Load Data
+async function loadReport() {
+  try {
+    const snap = await getDocs(collection(db, "data"));
+    allData = [];
+    let tT=0, tW=0, tM=0;
+    const today = getTodayString();
+    const now = new Date();
     
-    snap.forEach(doc=>{
-      const d=doc.data();
-      allData.push({nama:d.nama,service:d.service,keterangan:d.keterangan,biaya:d.biaya,tanggal:d.tanggal});
-      const t=new Date(d.tanggal+'T00:00:00');
-      if(t>=sD&&d.tanggal===getTodayString())tT+=d.biaya;
-      if(t>=sW)tW+=d.biaya;
-      if(t>=sM)tM+=d.biaya;
+    // Start of week
+    const sow = new Date(now);
+    const dow = sow.getDay();
+    sow.setDate(now.getDate() - (dow===0?6:dow-1));
+    const startOfWeek = formatDateToString(sow);
+    
+    // Start of month
+    const som = formatDateToString(new Date(now.getFullYear(), now.getMonth(), 1));
+    
+    snap.forEach(doc => {
+      const d = doc.data();
+      // Validasi data
+      const item = {
+        nama: d.nama || '-',
+        service: d.service || '-',
+        keterangan: d.keterangan || null,
+        biaya: Number(d.biaya) || 0,  // Pasti number!
+        tanggal: d.tanggal || today   // Pasti ada tanggal!
+      };
+      allData.push(item);
+      
+      // Stats
+      if (item.tanggal === today) tT += item.biaya;
+      if (item.tanggal >= startOfWeek) tW += item.biaya;
+      if (item.tanggal >= som) tM += item.biaya;
     });
     
-    document.getElementById('statToday').textContent=`Rp ${formatRupiah(tT)}`;
-    document.getElementById('statWeek').textContent=`Rp ${formatRupiah(tW)}`;
-    document.getElementById('statMonth').textContent=`Rp ${formatRupiah(tM)}`;
-    document.getElementById('totalCount').textContent=`${allData.length} total`;
+    document.getElementById('statToday').textContent = 'Rp ' + formatRupiah(tT);
+    document.getElementById('statWeek').textContent = 'Rp ' + formatRupiah(tW);
+    document.getElementById('statMonth').textContent = 'Rp ' + formatRupiah(tM);
+    document.getElementById('totalCount').textContent = allData.length + ' total';
+    
     renderList();
-  }catch(e){
+    
+  } catch(e) {
     console.error(e);
-    document.getElementById('transactionList').innerHTML=`<div class="empty-state"><div class="empty-icon">❌</div><p>Gagal memuat data</p></div>`;
+    document.getElementById('transactionList').innerHTML = '<div class="empty-state"><div class="empty-icon">❌</div><p>Gagal load data</p></div>';
   }
 }
 
 loadReport();
 
-// Close modals on overlay click or Escape
-document.getElementById('dateRangeModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
-document.getElementById('pdfResultModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closePdfModal()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closePdfModal();closeMenu()}});
+// Close modal on outside click or Escape
+document.getElementById('dateRangeModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
 </script>
 </body>
 </html>
