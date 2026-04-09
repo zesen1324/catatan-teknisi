@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laporan Pendapatan - Catatan Teknisi</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #0d9488;
+  --primary-dark: #0f766e;
+  --primary-light: #14b8a6;
+  --accent: #f59e0b;
+  --success: #10b981;
+  --purple: #8b5cf6;
+  --blue: #3b82f6;
+  --danger: #ef4444;
+  --bg-main: #0c1222;
+  --bg-card: #151d2e;
+  --bg-card-hover: #1a2540;
+  --bg-input: #0f172a;
+  --border: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg-main);
+  min-height: 100vh;
+  padding: 16px;
+  color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(13, 148, 136, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+  animation: float 25s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb-1 {
+  width: 350px;
+  height: 350px;
+  background: linear-gradient(135deg, var(--purple), transparent);
+  top: -120px;
+  right: -120px;
+}
+
+.orb-2 {
+  width: 280px;
+  height: 280px;
+  background: linear-gradient(135deg, var(--primary), transparent);
+  bottom: -100px;
+  left: -100px;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 0 28px;
+}
+
+.back-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border-color: var(--primary);
+  transform: translateX(-3px);
+}
+
+.header-info h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.header-info p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.stat-card.today::before { background: linear-gradient(90deg, var(--success), #34d399); }
+.stat-card.week::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+.stat-card.month::before { background: linear-gradient(90deg, var(--purple), #a78bfa); }
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 18px;
+}
+
+.stat-card.today .stat-icon { background: rgba(16, 185, 129, 0.15); }
+.stat-card.week .stat-icon { background: rgba(59, 130, 246, 0.15); }
+.stat-card.month .stat-icon { background: rgba(139, 92, 246, 0.15); }
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.stat-card.today .stat-value { color: var(--success); }
+.stat-card.week .stat-value { color: var(--blue); }
+.stat-card.month .stat-value { color: var(--purple); }
+
+/* Filter Section */
+.filter-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+.filter-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+/* Summary Bar */
+.summary-bar {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.summary-text strong {
+  color: var(--text-primary);
+}
+
+.summary-total {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* Transaction List */
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding: 0 4px;
+}
+
+.list-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.transaction-count {
+  background: var(--bg-input);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.transaction-list {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.transaction-item {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: background 0.2s ease;
+  animation: fadeInUp 0.3s ease backwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-item:hover {
+  background: var(--bg-card-hover);
+}
+
+.txn-date {
+  background: var(--bg-input);
+  padding: 8px 12px;
+  border-radius: 10px;
+  text-align: center;
+  flex-shrink: 0;
+  min-width: 56px;
+}
+
+.txn-day {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.txn-month {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.txn-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.txn-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.txn-service {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.service-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-printer { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+.badge-komputer { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+.badge-install { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.badge-lainnya { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+.txn-amount {
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--success);
+  white-space: nowrap;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.4;
+}
+
+.empty-state p {
+  font-size: 15px;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 48px;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Responsive */
+@media (max-width: 520px) {
+  body { padding: 10px; }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .stat-card {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    padding: 16px;
+  }
+  
+  .stat-icon {
+    margin: 0 16px 0 0;
+  }
+  
+  .stat-label {
+    margin-bottom: 4px;
+  }
+  
+  .filter-section {
+    justify-content: center;
+  }
+  
+  .summary-bar {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  
+  .transaction-item {
+    flex-wrap: wrap;
+  }
+  
+  .txn-amount {
+    width: 100%;
+    text-align: right;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <a href="index.html" class="back-btn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+    </a>
+    <div class="header-info">
+      <h1>Laporan Pendapatan</h1>
+      <p>Riwayat semua transaksi</p>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card today">
+      <div class="stat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="stat-label">Hari Ini</div>
+      <div class="stat-value" id="statToday">Rp 0</div>
+    </div>
+    <div class="stat-card week">
+      <div class="stat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="stat-label">Minggu Ini</div>
+      <div class="stat-value" id="statWeek">Rp 0</div>
+    </div>
+    <div class="stat-card month">
+      <div class="stat-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M4 18V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-1z"/><path d="M12 17V7"/><path d="M8 11h8"/></svg>
+      </div>
+      <div class="stat-label">Bulan Ini</div>
+      <div class="stat-value" id="statMonth">Rp 0</div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-section">
+    <span class="filter-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      Filter:
+    </span>
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Semua</button>
+    <button class="filter-btn" data-filter="today" onclick="setFilter('today')">Hari Ini</button>
+    <button class="filter-btn" data-filter="week" onclick="setFilter('week')">Minggu Ini</button>
+    <button class="filter-btn" data-filter="month" onclick="setFilter('month')">Bulan Ini</button>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-bar">
+    <div class="summary-text">
+      Menampilkan <strong id="showCount">0</strong> transaksi
+    </div>
+    <div class="summary-total" id="summaryTotal">Total: Rp 0</div>
+  </div>
+
+  <!-- Transaction List -->
+  <div class="list-header">
+    <div class="list-title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Daftar Transaksi
+    </div>
+    <span class="transaction-count" id="totalCount">0 total</span>
+  </div>
+  
+  <div id="transactionList" class="transaction-list">
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Memuat data...</p>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD25yifoIuCrqXVKEx7NvALoAJ8PNb8pDg",
+  authDomain: "catatan-teknisi-50aef.firebaseapp.com",
+  projectId: "catatan-teknisi-50aef",
+  storageBucket: "catatan-teknisi-50aef.firebasestorage.app",
+  messagingSenderId: "172857160604",
+  appId: "1:172857160604:web:8e94e98ca0e7e28309ce59"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let allData = [];
+let currentFilter = 'all';
+
+function today() {
+  return new Date().toISOString().split("T")[0];
+}
+
+function formatRupiah(angka) {
+  return new Intl.NumberFormat('id-ID', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(angka);
+}
+
+function getServiceBadgeClass(service) {
+  const map = {
+    'Printer': 'badge-printer',
+    'Komputer': 'badge-komputer',
+    'Install': 'badge-install',
+    'Lainnya': 'badge-lainnya'
+  };
+  return map[service] || 'badge-lainnya';
+}
+
+function formatDate(dateStr) {
+  const date = new Date(dateStr + 'T00:00:00');
+  const day = date.getDate();
+  const month = date.toLocaleDateString('id-ID', { month: 'short' });
+  const year = date.getFullYear();
+  return { day, month, year };
+}
+
+function isInRange(dateStr, range) {
+  const date = new Date(dateStr + 'T00:00:00');
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  
+  switch(range) {
+    case 'today':
+      return dateStr === today();
+    case 'week':
+      const startOfWeek = new Date(now);
+      startOfWeek.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1));
+      return date >= startOfWeek;
+    case 'month':
+      return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+    default:
+      return true;
+  }
+}
+
+window.setFilter = function(filter) {
+  currentFilter = filter;
+  
+  // Update button states
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filter);
+  });
+  
+  renderList();
+};
+
+function renderList() {
+  const filteredData = allData.filter(item => isInRange(item.tanggal, currentFilter));
+  
+  // Update summary
+  const total = filteredData.reduce((sum, item) => sum + item.biaya, 0);
+  document.getElementById('showCount').textContent = filteredData.length;
+  document.getElementById('summaryTotal').textContent = `Total: Rp ${formatRupiah(total)}`;
+  
+  // Sort by date descending
+  filteredData.sort((a, b) => b.tanggal.localeCompare(a.tanggal));
+  
+  const container = document.getElementById('transactionList');
+  
+  if (filteredData.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📊</div>
+        <p>Tidak ada transaksi untuk periode ini</p>
+      </div>
+    `;
+    return;
+  }
+  
+  let html = '';
+  filteredData.forEach((item, index) => {
+    const namaService = item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
+    const dateInfo = formatDate(item.tanggal);
+    
+    html += `
+      <div class="transaction-item" style="animation-delay: ${Math.min(index * 0.03, 0.3)}s">
+        <div class="txn-date">
+          <div class="txn-day">${dateInfo.day}</div>
+          <div class="txn-month">${dateInfo.month}</div>
+        </div>
+        <div class="txn-info">
+          <div class="txn-name">${item.nama}</div>
+          <div class="txn-service">
+            <span class="service-badge ${getServiceBadgeClass(item.service)}">${namaService}</span>
+          </div>
+        </div>
+        <div class="txn-amount">Rp ${formatRupiah(item.biaya)}</div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+async function loadReport() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "data"));
+    
+    allData = [];
+    let totalToday = 0;
+    let totalWeek = 0;
+    let totalMonth = 0;
+    
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1));
+    startOfWeek.setHours(0, 0, 0, 0);
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    querySnapshot.forEach((docSnap) => {
+      const d = docSnap.data();
+      const tanggal = new Date(d.tanggal + 'T00:00:00');
+      
+      allData.push({
+        nama: d.nama,
+        service: d.service,
+        keterangan: d.keterangan,
+        biaya: d.biaya,
+        tanggal: d.tanggal
+      });
+      
+      if (tanggal >= startOfDay && d.tanggal === today()) {
+        totalToday += d.biaya;
+      }
+      if (tanggal >= startOfWeek) {
+        totalWeek += d.biaya;
+      }
+      if (tanggal >= startOfMonth) {
+        totalMonth += d.biaya;
+      }
+    });
+    
+    // Update stats
+    document.getElementById('statToday').textContent = `Rp ${formatRupiah(totalToday)}`;
+    document.getElementById('statWeek').textContent = `Rp ${formatRupiah(totalWeek)}`;
+    document.getElementById('statMonth').textContent = `Rp ${formatRupiah(totalMonth)}`;
+    document.getElementById('totalCount').textContent = `${allData.length} total`;
+    
+    renderList();
+    
+  } catch (error) {
+    console.error('Error loading report:', error);
+    document.getElementById('transactionList').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">❌</div>
+        <p>Gagal memuat data laporan</p>
+      </div>
+    `;
+  }
+}
+
+// Load on page ready
+loadReport();
+</script>
+</body>
+</html>
