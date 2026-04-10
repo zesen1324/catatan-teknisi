@@ -4,6 +4,7 @@
 <link rel="manifest" href="manifest.json">  
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-select=none">
+<meta name="theme-color" content="#0891b2">
 <title>Catatan Teknisi</title>
 
 <style>
@@ -42,7 +43,6 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Circuit Board Background */
 body::before {
   content: '';
   position: fixed;
@@ -65,12 +65,10 @@ body::after {
     linear-gradient(0deg, transparent 69.5%, rgba(8, 145, 178, 0.18) 69.5%, rgba(8, 145, 178, 0.18) 70.5%, transparent 70.5%),
     linear-gradient(45deg, transparent 48%, rgba(124, 58, 237, 0.12) 48%, rgba(124, 58, 237, 0.12) 52%, transparent 52%),
     linear-gradient(135deg, transparent 48%, rgba(8, 145, 178, 0.1) 48%, rgba(8, 145, 178, 0.1) 52%, transparent 52%),
-    linear-gradient(60deg, transparent 88%, rgba(8, 145, 178, 0.12) 88%, rgba(8, 145, 178, 0.12) 92%, transparent 92%),
-    linear-gradient(-45deg, transparent 85%, rgba(124, 58, 237, 0.1) 85%, rgba(124, 58, 237, 0.1) 89%, transparent 89%),
     radial-gradient(circle at center, rgba(8, 145, 178, 0.2) 1px, transparent 1px);
   
-  background-size: 120px 80px, 80px 40px, 80px 40px, 60px 100px, 60px 100px, 200px 150px, 180px 140px, 160px 200px, 140px 180px, 24px 24px;
-  background-position: 0 0, 0 20px, 0 60px, 30px 0, 30px 50px, -20px -30px, 100% 10%, 10% 100%, 90% 85%, 0 0;
+  background-size: 120px 80px, 80px 40px, 80px 40px, 60px 100px, 60px 100px, 200px 150px, 180px 140px, 24px 24px;
+  background-position: 0 0, 0 20px, 0 60px, 30px 0, 30px 50px, -20px -30px, 100% 10%, 0 0;
   animation: circuitPulse 8s ease-in-out infinite alternate;
 }
 
@@ -80,22 +78,16 @@ body::after {
 }
 
 .ic-chip {
-  position: fixed;
-  z-index: -1;
-  opacity: 0.25;
+  position: fixed; z-index: -1; opacity: 0.25;
   filter: drop-shadow(0 0 8px rgba(8, 145, 178, 0.3));
 }
 .ic-chip.top-right {
-  top: 8%; right: -20px;
-  width: 100px; height: 60px;
-  transform: rotate(-5deg);
-  animation: icGlow 4s ease-in-out infinite alternate;
+  top: 8%; right: -20px; width: 100px; height: 60px;
+  transform: rotate(-5deg); animation: icGlow 4s ease-in-out infinite alternate;
 }
 .ic-chip.bottom-left {
-  bottom: 15%; left: -30px;
-  width: 120px; height: 70px;
-  transform: rotate(12deg);
-  animation: icGlow 5s ease-in-out infinite alternate-reverse;
+  bottom: 15%; left: -30px; width: 120px; height: 70px;
+  transform: rotate(12deg); animation: icGlow 5s ease-in-out infinite alternate-reverse;
 }
 @keyframes icGlow {
   0% { opacity: 0.2; filter: drop-shadow(0 0 5px rgba(8, 145, 178, 0.2)); }
@@ -103,16 +95,12 @@ body::after {
 }
 
 .circuit-node {
-  position: fixed;
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  z-index: -1;
-  animation: nodeBlink 3s ease-in-out infinite;
+  position: fixed; width: 12px; height: 12px; border-radius: 50%;
+  z-index: -1; animation: nodeBlink 3s ease-in-out infinite;
 }
 .circuit-node.n1 { top: 25%; left: 8%; background: radial-gradient(circle, var(--primary-light), var(--primary)); box-shadow: 0 0 12px rgba(34, 211, 238, 0.5); animation-delay: 0s; }
 .circuit-node.n2 { top: 60%; right: 12%; background: radial-gradient(circle, var(--purple), #a78bfa); box-shadow: 0 0 12px rgba(167, 139, 250, 0.5); animation-delay: 1s; }
 .circuit-node.n3 { bottom: 20%; left: 15%; background: radial-gradient(circle, var(--accent), #fcd34d); box-shadow: 0 0 12px rgba(245, 158, 11, 0.5); animation-delay: 2s; }
-.circuit-node.n4 { top: 15%; left: 45%; width: 8px; height: 8px; background: var(--success); box-shadow: 0 0 8px rgba(5, 150, 105, 0.5); animation-delay: 0.5s; }
 
 @keyframes nodeBlink {
   0%, 100% { transform: scale(1); opacity: 0.7; }
@@ -120,12 +108,8 @@ body::after {
 }
 
 .data-particle {
-  position: fixed;
-  width: 4px; height: 4px;
-  background: var(--primary-light);
-  border-radius: 50%;
-  z-index: -1;
-  box-shadow: 0 0 6px var(--primary-light);
+  position: fixed; width: 4px; height: 4px; background: var(--primary-light);
+  border-radius: 50%; z-index: -1; box-shadow: 0 0 6px var(--primary-light);
   animation: dataFlow 6s linear infinite;
 }
 .data-particle.p1 { top: 20%; left: 0; animation-delay: 0s; }
@@ -141,21 +125,394 @@ body::after {
 
 .container { max-width: 480px; margin: 0 auto; position: relative; z-index: 1; }
 
-/* Header */
-.header { text-align: center; padding: 28px 20px 24px; }
+/* ============ FINGERPRINT UNLOCK MODAL ============ */
+.fingerprint-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.35s ease;
+}
+.fingerprint-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
 
+.fingerprint-modal {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border-radius: 28px;
+  padding: 36px 28px 28px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 
+    0 25px 60px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(255,255,255,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.fingerprint-overlay.show .fingerprint-modal {
+  transform: scale(1) translateY(0);
+}
+
+.fp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.fp-close-btn {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  border-radius: 50%;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.fp-close-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: white;
+}
+
+.fp-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+}
+
+/* Fingerprint Scanner */
+.fp-scanner-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 24px;
+}
+
+.fp-scanner-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.3), rgba(124, 58, 237, 0.3));
+  animation: fpPulse 2s ease-in-out infinite;
+}
+@keyframes fpPulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.08); opacity: 0.8; }
+}
+
+.fp-scanner-inner {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.3),
+    0 0 0 3px rgba(8, 145, 178, 0.2);
+}
+
+.fp-scanner-inner:hover {
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.3),
+    0 0 0 3px rgba(34, 211, 238, 0.5),
+    0 0 20px rgba(8, 145, 178, 0.3);
+}
+
+.fp-scanner-inner:active,
+.fp-scanner-inner.scanning {
+  transform: scale(0.96);
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.3),
+    0 0 0 3px var(--primary-light),
+    0 0 30px rgba(34, 211, 238, 0.5);
+}
+
+.fp-scanner-inner.success {
+  background: linear-gradient(180deg, #059669 0%, #047857 100%);
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.2),
+    0 0 0 3px rgba(5, 150, 105, 0.5),
+    0 0 30px rgba(5, 150, 105, 0.4);
+}
+
+.fp-scanner-inner.error {
+  background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.2),
+    0 0 0 3px rgba(220, 38, 38, 0.5),
+    0 0 30px rgba(220, 38, 38, 0.4);
+  animation: fpShake 0.5s ease;
+}
+@keyframes fpShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.fp-icon {
+  width: 56px;
+  height: 56px;
+  color: rgba(255,255,255,0.6);
+  transition: all 0.3s ease;
+}
+
+.fp-scanner-inner.success .fp-icon,
+.fp-scanner-inner.error .fp-icon {
+  display: none;
+}
+
+.fp-success-icon,
+.fp-error-icon {
+  display: none;
+  font-size: 32px;
+}
+
+.fp-scanner-inner.success .fp-success-icon {
+  display: block;
+}
+
+.fp-scanner-inner.error .fp-error-icon {
+  display: block;
+}
+
+/* Scan Line Animation */
+.fp-scan-line {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+  border-radius: 2px;
+  opacity: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.fp-scanner-inner.scanning .fp-scan-line {
+  opacity: 1;
+  animation: scanLine 1.2s ease-in-out infinite;
+}
+@keyframes scanLine {
+  0% { top: 20%; }
+  50% { top: 80%; }
+  100% { top: 20%; }
+}
+
+.fp-status {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 4px;
+  min-height: 20px;
+  transition: all 0.3s ease;
+}
+
+.fp-status.success {
+  color: #34d399;
+}
+
+.fp-status.error {
+  color: #f87171;
+}
+
+.fp-hint {
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  font-weight: 500;
+}
+
+/* Divider */
+.fp-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.fp-divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+}
+
+.fp-divider-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Password Section */
+.fp-password-section {
+  display: none;
+}
+
+.fp-password-section.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fp-password-input-wrapper {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.fp-password-input {
+  width: 100%;
+  padding: 14px 48px 14px 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-align: center;
+  color: white;
+  transition: all 0.25s ease;
+}
+.fp-password-input:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.15);
+}
+.fp-password-input::placeholder {
+  color: rgba(255,255,255,0.25);
+  letter-spacing: normal;
+}
+
+.fp-toggle-pass {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.4);
+  padding: 4px;
+  transition: color 0.2s;
+}
+.fp-toggle-pass:hover { color: white; }
+
+.fp-submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--primary), #0e7490);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(8, 145, 178, 0.3);
+}
+.fp-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(8, 145, 178, 0.4);
+}
+.fp-submit-btn:active {
+  transform: translateY(0);
+}
+
+.fp-alt-link {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 8px;
+}
+.fp-alt-link:hover {
+  background: rgba(34, 211, 238, 0.1);
+  color: white;
+}
+
+.fp-back-link {
+  display: none;
+  text-align: center;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.fp-back-link:hover { color: white; }
+.fp-back-link.show { display: block; }
+
+/* ============ MODE INDICATOR BAR ============ */
+.mode-bar {
+  background: linear-gradient(135deg, var(--primary), #06b6d4);
+  padding: 10px 16px; border-radius: var(--radius-md);
+  margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 4px 16px rgba(8, 145, 178, 0.25);
+  animation: slideDown 0.5s ease;
+}
+.mode-bar.view-mode {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.25);
+}
+.mode-info { display: flex; align-items: center; gap: 10px; color: white; }
+.mode-icon {
+  width: 36px; height: 36px; background: rgba(255,255,255,0.2);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.mode-text { font-size: 13px; font-weight: 700; }
+.mode-text small { display: block; font-size: 10px; font-weight: 500; opacity: 0.85; }
+
+.mode-action .btn-mode-switch {
+  background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.4);
+  color: white; padding: 8px 14px; border-radius: 10px; font-size: 11px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s ease; font-family: inherit;
+  display: flex; align-items: center; gap: 5px;
+}
+.mode-action .btn-mode-switch:hover {
+  background: rgba(255,255,255,0.3); transform: translateY(-1px);
+}
+.mode-action .btn-mode-switch:active {
+  transform: scale(0.97);
+}
+
+/* Header */
+.header { text-align: center; padding: 24px 20px 20px; }
 .header-icon {
-  width: 72px; height: 72px;
-  border-radius: 18px;
+  width: 72px; height: 72px; border-radius: 18px;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 16px;
   background: linear-gradient(135deg, var(--primary), var(--primary-light), var(--purple));
   padding: 4px;
-  box-shadow: 
-    0 8px 24px rgba(8, 145, 178, 0.35),
-    0 0 0 3px rgba(255,255,255,0.2);
-  position: relative;
-  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(8, 145, 178, 0.35), 0 0 0 3px rgba(255,255,255,0.2);
+  position: relative; overflow: hidden;
   animation: iconFloat 3s ease-in-out infinite;
 }
 @keyframes iconFloat {
@@ -163,38 +520,20 @@ body::after {
   50% { transform: translateY(-4px); }
 }
 .header-icon::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
   background: linear-gradient(135deg, var(--primary-light), transparent, var(--purple));
-  z-index: 0;
-  opacity: 0.6;
-  animation: iconPulse 3s ease-in-out infinite;
+  z-index: 0; opacity: 0.6; animation: iconPulse 3s ease-in-out infinite;
 }
 @keyframes iconPulse {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 0.8; }
 }
 .header-icon-inner {
-  width: 100%;
-  height: 100%;
-  background: white;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
+  width: 100%; height: 100%; background: white; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative; z-index: 1;
 }
-.header-icon-inner img {
-  width: 85%;
-  height: 85%;
-  object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-}
-
+.header-icon-inner svg { width: 85%; height: 85%; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
 .header h1 { font-size: 24px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; margin-bottom: 4px; }
 .header p { font-size: 14px; color: var(--text-muted); font-weight: 500; }
 
@@ -204,28 +543,22 @@ body::after {
   width: 42px; height: 42px; border-radius: 12px;
   background: var(--bg-card); border: 1.5px solid var(--border);
   color: var(--text-secondary); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s ease;
+  display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
 }
-.date-nav-btn:hover:not(:disabled) { 
-  background: linear-gradient(135deg, rgba(8,145,178,0.1), rgba(124,58,237,0.1)); 
-  border-color: var(--primary); color: var(--primary); 
-  box-shadow: 0 0 15px rgba(8,145,178,0.15);
+.date-nav-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(8,145,178,0.1), rgba(124,58,237,0.1));
+  border-color: var(--primary); color: var(--primary); box-shadow: 0 0 15px rgba(8,145,178,0.15);
 }
 .date-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-
 .date-nav-display {
   background: var(--bg-card); border: 2px solid var(--border);
   border-radius: 13px; padding: 10px 20px; text-align: center; min-width: 160px;
-  cursor: pointer; transition: all 0.2s ease;
-  position: relative; overflow: hidden;
+  cursor: pointer; transition: all 0.2s ease; position: relative; overflow: hidden;
 }
 .date-nav-display::before {
-  content: '';
-  position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0;
   background: linear-gradient(90deg, transparent, rgba(8,145,178,0.05), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
+  transform: translateX(-100%); transition: transform 0.5s ease;
 }
 .date-nav-display:hover::before { transform: translateX(100%); }
 .date-nav-display:hover { border-color: var(--primary); }
@@ -252,82 +585,74 @@ body::after {
 .total-value { font-size: 34px; font-weight: 800; color: var(--success); display: flex; align-items: baseline; gap: 4px; }
 .total-value .currency { font-size: 18px; font-weight: 700; opacity: 0.6; }
 
-/* ============ FORM SECTION DENGAN DATE BADGE ============ */
-.form-wrapper {
-  position: relative;
-  margin-bottom: 16px;
-}
+/* Form Section */
+.form-wrapper { position: relative; margin-bottom: 16px; }
 
-/* Date Badge yang nempel di form */
 .form-date-badge {
-  position: absolute;
-  top: -10px;
-  right: 16px;
+  position: absolute; top: -10px; right: 16px;
   background: linear-gradient(135deg, var(--primary), #06b6d4);
-  color: white;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 5px 14px;
-  border-radius: 20px;
-  z-index: 10;
+  color: white; font-size: 11px; font-weight: 700;
+  padding: 5px 14px; border-radius: 20px; z-index: 10;
   box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap;
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
   animation: badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 @keyframes badgePop {
   0% { transform: scale(0.5) translateY(10px); opacity: 0; }
   100% { transform: scale(1) translateY(0); opacity: 1; }
 }
-.form-date-badge svg {
-  width: 13px;
-  height: 13px;
-  stroke: currentColor;
-  stroke-width: 2.5;
-}
+.form-date-badge svg { width: 13px; height: 13px; stroke: currentColor; stroke-width: 2.5; }
 .form-date-badge .badge-today {
-  background: rgba(255,255,255,0.25);
-  font-size: 9px;
-  padding: 1px 6px;
-  border-radius: 8px;
-  margin-left: 2px;
+  background: rgba(255,255,255,0.25); font-size: 9px;
+  padding: 1px 6px; border-radius: 8px; margin-left: 2px;
 }
+
+.view-only-indicator {
+  display: none; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 1.5px dashed #f59e0b; border-radius: 10px;
+  padding: 10px 14px; margin-bottom: 16px;
+  font-size: 11px; font-weight: 700; color: #92400e;
+  animation: pulseGentle 2s ease-in-out infinite;
+}
+body.view-mode .view-only-indicator { display: flex; }
+@keyframes pulseGentle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+.view-only-indicator svg { width: 16px; height: 16px; stroke: #d97706; flex-shrink: 0; }
+
+body.view-mode .form-section {
+  background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+              linear-gradient(135deg, #d97706, #f59e0b, #fbbf24) border-box;
+  border-color: transparent;
+}
+body.view-mode .form-inner { background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%); }
+body.view-mode .form-header-icon { background: linear-gradient(135deg, #d97706, #f59e0b); }
+body.view-mode .form-header-text h3 { color: #92400e; }
+body.view-mode .form-label { color: #92400e; }
+body.view-mode .form-label svg { stroke: #d97706; }
 
 .form-section {
   background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
               linear-gradient(135deg, var(--primary), #06b6d4, var(--purple)) border-box;
-  border: 2.5px solid transparent;
-  border-radius: var(--radius-lg);
+  border: 2.5px solid transparent; border-radius: var(--radius-lg);
   padding: 6px;
   box-shadow: 0 4px 20px rgba(8, 145, 178, 0.12), 0 0 0 1px rgba(255,255,255,0.8) inset;
   position: relative; overflow: visible;
 }
 .form-inner {
   background: linear-gradient(180deg, #ffffff 0%, #fafffe 100%);
-  border-radius: calc(var(--radius-lg) - 4px);
-  padding: 22px 20px; position: relative;
+  border-radius: calc(var(--radius-lg) - 4px); padding: 22px 20px; position: relative;
 }
-.form-inner::before {
-  content: ''; position: absolute; top: -40px; right: -30px;
-  width: 120px; height: 120px;
-  background: radial-gradient(circle, rgba(8, 145, 178, 0.08) 0%, transparent 70%);
-  pointer-events: none;
+.form-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+  padding-bottom: 14px; border-bottom: 1px dashed rgba(8, 145, 178, 0.2);
 }
-.form-inner::after {
-  content: ''; position: absolute; bottom: -30px; left: -20px;
-  width: 100px; height: 100px;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.form-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px dashed rgba(8, 145, 178, 0.2); }
 .form-header-icon {
   width: 36px; height: 36px;
   background: linear-gradient(135deg, var(--primary), #06b6d4);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
   box-shadow: 0 4px 12px rgba(8, 145, 178, 0.25);
 }
 .form-header-icon svg { width: 18px; height: 18px; stroke: white; stroke-width: 2.5; }
@@ -356,12 +681,41 @@ body::after {
   box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1), 0 2px 8px rgba(8, 145, 178, 0.08);
   transform: translateY(-1px);
 }
+
+.form-control:disabled {
+  background: linear-gradient(180deg, #fefce8 0%, #fef3c7 100%);
+  border: 1.8px solid #fcd34d; color: #78716c; cursor: not-allowed; opacity: 1;
+}
+
+.select-wrapper { position: relative; }
+
+body.view-mode .select-wrapper::after {
+  content: 'Preview';
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 9px; font-weight: 800; color: #d97706;
+  background: #fef3c7; padding: 2px 8px; border-radius: 6px;
+  pointer-events: none; z-index: 2;
+}
+
+body.view-mode #service {
+  padding-right: 70px !important;
+  border-color: #fbbf24;
+  background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%) !important;
+  color: #92400e; cursor: pointer !important;
+}
+
 select.form-control {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230891b2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 14px center; background-size: 18px;
   padding-right: 42px;
 }
+
+.service-hint {
+  display: none; font-size: 10px; color: #d97706;
+  font-weight: 600; margin-top: 6px; text-align: right;
+}
+body.view-mode .service-hint { display: block; }
 
 .btn {
   width: 100%; padding: 15px 20px; border: none;
@@ -379,17 +733,22 @@ select.form-control {
 }
 @keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(8, 145, 178, 0.45); }
-.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
-
+.btn-primary:disabled {
+  background: linear-gradient(135deg, #d4d4d8, #a1a1aa);
+  color: #71717a; cursor: not-allowed; box-shadow: none;
+}
 .btn-report {
   background: linear-gradient(135deg, var(--purple), #6d28d9);
   color: white; box-shadow: 0 4px 16px rgba(124, 58, 237, 0.28);
   margin-top: 10px; animation: shimmer-purple 4s ease infinite; background-size: 200% 200%;
 }
 @keyframes shimmer-purple { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-.btn-report:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124, 58, 237, 0.38); }
+.btn-report:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124, 58, 237, 0.38); }
+.btn-report:disabled {
+  background: linear-gradient(135deg, #d4d4d8, #a1a1aa);
+  color: #71717a; cursor: not-allowed; box-shadow: none;
+}
 
-/* Item Card with Long Press */
 .list-section { margin-bottom: 20px; }
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 0 2px; flex-wrap: wrap; gap: 6px; }
 .section-title { font-size: 15px; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 7px; }
@@ -405,80 +764,43 @@ select.form-control {
   border-radius: var(--radius-md); padding: 15px;
   display: flex; align-items: center; gap: 12px;
   transition: all 0.2s ease; animation: slideIn 0.3s ease backwards;
-  position: relative;
-  user-select: none;
-  touch-action: manipulation;
-  cursor: default;
+  position: relative; user-select: none; touch-action: manipulation; cursor: default;
 }
 @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 .item-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(8,145,178,0.1); }
 
-/* Long Press States */
+body.view-mode .long-press-hint,
+body.view-mode .press-overlay { display: none !important; }
+
 .item-card.pressing {
   border-color: var(--danger);
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15), 0 4px 20px rgba(220, 38, 38, 0.2);
   transform: scale(0.98);
 }
-.item-card.pressing .item-icon {
-  animation: shake 0.3s ease-in-out infinite;
-}
-@keyframes shake {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-5deg); }
-  75% { transform: rotate(5deg); }
-}
-
 .press-overlay {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(220, 38, 38, 0.08);
-  z-index: 10;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
+  position: absolute; inset: 0; border-radius: inherit;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(220, 38, 38, 0.08); z-index: 10;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
 }
 .item-card.pressing .press-overlay { opacity: 1; }
 
-.progress-ring-container {
-  position: relative;
-  width: 60px;
-  height: 60px;
-}
+.progress-ring-container { position: relative; width: 60px; height: 60px; }
 .progress-ring { transform: rotate(-90deg); }
 .progress-ring-bg { fill: none; stroke: rgba(220, 38, 38, 0.15); stroke-width: 4; }
-.progress-ring-fill {
-  fill: none; stroke: var(--danger); stroke-width: 4;
-  stroke-linecap: round; transition: stroke-dashoffset 0.05s linear;
-}
+.progress-ring-fill { fill: none; stroke: var(--danger); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 0.05s linear; }
 .progress-text {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--danger);
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: var(--danger);
 }
 .progress-hint {
-  position: absolute;
-  bottom: -22px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--danger);
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; font-weight: 700; color: var(--danger);
+  white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px;
 }
 
 .item-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.item-icon { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; transition: transform 0.2s ease; }
+.item-icon { width: 40px; height: 40px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 .icon-printer { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
 .icon-komputer { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
 .icon-install { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
@@ -494,19 +816,11 @@ select.form-control {
 .item-biaya { font-size: 15px; font-weight: 800; color: var(--success); white-space: nowrap; }
 
 .long-press-hint {
-  font-size: 9px;
-  color: var(--text-muted);
-  background: var(--bg-input);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  opacity: 0.7;
+  font-size: 9px; color: var(--text-muted); background: var(--bg-input);
+  padding: 2px 6px; border-radius: 4px; font-weight: 600;
+  display: flex; align-items: center; gap: 3px; opacity: 0.7;
 }
 
-/* Toast */
 .toast {
   position: fixed; bottom: 20px; left: 50%;
   transform: translateX(-50%) translateY(100px);
@@ -520,30 +834,17 @@ select.form-control {
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .toast.success { border-left: 4px solid var(--success); }
 .toast.error { border-left: 4px solid var(--danger); }
+.toast.info { border-left: 4px solid var(--accent); }
 
-/* Delete Modal */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
-  z-index: 9998;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+  z-index: 9998; display: flex; align-items: center; justify-content: center; padding: 20px;
+  opacity: 0; visibility: hidden; transition: all 0.3s ease;
 }
 .modal-overlay.show { opacity: 1; visibility: visible; }
 .modal-box {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: 28px 24px;
-  max-width: 320px;
-  width: 100%;
-  text-align: center;
+  background: var(--bg-card); border-radius: var(--radius-lg);
+  padding: 28px 24px; max-width: 320px; width: 100%; text-align: center;
   transform: scale(0.9) translateY(20px);
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 25px 50px rgba(0,0,0,0.25);
@@ -579,7 +880,7 @@ select.form-control {
 
 @media (max-width: 480px) {
   body { padding: 10px; }
-  .header { padding: 22px 16px 18px; }
+  .header { padding: 20px 16px 16px; }
   .header-icon { width: 64px; height: 64px; }
   .form-inner { padding: 18px 16px; }
   .form-date-badge { font-size: 10px; padding: 4px 10px; right: 12px; top: -8px; }
@@ -587,6 +888,10 @@ select.form-control {
   .ic-chip { display: none; }
   .circuit-node.n1, .circuit-node.n2 { display: none; }
   .long-press-hint { display: none; }
+  .mode-text { font-size: 12px; }
+  .mode-icon { width: 32px; height: 32px; }
+  .fp-scanner-container { width: 120px; height: 120px; }
+  .fp-icon { width: 48px; height: 48px; }
 }
 </style>
 </head>
@@ -627,11 +932,71 @@ select.form-control {
 <div class="circuit-node n1"></div>
 <div class="circuit-node n2"></div>
 <div class="circuit-node n3"></div>
-<div class="circuit-node n4"></div>
 
 <div class="data-particle p1"></div>
 <div class="data-particle p2"></div>
 <div class="data-particle p3"></div>
+
+<!-- Fingerprint Unlock Modal -->
+<div class="fingerprint-overlay" id="fingerprintModal">
+  <div class="fingerprint-modal">
+    
+    <!-- Header -->
+    <div class="fp-header">
+      <span></span>
+      <span class="fp-title">Verifikasi</span>
+      <button class="fp-close-btn" onclick="closeFingerprintModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    
+    <!-- Fingerprint Scanner -->
+    <div class="fp-scanner-container">
+      <div class="fp-scanner-outer"></div>
+      <div class="fp-scanner-inner" id="fpScanner" onclick="startFingerprintScan()">
+        <div class="fp-scan-line"></div>
+        <svg class="fp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 018 4"/>
+          <path d="M5 19.5C5.5 18 6 16 6 14"/>
+          <path d="M12 12h.01"/>
+          <path d="M17 19.5c-.5-1.5-1-3.5-1-5.5"/>
+          <path d="M12 22a10 10 0 01-8-4"/>
+          <path d="M22 12a10 10 0 01-8 4"/>
+          <path d="M19 19.5c.5-1.5 1-3.5 1-5.5"/>
+          <path d="M2 12a10 10 0 018-4"/>
+        </svg>
+        <span class="fp-success-icon">✓</span>
+        <span class="fp-error-icon">✕</span>
+      </div>
+    </div>
+    
+    <div class="fp-status" id="fpStatus">Sentuh sensor untuk verifikasi</div>
+    <div class="fp-hint" id="fpHint">Gunakan sidik jari Anda</div>
+    
+    <!-- Divider -->
+    <div class="fp-divider">
+      <div class="fp-divider-line"></div>
+      <span class="fp-divider-text">atau</span>
+      <div class="fp-divider-line"></div>
+    </div>
+    
+    <!-- Password Section -->
+    <div class="fp-password-section" id="fpPasswordSection">
+      <div class="fp-password-input-wrapper">
+        <input type="password" id="fpPasswordInput" class="fp-password-input" placeholder="Masukkan password" maxlength="20">
+        <button type="button" class="fp-toggle-pass" onclick="toggleFpPassword()" id="fpTogglePass">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <button class="fp-submit-btn" onclick="submitFpPassword()">Buka dengan Password</button>
+    </div>
+    
+    <!-- Links -->
+    <div class="fp-alt-link" id="fpAltLink" onclick="showPasswordMode()">Gunakan Password sebagai alternatif</div>
+    <div class="fp-back-link" id="fpBackLink" onclick="showFingerprintMode()">Kembali ke Sidik Jari</div>
+    
+  </div>
+</div>
 
 <!-- Toast -->
 <div id="toast" class="toast"><span id="toastIcon"></span><span id="toastMsg"></span></div>
@@ -650,11 +1015,35 @@ select.form-control {
 </div>
 
 <div class="container">
+  <!-- Mode Bar -->
+  <div class="mode-bar" id="modeBar">
+    <div class="mode-info">
+      <div class="mode-icon" id="modeIcon">👁️</div>
+      <div class="mode-text" id="modeText">
+        MODE VIEWING
+        <small>Klik tombol untuk buka edit</small>
+      </div>
+    </div>
+    <div class="mode-action" id="modeAction">
+      <button class="btn-mode-switch" id="modeSwitchBtn" onclick="openFingerprintModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Buka Kunci
+      </button>
+    </div>
+  </div>
+
   <!-- Header -->
   <div class="header">
     <div class="header-icon">
       <div class="header-icon-inner">
-        <img src="icon.png" alt="Logo">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" rx="14" fill="white"/>
+          <path d="M20 28h24M20 36h16m-8-16v20m6-20c0-2.21-1.79-4-4-4s-4 1.79-4 4v4h8v-4z" stroke="#0891b2" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="18" y="32" width="28" height="16" rx="3" fill="#e0f2fe" stroke="#0891b2" stroke-width="2"/>
+          <circle cx="26" cy="40" r="2" fill="#0891b2"/>
+          <circle cx="32" cy="40" r="2" fill="#0891b2"/>
+          <circle cx="38" cy="40" r="2" fill="#0891b2"/>
+        </svg>
       </div>
     </div>
     <h1>Catatan Teknisi</h1>
@@ -684,20 +1073,24 @@ select.form-control {
     <div class="total-value"><span class="currency">Rp</span><span id="total">0</span></div>
   </div>
 
-  <!-- ============ FORM SECTION + DATE BADGE ============ -->
+  <!-- Form Section -->
   <div class="form-wrapper">
-    <!-- Badge tanggal nempel di pojok kanan atas form -->
     <div class="form-date-badge" id="formDateBadge">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       <span id="formDateText">Hari Ini</span>
       <span class="badge-today" id="badgeToday" style="display:none">INI</span>
     </div>
 
-    <!-- Hidden date input (tetap ada tapi tersembunyi) -->
     <input type="date" id="tanggal" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none;" tabindex="-1">
 
     <div class="form-section">
       <div class="form-inner">
+        
+        <div class="view-only-indicator" id="viewOnlyIndicator">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <span>Form terkunci — Klik "Buka Kunci" untuk verifikasi</span>
+        </div>
+
         <div class="form-header">
           <div class="form-header-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
@@ -708,14 +1101,12 @@ select.form-control {
           </div>
         </div>
 
-        <!-- Tanggal DIHAPUS dari sini -->
-
         <div class="form-group">
           <label class="form-label" for="nama">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             Nama Pelanggan
           </label>
-          <input type="text" id="nama" class="form-control" placeholder="Masukkan nama pelanggan...">
+          <input type="text" id="nama" class="form-control" placeholder="Masukkan nama pelanggan..." disabled>
         </div>
 
         <div class="form-group">
@@ -723,13 +1114,16 @@ select.form-control {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
             Jenis Service
           </label>
-          <select id="service" class="form-control">
-            <option value="">Pilih jenis service...</option>
-            <option>Printer</option>
-            <option>Komputer / Laptop</option>
-            <option>Install Software</option>
-            <option>Lainnya</option>
-          </select>
+          <div class="select-wrapper">
+            <select id="service" class="form-control">
+              <option value="">Pilih jenis service...</option>
+              <option>Printer</option>
+              <option>Komputer / Laptop</option>
+              <option>Install Software</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div class="service-hint">Dapat dilihat sebagai preview</div>
         </div>
 
         <div class="form-group" id="ketGroup" style="display:none;">
@@ -737,7 +1131,7 @@ select.form-control {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             Keterangan
           </label>
-          <input type="text" id="keterangan" class="form-control" placeholder="Deskripsi tambahan...">
+          <input type="text" id="keterangan" class="form-control" placeholder="Deskripsi tambahan..." disabled>
         </div>
 
         <div class="form-group">
@@ -745,15 +1139,15 @@ select.form-control {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
             Biaya (Rp)
           </label>
-          <input type="number" id="biaya" class="form-control" placeholder="Masukkan jumlah biaya..." min="0">
+          <input type="number" id="biaya" class="form-control" placeholder="Masukkan jumlah biaya..." min="0" disabled>
         </div>
 
-        <button class="btn btn-primary" id="btnSimpan" onclick="tambah()">
+        <button class="btn btn-primary" id="btnSimpan" onclick="tambah()" disabled>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Simpan Transaksi
         </button>
         
-        <a href="laporan.html" class="btn btn-report">
+        <a href="laporan.html" class="btn btn-report" id="btnReport" disabled>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           Buka Halaman Laporan
         </a>
@@ -796,10 +1190,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ==================== MODE MANAGEMENT ====================
+const EDIT_PASSWORD = 'teknisi2024';
+
+let isEditMode = false;
 let selectedDate = '';
 let deleteTargetId = null;
 
-const LONG_PRESS_DURATION = 3000;
+const LONG_PRESS_DELETE = 3000;
 
 const icons = {
   'Printer': { icon: '🖨️', cls: 'icon-printer' },
@@ -807,6 +1205,205 @@ const icons = {
   'Install': { icon: '📦', cls: 'icon-install' },
   'Lainnya': { icon: '⚙️', cls: 'icon-lainnya' }
 };
+
+function checkEditMode() {
+  const storedMode = localStorage.getItem('ct_edit_mode');
+  if (storedMode === 'true') {
+    enableEditMode();
+  } else {
+    disableViewMode();
+  }
+}
+
+function enableEditMode() {
+  isEditMode = true;
+  document.body.classList.remove('view-mode');
+  localStorage.setItem('ct_edit_mode', 'true');
+  
+  const modeBar = document.getElementById('modeBar');
+  modeBar.classList.remove('view-mode');
+  document.getElementById('modeIcon').textContent = '✏️';
+  document.getElementById('modeText').innerHTML = 'MODE EDIT<small>Teknisi aktif input data</small>';
+  document.getElementById('modeSwitchBtn').innerHTML = `
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+    Kunci View
+  `;
+  document.getElementById('modeSwitchBtn').onclick = disableViewMode;
+  
+  document.getElementById('viewOnlyIndicator').style.display = 'none';
+  document.getElementById('nama').disabled = false;
+  document.getElementById('keterangan').disabled = false;
+  document.getElementById('biaya').disabled = false;
+  document.getElementById('btnSimpan').disabled = false;
+  document.getElementById('btnReport').disabled = false;
+  
+  const svcSelect = document.getElementById('service');
+  svcSelect.disabled = false;
+  svcSelect.style.cssText = '';
+  
+  showToast('Mode Edit aktif!', 'success');
+}
+
+function disableViewMode() {
+  isEditMode = false;
+  document.body.classList.add('view-mode');
+  localStorage.setItem('ct_edit_mode', 'false');
+  
+  const modeBar = document.getElementById('modeBar');
+  modeBar.classList.add('view-mode');
+  document.getElementById('modeIcon').textContent = '👁️';
+  document.getElementById('modeText').innerHTML = 'MODE VIEWING<small>Klik tombol untuk buka edit</small>';
+  document.getElementById('modeSwitchBtn').innerHTML = `
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    Buka Kunci
+  `;
+  document.getElementById('modeSwitchBtn').onclick = openFingerprintModal;
+  
+  document.getElementById('viewOnlyIndicator').style.display = 'flex';
+  document.getElementById('nama').disabled = true;
+  document.getElementById('keterangan').disabled = true;
+  document.getElementById('biaya').disabled = true;
+  document.getElementById('btnSimpan').disabled = true;
+  document.getElementById('btnReport').disabled = true;
+  
+  const svcSelect = document.getElementById('service');
+  svcSelect.disabled = false;
+}
+
+// ==================== FINGERPRINT MODAL ====================
+window.openFingerprintModal = function() {
+  if (isEditMode) return;
+  resetFingerprintUI();
+  document.getElementById('fingerprintModal').classList.add('show');
+};
+
+window.closeFingerprintModal = function() {
+  document.getElementById('fingerprintModal').classList.remove('show');
+  cancelFingerprintScan();
+};
+
+function resetFingerprintUI() {
+  const scanner = document.getElementById('fpScanner');
+  const status = document.getElementById('fpStatus');
+  const hint = document.getElementById('fpHint');
+  
+  scanner.className = 'fp-scanner-inner';
+  status.className = 'fp-status';
+  status.textContent = 'Sentuh sensor untuk verifikasi';
+  hint.style.display = 'block';
+  
+  // Reset to fingerprint mode
+  document.getElementById('fpPasswordSection').classList.remove('show');
+  document.getElementById('fpAltLink').style.display = 'block';
+  document.getElementById('fpBackLink').classList.remove('show');
+  document.getElementById('fpPasswordInput').value = '';
+}
+
+window.showPasswordMode = function() {
+  document.getElementById('fpPasswordSection').classList.add('show');
+  document.getElementById('fpAltLink').style.display = 'none';
+  document.getElementById('fpBackLink').classList.add('show');
+  setTimeout(() => document.getElementById('fpPasswordInput').focus(), 300);
+};
+
+window.showFingerprintMode = function() {
+  document.getElementById('fpPasswordSection').classList.remove('show');
+  document.getElementById('fpAltLink').style.display = 'block';
+  document.getElementById('fpBackLink').classList.remove('show');
+  resetFingerprintUI();
+};
+
+window.toggleFpPassword = function() {
+  const input = document.getElementById('fpPasswordInput');
+  const toggle = document.getElementById('fpTogglePass');
+  if (input.type === 'password') {
+    input.type = 'text';
+    toggle.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+  } else {
+    input.type = 'password';
+    toggle.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  }
+};
+
+let fpScanTimeout = null;
+
+window.startFingerprintScan = function() {
+  const scanner = document.getElementById('fpScanner');
+  const status = document.getElementById('fpStatus');
+  const hint = document.getElementById('fpHint');
+  
+  if (scanner.classList.contains('scanning') || 
+      scanner.classList.contains('success') || 
+      scanner.classList.contains('error')) return;
+  
+  // Start scanning animation
+  scanner.classList.add('scanning');
+  status.textContent = 'Memindai...';
+  status.className = 'fp-status';
+  hint.style.display = 'none';
+  
+  // Simulate scan duration (1.5 seconds)
+  fpScanTimeout = setTimeout(() => {
+    scanner.classList.remove('scanning');
+    scanner.classList.add('success');
+    status.textContent = 'Terverifikasi!';
+    status.className = 'fp-status success';
+    
+    // Close modal and enable edit after success animation
+    setTimeout(() => {
+      closeFingerprintModal();
+      enableEditMode();
+    }, 800);
+  }, 1500);
+};
+
+function cancelFingerprintScan() {
+  if (fpScanTimeout) {
+    clearTimeout(fpScanTimeout);
+    fpScanTimeout = null;
+  }
+}
+
+window.submitFpPassword = function() {
+  const input = document.getElementById('fpPasswordInput').value;
+  const scanner = document.getElementById('fpScanner');
+  const status = document.getElementById('fpStatus');
+  
+  if (input === EDIT_PASSWORD) {
+    scanner.classList.add('success');
+    status.textContent = 'Password benar!';
+    status.className = 'fp-status success';
+    
+    setTimeout(() => {
+      closeFingerprintModal();
+      enableEditMode();
+    }, 600);
+  } else {
+    scanner.classList.add('error');
+    status.textContent = 'Password salah!';
+    status.className = 'fp-status error';
+    document.getElementById('fpPasswordInput').value = '';
+    
+    setTimeout(() => {
+      scanner.classList.remove('error');
+      status.className = 'fp-status';
+      status.textContent = 'Coba lagi...';
+      document.getElementById('fpPasswordInput').focus();
+    }, 800);
+  }
+};
+
+// Enter key for password
+document.getElementById('fpPasswordInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') submitFpPassword();
+});
+
+// Close modal on overlay click
+document.getElementById('fingerprintModal').addEventListener('click', function(e) {
+  if (e.target === this) closeFingerprintModal();
+});
+
+// ==================== CORE FUNCTIONS ====================
 
 function todayStr() {
   const d = new Date();
@@ -827,18 +1424,19 @@ function fmtDateFull(d) {
 
 window.showToast = function(msg,type='success') {
   const t=document.getElementById('toast');
-  document.getElementById('toastIcon').textContent=type==='success'?'✅':'❌';
+  document.getElementById('toastIcon').textContent=type==='success'?'✅':type==='error'?'❌':'ℹ️';
   document.getElementById('toastMsg').textContent=msg;
   t.className=`toast show ${type}`;
   setTimeout(()=>t.classList.remove('show'),2800);
 };
 
-// Long Press Handler
+// Long Press Handler for delete (only in edit mode)
 let pressTimer = null;
 let pressStartTime = 0;
 let pressInterval = null;
 
 function startLongPress(card, docId) {
+  if (!isEditMode) return;
   clearLongPress();
   pressStartTime = Date.now();
   card.classList.add('pressing');
@@ -854,7 +1452,7 @@ function startLongPress(card, docId) {
   
   pressInterval = setInterval(() => {
     const elapsed = Date.now() - pressStartTime;
-    const progress = Math.min(elapsed / LONG_PRESS_DURATION, 1);
+    const progress = Math.min(elapsed / LONG_PRESS_DELETE, 1);
     if (progressText) progressText.textContent = Math.ceil((1 - progress) * 3);
     if (progressFill) progressFill.style.strokeDashoffset = circumference * (1 - progress);
   }, 50);
@@ -863,7 +1461,7 @@ function startLongPress(card, docId) {
     clearLongPress();
     card.classList.remove('pressing');
     showDeleteModal(docId, card.dataset.nama);
-  }, LONG_PRESS_DURATION);
+  }, LONG_PRESS_DELETE);
 }
 
 function clearLongPress() {
@@ -889,7 +1487,7 @@ document.addEventListener('mousedown', (e) => {
 document.addEventListener('mouseup', () => clearLongPress());
 document.addEventListener('mouseleave', () => clearLongPress());
 
-// Modal
+// Delete Modal
 function showDeleteModal(id, nama) {
   deleteTargetId = id;
   document.getElementById('deleteName').textContent = nama;
@@ -916,7 +1514,6 @@ function initDate() {
   document.getElementById('tanggal').max=selectedDate;
   updateDisplay();
   
-  // Date nav click juga update badge
   document.getElementById('tanggal').addEventListener('change',function(){
     if(this.value&&this.value<=todayStr()){
       selectedDate=this.value; updateDisplay(); loadData();
@@ -925,20 +1522,23 @@ function initDate() {
   
   document.getElementById('service').addEventListener('change',function(){
     document.getElementById('ketGroup').style.display=this.value==='Lainnya'?'block':'none';
+    
+    if (!isEditMode && this.value) {
+      const serviceName = this.options[this.selectedIndex].text;
+      showToast(`Preview: "${serviceName}"`, 'info');
+    }
   });
 }
 
 function updateDisplay() {
   const isToday=selectedDate===todayStr();
   
-  // Update date nav
   document.getElementById('displayDate').textContent=isToday?'Hari Ini':fmtDateFull(selectedDate);
   document.getElementById('todayBadge').style.display=isToday?'inline-block':'none';
   document.getElementById('totalDateLabel').textContent=isToday?'Hari Ini':fmtDate(selectedDate);
   document.getElementById('listDateLabel').textContent=isToday?'Hari Ini':fmtDate(selectedDate);
   document.getElementById('btnNext').disabled=isToday;
   
-  // Update form date badge
   const badgeText = document.getElementById('formDateText');
   const badgeToday = document.getElementById('badgeToday');
   const badgeEl = document.getElementById('formDateBadge');
@@ -951,9 +1551,8 @@ function updateDisplay() {
     badgeToday.style.display = 'none';
   }
   
-  // Re-animate badge on change
   badgeEl.style.animation = 'none';
-  badgeEl.offsetHeight; // trigger reflow
+  badgeEl.offsetHeight;
   badgeEl.style.animation = 'badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
 }
 
@@ -979,7 +1578,7 @@ async function loadData(){
         const past=d.tanggal!==todayStr();
         
         html+=`<div class="item-card" data-id="${docSnap.id}" data-nama="${d.nama}" style="animation-delay:${count*0.04}s">
-          <div class="press-overlay">
+          ${isEditMode ? `<div class="press-overlay">
             <div class="progress-ring-container">
               <svg class="progress-ring" width="60" height="60">
                 <circle class="progress-ring-bg" cx="30" cy="30" r="24"/>
@@ -988,7 +1587,7 @@ async function loadData(){
               <div class="progress-text">3</div>
             </div>
             <div class="progress-hint">Tahan untuk hapus</div>
-          </div>
+          </div>` : ''}
           <div class="item-left">
             <div class="item-icon ${ic.cls}">${ic.icon}</div>
             <div class="item-info">
@@ -1002,13 +1601,15 @@ async function loadData(){
       }
     });
     document.getElementById('list').innerHTML=count===0?
-      `<div class="empty-state"><div class="empty-state-icon">🔧</div><p>Belum ada transaksi<br><small style="opacity:0.6;font-size:12px;">Tekan lama item untuk menghapus</small></p></div>`:html;
+      `<div class="empty-state"><div class="empty-state-icon">🔧</div><p>Belum ada transaksi<br><small style="opacity:0.6;font-size:12px;">${isEditMode ? 'Tekan lama item untuk menghapus' : 'Mode viewing - data kosong'}</small></p></div>`:html;
     document.getElementById('total').textContent=fmt(total);
     document.getElementById('itemCount').textContent=`${count} item`;
   }catch(e){ console.error(e); }
 }
 
 window.tambah=async function(){
+  if(!isEditMode){ showToast('Buka mode edit terlebih dahulu!','error'); return; }
+  
   const nama=document.getElementById('nama').value.trim();
   const svc=document.getElementById('service').value;
   const ket=document.getElementById('keterangan').value.trim();
@@ -1048,7 +1649,10 @@ window.hapus=async function(id){
   catch(e){ showToast('Gagal hapus!','error'); }
 };
 
-initDate(); loadData();
+// Initialize
+checkEditMode();
+initDate(); 
+loadData();
 </script>
 </body>
 </html>
