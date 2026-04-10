@@ -125,6 +125,42 @@ body::after {
 
 .container { max-width: 480px; margin: 0 auto; position: relative; z-index: 1; }
 
+/* ============ MODAL SHARED STYLES ============ */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+  z-index: 9998; display: flex; align-items: center; justify-content: center; padding: 20px;
+  opacity: 0; visibility: hidden; transition: all 0.3s ease;
+}
+.modal-overlay.show { opacity: 1; visibility: visible; }
+.modal-box {
+  background: var(--bg-card); border-radius: var(--radius-lg);
+  padding: 28px 24px; max-width: 360px; width: 100%; text-align: center;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+.modal-overlay.show .modal-box { transform: scale(1) translateY(0); }
+.modal-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px; font-size: 28px;
+}
+.modal-title { font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
+.modal-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5; }
+.modal-buttons { display: flex; gap: 10px; }
+.modal-btn {
+  flex: 1; padding: 12px 16px; border-radius: 10px;
+  font-size: 14px; font-weight: 700; font-family: inherit;
+  cursor: pointer; transition: all 0.2s ease; border: none;
+}
+.modal-btn-cancel { background: var(--bg-input); color: var(--text-secondary); }
+.modal-btn-cancel:hover { background: var(--border); }
+.modal-btn-delete {
+  background: linear-gradient(135deg, var(--danger), #b91c1c);
+  color: white; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+.modal-btn-delete:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4); }
+
 /* ============ PASSWORD UNLOCK MODAL ============ */
 .password-overlay {
   position: fixed;
@@ -193,7 +229,6 @@ body::after {
   color: white;
 }
 
-/* Lock Icon */
 .pw-lock-container {
   position: relative;
   width: 100px;
@@ -236,18 +271,11 @@ body::after {
 
 .pw-lock-inner.success {
   background: linear-gradient(180deg, #059669 0%, #047857 100%);
-  box-shadow: 
-    inset 0 2px 4px rgba(0,0,0,0.2),
-    0 0 0 3px rgba(5, 150, 105, 0.5),
-    0 0 30px rgba(5, 150, 105, 0.4);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 0 0 3px rgba(5,150,105,0.5), 0 0 30px rgba(5,150,105,0.4);
 }
-
 .pw-lock-inner.error {
   background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);
-  box-shadow: 
-    inset 0 2px 4px rgba(0,0,0,0.2),
-    0 0 0 3px rgba(220, 38, 38, 0.5),
-    0 0 30px rgba(220, 38, 38, 0.4);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 0 0 3px rgba(220,38,38,0.5), 0 0 30px rgba(220,38,38,0.4);
   animation: pwShake 0.5s ease;
 }
 @keyframes pwShake {
@@ -257,23 +285,10 @@ body::after {
 }
 
 .pw-lock-inner.success .pw-lock-icon,
-.pw-lock-inner.error .pw-lock-icon {
-  display: none;
-}
-
-.pw-success-icon,
-.pw-error-icon {
-  display: none;
-  font-size: 32px;
-}
-
-.pw-lock-inner.success .pw-success-icon {
-  display: block;
-}
-
-.pw-lock-inner.error .pw-error-icon {
-  display: block;
-}
+.pw-lock-inner.error .pw-lock-icon { display: none; }
+.pw-success-icon, .pw-error-icon { display: none; font-size: 32px; }
+.pw-lock-inner.success .pw-success-icon { display: block; }
+.pw-lock-inner.error .pw-error-icon { display: block; }
 
 .pw-status {
   font-size: 14px;
@@ -283,16 +298,9 @@ body::after {
   min-height: 20px;
   transition: all 0.3s ease;
 }
+.pw-status.success { color: #34d399; }
+.pw-status.error { color: #f87171; }
 
-.pw-status.success {
-  color: #34d399;
-}
-
-.pw-status.error {
-  color: #f87171;
-}
-
-/* Password Input */
 .pw-input-wrapper {
   position: relative;
   margin-bottom: 16px;
@@ -337,10 +345,7 @@ body::after {
   transition: color 0.2s;
   border-radius: 8px;
 }
-.pw-toggle-btn:hover { 
-  color: white; 
-  background: rgba(255,255,255,0.1);
-}
+.pw-toggle-btn:hover { color: white; background: rgba(255,255,255,0.1); }
 
 .pw-submit-btn {
   width: 100%;
@@ -360,18 +365,170 @@ body::after {
   justify-content: center;
   gap: 8px;
 }
-.pw-submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(8, 145, 178, 0.4);
-}
-.pw-submit-btn:active {
-  transform: translateY(0);
-}
+.pw-submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(8, 145, 178, 0.4); }
+.pw-submit-btn:active { transform: translateY(0); }
+.pw-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .pw-hint {
   font-size: 11px;
   color: rgba(255,255,255,0.3);
   margin-top: 14px;
+  font-weight: 500;
+}
+
+/* ============ CHANGE PASSWORD MODAL ============ */
+.cp-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.35s ease;
+}
+.cp-overlay.show { opacity: 1; visibility: visible; }
+
+.cp-modal {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border-radius: 28px;
+  padding: 32px 28px 28px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 
+    0 25px 60px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(255,255,255,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.cp-overlay.show .cp-modal { transform: scale(1) translateY(0); }
+
+.cp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.cp-close-btn {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  border-radius: 50%;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.cp-close-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+
+.cp-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+}
+
+.cp-icon-container {
+  width: 72px; height: 72px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(8, 145, 178, 0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
+}
+.cp-icon-container svg {
+  width: 36px; height: 36px;
+  color: var(--primary-light);
+}
+
+.cp-field { margin-bottom: 14px; text-align: left; }
+.cp-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
+}
+.cp-label svg { width: 13px; height: 13px; }
+
+.cp-input {
+  width: 100%;
+  padding: 13px 16px;
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-align: center;
+  color: white;
+  transition: all 0.25s ease;
+}
+.cp-input:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.15);
+}
+.cp-input::placeholder {
+  color: rgba(255,255,255,0.2);
+  letter-spacing: normal;
+  font-size: 13px;
+  font-weight: 500;
+}
+.cp-input.error-border { border-color: #f87171; }
+
+.cp-status {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 14px;
+  min-height: 18px;
+  transition: all 0.3s ease;
+}
+.cp-status.success { color: #34d399; }
+.cp-status.error { color: #f87171; }
+
+.cp-submit-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, var(--purple), #6d28d9);
+  border: none;
+  border-radius: 14px;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.cp-submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4); }
+.cp-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.cp-hint {
+  font-size: 10px;
+  color: rgba(255,255,255,0.25);
+  margin-top: 12px;
   font-weight: 500;
 }
 
@@ -395,17 +552,22 @@ body::after {
 .mode-text { font-size: 13px; font-weight: 700; }
 .mode-text small { display: block; font-size: 10px; font-weight: 500; opacity: 0.85; }
 
+.mode-action { display: flex; gap: 6px; }
 .mode-action .btn-mode-switch {
   background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.4);
-  color: white; padding: 8px 14px; border-radius: 10px; font-size: 11px; font-weight: 700;
+  color: white; padding: 8px 12px; border-radius: 10px; font-size: 11px; font-weight: 700;
   cursor: pointer; transition: all 0.2s ease; font-family: inherit;
-  display: flex; align-items: center; gap: 5px;
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
 }
-.mode-action .btn-mode-switch:hover {
-  background: rgba(255,255,255,0.3); transform: translateY(-1px);
+.mode-action .btn-mode-switch:hover { background: rgba(255,255,255,0.3); transform: translateY(-1px); }
+.mode-action .btn-mode-switch:active { transform: scale(0.97); }
+
+.btn-change-pw {
+  background: rgba(124, 58, 237, 0.3) !important;
+  border-color: rgba(167, 139, 250, 0.5) !important;
 }
-.mode-action .btn-mode-switch:active {
-  transform: scale(0.97);
+.btn-change-pw:hover {
+  background: rgba(124, 58, 237, 0.5) !important;
 }
 
 /* Header */
@@ -550,9 +712,7 @@ body.edit-mode .form-inner {
   background: linear-gradient(180deg, #ffffff 0%, #fafffe 100%);
   border-radius: calc(var(--radius-lg) - 4px); padding: 22px 20px; position: relative;
 }
-body.edit-mode .form-header-icon {
-  background: linear-gradient(135deg, var(--primary), #06b6d4);
-}
+body.edit-mode .form-header-icon { background: linear-gradient(135deg, var(--primary), #06b6d4); }
 body.edit-mode .form-header-text h3 { color: var(--primary-dark); }
 body.edit-mode .form-label { color: var(--primary-dark); }
 body.edit-mode .form-label svg { stroke: var(--primary); }
@@ -573,9 +733,7 @@ body.edit-mode .form-label svg { stroke: var(--primary); }
   display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
   padding-bottom: 14px; border-bottom: 1px dashed rgba(217, 119, 6, 0.2);
 }
-body.edit-mode .form-header {
-  border-bottom: 1px dashed rgba(8, 145, 178, 0.2);
-}
+body.edit-mode .form-header { border-bottom: 1px dashed rgba(8, 145, 178, 0.2); }
 .form-header-icon {
   width: 36px; height: 36px;
   background: linear-gradient(135deg, #d97706, #f59e0b);
@@ -621,8 +779,7 @@ body.edit-mode .form-control {
   background: linear-gradient(180deg, #fefce8 0%, #fef3c7 100%) !important;
   border: 1.8px solid #fcd34d !important; 
   color: #78716c !important; 
-  cursor: not-allowed; 
-  opacity: 1;
+  cursor: not-allowed; opacity: 1;
 }
 
 .select-wrapper { position: relative; }
@@ -775,42 +932,6 @@ body:not(.edit-mode) .press-overlay { display: none !important; }
 .toast.error { border-left: 4px solid var(--danger); }
 .toast.info { border-left: 4px solid var(--accent); }
 
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-  z-index: 9998; display: flex; align-items: center; justify-content: center; padding: 20px;
-  opacity: 0; visibility: hidden; transition: all 0.3s ease;
-}
-.modal-overlay.show { opacity: 1; visibility: visible; }
-.modal-box {
-  background: var(--bg-card); border-radius: var(--radius-lg);
-  padding: 28px 24px; max-width: 320px; width: 100%; text-align: center;
-  transform: scale(0.9) translateY(20px);
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-}
-.modal-overlay.show .modal-box { transform: scale(1) translateY(0); }
-.modal-icon {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: linear-gradient(135deg, #fef2f2, #fee2e2);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 16px; font-size: 28px;
-}
-.modal-title { font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
-.modal-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5; }
-.modal-buttons { display: flex; gap: 10px; }
-.modal-btn {
-  flex: 1; padding: 12px 16px; border-radius: 10px;
-  font-size: 14px; font-weight: 700; font-family: inherit;
-  cursor: pointer; transition: all 0.2s ease; border: none;
-}
-.modal-btn-cancel { background: var(--bg-input); color: var(--text-secondary); }
-.modal-btn-cancel:hover { background: var(--border); }
-.modal-btn-delete {
-  background: linear-gradient(135deg, var(--danger), #b91c1c);
-  color: white; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-}
-.modal-btn-delete:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4); }
-
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
@@ -831,6 +952,8 @@ body:not(.edit-mode) .press-overlay { display: none !important; }
   .mode-icon { width: 32px; height: 32px; }
   .pw-lock-container { width: 85px; height: 85px; }
   .pw-lock-icon { width: 38px; height: 38px; }
+  .mode-action { flex-direction: column; gap: 4px; }
+  .mode-action .btn-mode-switch { padding: 7px 10px; font-size: 10px; }
 }
 </style>
 </head>
@@ -876,11 +999,9 @@ body:not(.edit-mode) .press-overlay { display: none !important; }
 <div class="data-particle p2"></div>
 <div class="data-particle p3"></div>
 
-<!-- Password Unlock Modal -->
+<!-- ============ PASSWORD UNLOCK MODAL ============ -->
 <div class="password-overlay" id="passwordModal">
   <div class="password-modal">
-    
-    <!-- Header -->
     <div class="pw-header">
       <span></span>
       <span class="pw-title">Verifikasi Password</span>
@@ -888,8 +1009,6 @@ body:not(.edit-mode) .press-overlay { display: none !important; }
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    
-    <!-- Lock Icon -->
     <div class="pw-lock-container">
       <div class="pw-lock-outer"></div>
       <div class="pw-lock-inner" id="pwLockInner">
@@ -901,24 +1020,69 @@ body:not(.edit-mode) .press-overlay { display: none !important; }
         <span class="pw-error-icon">✕</span>
       </div>
     </div>
-    
     <div class="pw-status" id="pwStatus">Masukkan password untuk membuka kunci</div>
-    
-    <!-- Password Input -->
     <div class="pw-input-wrapper">
-      <input type="password" id="pwInput" class="pw-input" placeholder="Password..." maxlength="20" autocomplete="off">
+      <input type="password" id="pwInput" class="pw-input" placeholder="Password..." maxlength="30" autocomplete="off">
       <button type="button" class="pw-toggle-btn" onclick="togglePassword()" id="pwToggleBtn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
       </button>
     </div>
-    
-    <button class="pw-submit-btn" onclick="submitPassword()">
+    <button class="pw-submit-btn" id="pwSubmitBtn" onclick="submitPassword()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 019.9-1"/></svg>
       Buka Kunci
     </button>
-    
     <div class="pw-hint">Tekan Enter atau klik tombol untuk submit</div>
-    
+  </div>
+</div>
+
+<!-- ============ CHANGE PASSWORD MODAL ============ -->
+<div class="cp-overlay" id="changePwModal">
+  <div class="cp-modal">
+    <div class="cp-header">
+      <span></span>
+      <span class="cp-title">Ganti Password</span>
+      <button class="cp-close-btn" onclick="closeChangePwModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cp-icon-container">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="cp-status" id="cpStatus"></div>
+
+    <div class="cp-field">
+      <label class="cp-label" for="cpOldPw">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Password Lama
+      </label>
+      <input type="password" id="cpOldPw" class="cp-input" placeholder="Masukkan password lama..." maxlength="30" autocomplete="off">
+    </div>
+
+    <div class="cp-field">
+      <label class="cp-label" for="cpNewPw">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Password Baru
+      </label>
+      <input type="password" id="cpNewPw" class="cp-input" placeholder="Buat password baru..." maxlength="30" autocomplete="off">
+    </div>
+
+    <div class="cp-field">
+      <label class="cp-label" for="cpConfirmPw">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Konfirmasi Password Baru
+      </label>
+      <input type="password" id="cpConfirmPw" class="cp-input" placeholder="Ulangi password baru..." maxlength="30" autocomplete="off">
+    </div>
+
+    <button class="cp-submit-btn" id="cpSubmitBtn" onclick="submitChangePassword()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      Simpan Password Baru
+    </button>
+    <div class="cp-hint">Minimal 4 karakter. Password disimpan sebagai hash aman (SHA-256).</div>
   </div>
 </div>
 
@@ -928,7 +1092,7 @@ body:not(.edit-mode) .press-overlay { display: none !important; }
 <!-- Delete Modal -->
 <div class="modal-overlay" id="deleteModal">
   <div class="modal-box">
-    <div class="modal-icon">🗑️</div>
+    <div class="modal-icon" style="background:linear-gradient(135deg,#fef2f2,#fee2e2);">🗑️</div>
     <div class="modal-title">Hapus Transaksi?</div>
     <div class="modal-text">Data transaksi <strong id="deleteName"></strong> akan dihapus permanen.</div>
     <div class="modal-buttons">
@@ -1071,7 +1235,6 @@ body:not(.edit-mode) .press-overlay { display: none !important; }
           Simpan Transaksi
         </button>
         
-        <!-- Tombol Laporan - SELALU AKTIF -->
         <a href="laporan.html" class="btn btn-report" id="btnReport">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           Buka Halaman Laporan
@@ -1101,7 +1264,7 @@ body:not(.edit-mode) .press-overlay { display: none !important; }
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD25yifoIuCrqXVKEx7NvALoAJ8PNb8pDg",
@@ -1115,29 +1278,41 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ==================== SECURE PASSWORD SYSTEM ====================
-// Password asli: teknisi2024
-// Di-encode dengan XOR cipher + character rotation
-// Tidak ada plain text password di source code!
+// ==================== SECURE PASSWORD (SHA-256 + FIRESTORE) ====================
+// Password disimpan sebagai hash SHA-256 di Firestore
+// TIDAK ADA password teks di source code ini!
+// Hash tidak bisa dibalik ke teks asli.
 
-const _0x = [116,101,107,110,105,115,105,50,48,50,52]; // char codes terenkripsi
+const CONFIG_DOC = 'config';
+const CONFIG_COLLECTION = 'app_settings';
 
-// Fungsi dekripsi internal
-const _d = (arr) => arr.map((c,i) => String.fromCharCode(c ^ ((i*3+7)%256))).join('');
+// Fungsi hash SHA-256
+async function hashPw(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
-// Password hash (hasil encode)
-const _hash = 'c2VjX3Rrbl8yMDI0X3Nj'; // encoded representation
+// Ambil password hash dari Firestore (atau default kalau belum ada)
+let currentPwHash = null;
 
-// Verifikasi password yang aman
-function verifyPassword(input) {
-  const decoded = _d(_0x);
-  const hashed = btoa(unescape(encodeURIComponent('sec_' + input)));
-  return hashed === _hash && input === decoded;
+async function loadPwHash() {
+  try {
+    const docSnap = await getDoc(doc(db, CONFIG_COLLECTION, CONFIG_DOC));
+    if (docSnap.exists() && docSnap.data().pwHash) {
+      currentPwHash = docSnap.data().pwHash;
+    } else {
+      // Default hash (password awal: teknisi2024)
+      currentPwHash = await hashPw('teknisi2024');
+      // Simpan ke Firestore untuk pertama kali
+      await setDoc(doc(db, CONFIG_COLLECTION, CONFIG_DOC), { pwHash: currentPwHash });
+    }
+  } catch (e) {
+    // Fallback kalau Firestore gagal
+    currentPwHash = await hashPw('teknisi2024');
+  }
 }
 
 // ==================== MODE MANAGEMENT ====================
-
-// Default SELALU mode terkunci (view mode)
 let isEditMode = false;
 let selectedDate = '';
 let deleteTargetId = null;
@@ -1151,7 +1326,6 @@ const icons = {
   'Lainnya': { icon: '⚙️', cls: 'icon-lainnya' }
 };
 
-// Inisialisasi: SELALU mulai dengan mode terkunci
 function initMode() {
   disableViewMode();
 }
@@ -1165,20 +1339,24 @@ function enableEditMode() {
   modeBar.classList.add('edit-mode');
   document.getElementById('modeIcon').textContent = '✏️';
   document.getElementById('modeText').innerHTML = 'MODE EDIT<small>Teknisi aktif input data</small>';
-  document.getElementById('modeSwitchBtn').innerHTML = `
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-    Kunci View
-  `;
-  document.getElementById('modeSwitchBtn').onclick = lockViewMode;
   
-  // Enable form inputs
+  // Tampilkan 2 tombol: Kunci + Ganti Password
+  document.getElementById('modeAction').innerHTML = `
+    <button class="btn-mode-switch btn-change-pw" onclick="openChangePwModal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Ganti PW
+    </button>
+    <button class="btn-mode-switch" id="modeSwitchBtn" onclick="lockViewMode()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Kunci
+    </button>
+  `;
+  
   document.getElementById('nama').disabled = false;
   document.getElementById('keterangan').disabled = false;
   document.getElementById('biaya').disabled = false;
   document.getElementById('btnSimpan').disabled = false;
-  
-  const svcSelect = document.getElementById('service');
-  svcSelect.disabled = false;
+  document.getElementById('service').disabled = false;
   
   showToast('Mode Edit aktif!', 'success');
 }
@@ -1192,21 +1370,20 @@ function disableViewMode() {
   modeBar.classList.remove('edit-mode');
   document.getElementById('modeIcon').textContent = '🔒';
   document.getElementById('modeText').innerHTML = 'MODE TERKUNCI<small>Masukkan password untuk edit</small>';
-  document.getElementById('modeSwitchBtn').innerHTML = `
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-    Buka Kunci
-  `;
-  document.getElementById('modeSwitchBtn').onclick = openPasswordModal;
   
-  // Disable form inputs (KECUALI tombol report)
+  // Hanya 1 tombol: Buka Kunci
+  document.getElementById('modeAction').innerHTML = `
+    <button class="btn-mode-switch" id="modeSwitchBtn" onclick="openPasswordModal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Buka Kunci
+    </button>
+  `;
+  
   document.getElementById('nama').disabled = true;
   document.getElementById('keterangan').disabled = true;
   document.getElementById('biaya').disabled = true;
   document.getElementById('btnSimpan').disabled = true;
-  // btnReport TIDAK disabled - selalu bisa klik!
-  
-  const svcSelect = document.getElementById('service');
-  svcSelect.disabled = false;
+  document.getElementById('service').disabled = false;
 }
 
 function lockViewMode() {
@@ -1214,7 +1391,7 @@ function lockViewMode() {
   showToast('Form dikunci kembali', 'info');
 }
 
-// ==================== PASSWORD MODAL ====================
+// ==================== PASSWORD UNLOCK MODAL ====================
 window.openPasswordModal = function() {
   if (isEditMode) return;
   resetPasswordUI();
@@ -1229,24 +1406,19 @@ window.closePasswordModal = function() {
 function resetPasswordUI() {
   const lockInner = document.getElementById('pwLockInner');
   const status = document.getElementById('pwStatus');
-  
   lockInner.className = 'pw-lock-inner';
   status.className = 'pw-status';
   status.textContent = 'Masukkan password untuk membuka kunci';
   document.getElementById('pwInput').value = '';
   document.getElementById('pwInput').type = 'password';
   updateToggleIcon(false);
+  document.getElementById('pwSubmitBtn').disabled = false;
 }
 
 window.togglePassword = function() {
   const input = document.getElementById('pwInput');
-  if (input.type === 'password') {
-    input.type = 'text';
-    updateToggleIcon(true);
-  } else {
-    input.type = 'password';
-    updateToggleIcon(false);
-  }
+  input.type = input.type === 'password' ? 'text' : 'password';
+  updateToggleIcon(input.type === 'text');
 };
 
 function updateToggleIcon(isVisible) {
@@ -1258,56 +1430,161 @@ function updateToggleIcon(isVisible) {
   }
 }
 
-window.submitPassword = function() {
+window.submitPassword = async function() {
   const input = document.getElementById('pwInput').value;
   const lockInner = document.getElementById('pwLockInner');
   const status = document.getElementById('pwStatus');
+  const submitBtn = document.getElementById('pwSubmitBtn');
   
   if (!input) {
     status.textContent = 'Password tidak boleh kosong!';
     status.className = 'pw-status error';
     lockInner.classList.add('error');
-    setTimeout(() => {
-      lockInner.classList.remove('error');
-      status.className = 'pw-status';
-      status.textContent = 'Masukkan password untuk membuka kunci';
-    }, 1200);
+    setTimeout(() => { lockInner.classList.remove('error'); status.className = 'pw-status'; status.textContent = 'Masukkan password untuk membuka kunci'; }, 1200);
     return;
   }
   
-  // Gunakan fungsi verifikasi yang aman
-  if (verifyPassword(input)) {
+  submitBtn.disabled = true;
+  const hashed = await hashPw(input);
+  
+  if (hashed === currentPwHash) {
     lockInner.classList.add('success');
     status.textContent = 'Password benar! Membuka...';
     status.className = 'pw-status success';
-    
-    setTimeout(() => {
-      closePasswordModal();
-      enableEditMode();
-    }, 800);
+    setTimeout(() => { closePasswordModal(); enableEditMode(); }, 800);
   } else {
     lockInner.classList.add('error');
     status.textContent = 'Password salah! Coba lagi.';
     status.className = 'pw-status error';
     document.getElementById('pwInput').value = '';
-    
-    setTimeout(() => {
-      lockInner.classList.remove('error');
-      status.className = 'pw-status';
-      status.textContent = 'Masukkan password untuk membuka kunci';
-      document.getElementById('pwInput').focus();
-    }, 1500);
+    setTimeout(() => { lockInner.classList.remove('error'); status.className = 'pw-status'; status.textContent = 'Masukkan password untuk membuka kunci'; document.getElementById('pwInput').focus(); }, 1500);
   }
+  submitBtn.disabled = false;
 };
 
-// Enter key for password
 document.getElementById('pwInput').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') submitPassword();
 });
-
-// Close modal on overlay click
 document.getElementById('passwordModal').addEventListener('click', function(e) {
   if (e.target === this) closePasswordModal();
+});
+
+// ==================== CHANGE PASSWORD MODAL ====================
+window.openChangePwModal = function() {
+  document.getElementById('cpOldPw').value = '';
+  document.getElementById('cpNewPw').value = '';
+  document.getElementById('cpConfirmPw').value = '';
+  document.getElementById('cpStatus').textContent = '';
+  document.getElementById('cpStatus').className = 'cp-status';
+  document.getElementById('cpOldPw').classList.remove('error-border');
+  document.getElementById('cpNewPw').classList.remove('error-border');
+  document.getElementById('cpConfirmPw').classList.remove('error-border');
+  document.getElementById('cpSubmitBtn').disabled = false;
+  document.getElementById('changePwModal').classList.add('show');
+  setTimeout(() => document.getElementById('cpOldPw').focus(), 300);
+};
+
+window.closeChangePwModal = function() {
+  document.getElementById('changePwModal').classList.remove('show');
+};
+
+document.getElementById('changePwModal').addEventListener('click', function(e) {
+  if (e.target === this) closeChangePwModal();
+});
+
+window.submitChangePassword = async function() {
+  const oldPw = document.getElementById('cpOldPw').value;
+  const newPw = document.getElementById('cpNewPw').value;
+  const confirmPw = document.getElementById('cpConfirmPw').value;
+  const status = document.getElementById('cpStatus');
+  const submitBtn = document.getElementById('cpSubmitBtn');
+  
+  // Reset error borders
+  document.getElementById('cpOldPw').classList.remove('error-border');
+  document.getElementById('cpNewPw').classList.remove('error-border');
+  document.getElementById('cpConfirmPw').classList.remove('error-border');
+  
+  // Validasi
+  if (!oldPw || !newPw || !confirmPw) {
+    status.textContent = 'Semua field harus diisi!';
+    status.className = 'cp-status error';
+    if (!oldPw) document.getElementById('cpOldPw').classList.add('error-border');
+    if (!newPw) document.getElementById('cpNewPw').classList.add('error-border');
+    if (!confirmPw) document.getElementById('cpConfirmPw').classList.add('error-border');
+    return;
+  }
+  
+  if (newPw.length < 4) {
+    status.textContent = 'Password baru minimal 4 karakter!';
+    status.className = 'cp-status error';
+    document.getElementById('cpNewPw').classList.add('error-border');
+    return;
+  }
+  
+  submitBtn.disabled = true;
+  status.textContent = 'Memverifikasi...';
+  status.className = 'cp-status';
+  
+  // Verifikasi password lama
+  const oldHashed = await hashPw(oldPw);
+  if (oldHashed !== currentPwHash) {
+    status.textContent = 'Password lama salah!';
+    status.className = 'cp-status error';
+    document.getElementById('cpOldPw').classList.add('error-border');
+    submitBtn.disabled = false;
+    return;
+  }
+  
+  // Cek konfirmasi
+  if (newPw !== confirmPw) {
+    status.textContent = 'Konfirmasi password tidak cocok!';
+    status.className = 'cp-status error';
+    document.getElementById('cpConfirmPw').classList.add('error-border');
+    submitBtn.disabled = false;
+    return;
+  }
+  
+  // Cek password baru tidak sama dengan lama
+  if (oldPw === newPw) {
+    status.textContent = 'Password baru harus berbeda dari yang lama!';
+    status.className = 'cp-status error';
+    document.getElementById('cpNewPw').classList.add('error-border');
+    submitBtn.disabled = false;
+    return;
+  }
+  
+  // Simpan password baru
+  try {
+    const newHash = await hashPw(newPw);
+    await setDoc(doc(db, CONFIG_COLLECTION, CONFIG_DOC), { pwHash: newHash });
+    currentPwHash = newHash;
+    
+    status.textContent = 'Password berhasil diubah!';
+    status.className = 'cp-status success';
+    
+    showToast('Password berhasil diubah!', 'success');
+    
+    setTimeout(() => {
+      closeChangePwModal();
+      lockViewMode();
+    }, 1200);
+  } catch (e) {
+    status.textContent = 'Gagal menyimpan! Cek koneksi.';
+    status.className = 'cp-status error';
+  }
+  
+  submitBtn.disabled = false;
+};
+
+// Enter key untuk modal ganti password
+document.getElementById('cpOldPw').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') document.getElementById('cpNewPw').focus();
+});
+document.getElementById('cpNewPw').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') document.getElementById('cpConfirmPw').focus();
+});
+document.getElementById('cpConfirmPw').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') submitChangePassword();
 });
 
 // ==================== CORE FUNCTIONS ====================
@@ -1337,7 +1614,7 @@ window.showToast = function(msg,type='success') {
   setTimeout(()=>t.classList.remove('show'),2800);
 };
 
-// Long Press Handler for delete (only in edit mode)
+// Long Press Handler
 let pressTimer = null;
 let pressStartTime = 0;
 let pressInterval = null;
@@ -1352,10 +1629,7 @@ function startLongPress(card, docId) {
   const progressFill = card.querySelector('.progress-ring-fill');
   const circumference = 2 * Math.PI * 24;
   
-  if (progressFill) {
-    progressFill.style.strokeDasharray = circumference;
-    progressFill.style.strokeDashoffset = circumference;
-  }
+  if (progressFill) { progressFill.style.strokeDasharray = circumference; progressFill.style.strokeDashoffset = circumference; }
   
   pressInterval = setInterval(() => {
     const elapsed = Date.now() - pressStartTime;
@@ -1429,7 +1703,6 @@ function initDate() {
   
   document.getElementById('service').addEventListener('change',function(){
     document.getElementById('ketGroup').style.display=this.value==='Lainnya'?'block':'none';
-    
     if (!isEditMode && this.value) {
       const serviceName = this.options[this.selectedIndex].text;
       showToast(`Preview: "${serviceName}"`, 'info');
@@ -1439,7 +1712,6 @@ function initDate() {
 
 function updateDisplay() {
   const isToday=selectedDate===todayStr();
-  
   document.getElementById('displayDate').textContent=isToday?'Hari Ini':fmtDateFull(selectedDate);
   document.getElementById('todayBadge').style.display=isToday?'inline-block':'none';
   document.getElementById('totalDateLabel').textContent=isToday?'Hari Ini':fmtDate(selectedDate);
@@ -1556,10 +1828,15 @@ window.hapus=async function(id){
   catch(e){ showToast('Gagal hapus!','error'); }
 };
 
-// Initialize - SELALU mulai dengan mode terkunci
-initMode();
-initDate(); 
-loadData();
+// ==================== INITIALIZE ====================
+async function init() {
+  await loadPwHash();
+  initMode();
+  initDate();
+  loadData();
+}
+
+init();
 </script>
 </body>
 </html>
