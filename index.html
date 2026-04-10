@@ -125,8 +125,8 @@ body::after {
 
 .container { max-width: 480px; margin: 0 auto; position: relative; z-index: 1; }
 
-/* ============ FINGERPRINT UNLOCK MODAL ============ */
-.fingerprint-overlay {
+/* ============ PASSWORD UNLOCK MODAL ============ */
+.password-overlay {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.92);
@@ -140,12 +140,12 @@ body::after {
   visibility: hidden;
   transition: all 0.35s ease;
 }
-.fingerprint-overlay.show {
+.password-overlay.show {
   opacity: 1;
   visibility: visible;
 }
 
-.fingerprint-modal {
+.password-modal {
   background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
   border-radius: 28px;
   padding: 36px 28px 28px;
@@ -159,18 +159,18 @@ body::after {
   transform: scale(0.9) translateY(20px);
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.fingerprint-overlay.show .fingerprint-modal {
+.password-overlay.show .password-modal {
   transform: scale(1) translateY(0);
 }
 
-.fp-header {
+.pw-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
 }
 
-.fp-close-btn {
+.pw-close-btn {
   width: 36px; height: 36px;
   background: rgba(255,255,255,0.08);
   border: none;
@@ -182,69 +182,59 @@ body::after {
   justify-content: center;
   transition: all 0.2s ease;
 }
-.fp-close-btn:hover {
+.pw-close-btn:hover {
   background: rgba(255,255,255,0.15);
   color: white;
 }
 
-.fp-title {
+.pw-title {
   font-size: 18px;
   font-weight: 800;
   color: white;
 }
 
-/* Fingerprint Scanner */
-.fp-scanner-container {
+/* Lock Icon */
+.pw-lock-container {
   position: relative;
-  width: 140px;
-  height: 140px;
+  width: 100px;
+  height: 100px;
   margin: 0 auto 24px;
 }
 
-.fp-scanner-outer {
+.pw-lock-outer {
   position: absolute;
   inset: 0;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(8, 145, 178, 0.3), rgba(124, 58, 237, 0.3));
-  animation: fpPulse 2s ease-in-out infinite;
+  animation: pwPulse 2s ease-in-out infinite;
 }
-@keyframes fpPulse {
+@keyframes pwPulse {
   0%, 100% { transform: scale(1); opacity: 0.5; }
   50% { transform: scale(1.08); opacity: 0.8; }
 }
 
-.fp-scanner-inner {
+.pw-lock-inner {
   position: absolute;
-  inset: 8px;
+  inset: 10px;
   border-radius: 50%;
   background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
   box-shadow: 
     inset 0 2px 4px rgba(0,0,0,0.3),
     0 0 0 3px rgba(8, 145, 178, 0.2);
+  transition: all 0.3s ease;
 }
 
-.fp-scanner-inner:hover {
-  box-shadow: 
-    inset 0 2px 4px rgba(0,0,0,0.3),
-    0 0 0 3px rgba(34, 211, 238, 0.5),
-    0 0 20px rgba(8, 145, 178, 0.3);
+.pw-lock-icon {
+  width: 44px;
+  height: 44px;
+  color: var(--primary-light);
+  transition: all 0.3s ease;
 }
 
-.fp-scanner-inner:active,
-.fp-scanner-inner.scanning {
-  transform: scale(0.96);
-  box-shadow: 
-    inset 0 2px 4px rgba(0,0,0,0.3),
-    0 0 0 3px var(--primary-light),
-    0 0 30px rgba(34, 211, 238, 0.5);
-}
-
-.fp-scanner-inner.success {
+.pw-lock-inner.success {
   background: linear-gradient(180deg, #059669 0%, #047857 100%);
   box-shadow: 
     inset 0 2px 4px rgba(0,0,0,0.2),
@@ -252,235 +242,150 @@ body::after {
     0 0 30px rgba(5, 150, 105, 0.4);
 }
 
-.fp-scanner-inner.error {
+.pw-lock-inner.error {
   background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);
   box-shadow: 
     inset 0 2px 4px rgba(0,0,0,0.2),
     0 0 0 3px rgba(220, 38, 38, 0.5),
     0 0 30px rgba(220, 38, 38, 0.4);
-  animation: fpShake 0.5s ease;
+  animation: pwShake 0.5s ease;
 }
-@keyframes fpShake {
+@keyframes pwShake {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-8px); }
   75% { transform: translateX(8px); }
 }
 
-.fp-icon {
-  width: 56px;
-  height: 56px;
-  color: rgba(255,255,255,0.6);
-  transition: all 0.3s ease;
-}
-
-.fp-scanner-inner.success .fp-icon,
-.fp-scanner-inner.error .fp-icon {
+.pw-lock-inner.success .pw-lock-icon,
+.pw-lock-inner.error .pw-lock-icon {
   display: none;
 }
 
-.fp-success-icon,
-.fp-error-icon {
+.pw-success-icon,
+.pw-error-icon {
   display: none;
   font-size: 32px;
 }
 
-.fp-scanner-inner.success .fp-success-icon {
+.pw-lock-inner.success .pw-success-icon {
   display: block;
 }
 
-.fp-scanner-inner.error .fp-error-icon {
+.pw-lock-inner.error .pw-error-icon {
   display: block;
 }
 
-/* Scan Line Animation */
-.fp-scan-line {
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
-  border-radius: 2px;
-  opacity: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.fp-scanner-inner.scanning .fp-scan-line {
-  opacity: 1;
-  animation: scanLine 1.2s ease-in-out infinite;
-}
-@keyframes scanLine {
-  0% { top: 20%; }
-  50% { top: 80%; }
-  100% { top: 20%; }
-}
-
-.fp-status {
+.pw-status {
   font-size: 14px;
   font-weight: 600;
   color: rgba(255,255,255,0.6);
-  margin-bottom: 4px;
+  margin-bottom: 20px;
   min-height: 20px;
   transition: all 0.3s ease;
 }
 
-.fp-status.success {
+.pw-status.success {
   color: #34d399;
 }
 
-.fp-status.error {
+.pw-status.error {
   color: #f87171;
 }
 
-.fp-hint {
-  font-size: 12px;
-  color: rgba(255,255,255,0.35);
-  font-weight: 500;
-}
-
-/* Divider */
-.fp-divider {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 20px 0;
-}
-
-.fp-divider-line {
-  flex: 1;
-  height: 1px;
-  background: rgba(255,255,255,0.1);
-}
-
-.fp-divider-text {
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.35);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Password Section */
-.fp-password-section {
-  display: none;
-}
-
-.fp-password-section.show {
-  display: block;
-  animation: slideDown 0.3s ease;
-}
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.fp-password-input-wrapper {
+/* Password Input */
+.pw-input-wrapper {
   position: relative;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
-.fp-password-input {
+.pw-input {
   width: 100%;
-  padding: 14px 48px 14px 16px;
+  padding: 16px 52px 16px 18px;
   background: rgba(255,255,255,0.06);
-  border: 1.5px solid rgba(255,255,255,0.15);
-  border-radius: 12px;
-  font-size: 16px;
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 14px;
+  font-size: 18px;
   font-family: inherit;
   font-weight: 600;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   text-align: center;
   color: white;
   transition: all 0.25s ease;
 }
-.fp-password-input:focus {
+.pw-input:focus {
   outline: none;
   border-color: var(--primary-light);
   background: rgba(255,255,255,0.1);
   box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.15);
 }
-.fp-password-input::placeholder {
+.pw-input::placeholder {
   color: rgba(255,255,255,0.25);
   letter-spacing: normal;
+  font-size: 14px;
 }
 
-.fp-toggle-pass {
+.pw-toggle-btn {
   position: absolute;
-  right: 12px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
   color: rgba(255,255,255,0.4);
-  padding: 4px;
+  padding: 6px;
   transition: color 0.2s;
+  border-radius: 8px;
 }
-.fp-toggle-pass:hover { color: white; }
+.pw-toggle-btn:hover { 
+  color: white; 
+  background: rgba(255,255,255,0.1);
+}
 
-.fp-submit-btn {
+.pw-submit-btn {
   width: 100%;
-  padding: 14px;
+  padding: 16px;
   background: linear-gradient(135deg, var(--primary), #0e7490);
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   color: white;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.25s ease;
   box-shadow: 0 4px 16px rgba(8, 145, 178, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
-.fp-submit-btn:hover {
+.pw-submit-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(8, 145, 178, 0.4);
 }
-.fp-submit-btn:active {
+.pw-submit-btn:active {
   transform: translateY(0);
 }
 
-.fp-alt-link {
-  display: block;
-  text-align: center;
-  margin-top: 16px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--primary-light);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 8px;
-  border-radius: 8px;
+.pw-hint {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 14px;
+  font-weight: 500;
 }
-.fp-alt-link:hover {
-  background: rgba(34, 211, 238, 0.1);
-  color: white;
-}
-
-.fp-back-link {
-  display: none;
-  text-align: center;
-  margin-top: 12px;
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.5);
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.fp-back-link:hover { color: white; }
-.fp-back-link.show { display: block; }
 
 /* ============ MODE INDICATOR BAR ============ */
 .mode-bar {
-  background: linear-gradient(135deg, var(--primary), #06b6d4);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
   padding: 10px 16px; border-radius: var(--radius-md);
   margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;
-  box-shadow: 0 4px 16px rgba(8, 145, 178, 0.25);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.25);
   animation: slideDown 0.5s ease;
 }
-.mode-bar.view-mode {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.25);
+.mode-bar.edit-mode {
+  background: linear-gradient(135deg, var(--primary), #06b6d4);
+  box-shadow: 0 4px 16px rgba(8, 145, 178, 0.25);
 }
 .mode-info { display: flex; align-items: center; gap: 10px; color: white; }
 .mode-icon {
@@ -590,10 +495,10 @@ body::after {
 
 .form-date-badge {
   position: absolute; top: -10px; right: 16px;
-  background: linear-gradient(135deg, var(--primary), #06b6d4);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
   color: white; font-size: 11px; font-weight: 700;
   padding: 5px 14px; border-radius: 20px; z-index: 10;
-  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
   display: flex; align-items: center; gap: 5px; white-space: nowrap;
   animation: badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -608,32 +513,32 @@ body::after {
 }
 
 .view-only-indicator {
-  display: none; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 8px;
   background: linear-gradient(135deg, #fef3c7, #fde68a);
   border: 1.5px dashed #f59e0b; border-radius: 10px;
   padding: 10px 14px; margin-bottom: 16px;
   font-size: 11px; font-weight: 700; color: #92400e;
   animation: pulseGentle 2s ease-in-out infinite;
 }
-body.view-mode .view-only-indicator { display: flex; }
+body.edit-mode .view-only-indicator { display: none !important; }
 @keyframes pulseGentle {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.75; }
 }
 .view-only-indicator svg { width: 16px; height: 16px; stroke: #d97706; flex-shrink: 0; }
 
-body.view-mode .form-section {
+body:not(.edit-mode) .form-section {
   background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
               linear-gradient(135deg, #d97706, #f59e0b, #fbbf24) border-box;
   border-color: transparent;
 }
-body.view-mode .form-inner { background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%); }
-body.view-mode .form-header-icon { background: linear-gradient(135deg, #d97706, #f59e0b); }
-body.view-mode .form-header-text h3 { color: #92400e; }
-body.view-mode .form-label { color: #92400e; }
-body.view-mode .form-label svg { stroke: #d97706; }
+body:not(.edit-mode) .form-inner { background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%); }
+body:not(.edit-mode) .form-header-icon { background: linear-gradient(135deg, #d97706, #f59e0b); }
+body:not(.edit-mode) .form-header-text h3 { color: #92400e; }
+body:not(.edit-mode) .form-label { color: #92400e; }
+body:not(.edit-mode) .form-label svg { stroke: #d97706; }
 
-.form-section {
+body.edit-mode .form-section {
   background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
               linear-gradient(135deg, var(--primary), #06b6d4, var(--purple)) border-box;
   border: 2.5px solid transparent; border-radius: var(--radius-lg);
@@ -641,22 +546,44 @@ body.view-mode .form-label svg { stroke: #d97706; }
   box-shadow: 0 4px 20px rgba(8, 145, 178, 0.12), 0 0 0 1px rgba(255,255,255,0.8) inset;
   position: relative; overflow: visible;
 }
-.form-inner {
+body.edit-mode .form-inner {
   background: linear-gradient(180deg, #ffffff 0%, #fafffe 100%);
+  border-radius: calc(var(--radius-lg) - 4px); padding: 22px 20px; position: relative;
+}
+body.edit-mode .form-header-icon {
+  background: linear-gradient(135deg, var(--primary), #06b6d4);
+}
+body.edit-mode .form-header-text h3 { color: var(--primary-dark); }
+body.edit-mode .form-label { color: var(--primary-dark); }
+body.edit-mode .form-label svg { stroke: var(--primary); }
+
+.form-section {
+  background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+              linear-gradient(135deg, #d97706, #f59e0b, #fbbf24) border-box;
+  border: 2.5px solid transparent; border-radius: var(--radius-lg);
+  padding: 6px;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.12), 0 0 0 1px rgba(255,255,255,0.8) inset;
+  position: relative; overflow: visible;
+}
+.form-inner {
+  background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%);
   border-radius: calc(var(--radius-lg) - 4px); padding: 22px 20px; position: relative;
 }
 .form-header {
   display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
-  padding-bottom: 14px; border-bottom: 1px dashed rgba(8, 145, 178, 0.2);
+  padding-bottom: 14px; border-bottom: 1px dashed rgba(217, 119, 6, 0.2);
+}
+body.edit-mode .form-header {
+  border-bottom: 1px dashed rgba(8, 145, 178, 0.2);
 }
 .form-header-icon {
   width: 36px; height: 36px;
-  background: linear-gradient(135deg, var(--primary), #06b6d4);
+  background: linear-gradient(135deg, #d97706, #f59e0b);
   border-radius: 10px; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.25);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
 }
 .form-header-icon svg { width: 18px; height: 18px; stroke: white; stroke-width: 2.5; }
-.form-header-text h3 { font-size: 15px; font-weight: 800; color: var(--primary-dark); letter-spacing: -0.3px; }
+.form-header-text h3 { font-size: 15px; font-weight: 800; color: #92400e; letter-spacing: -0.3px; }
 .form-header-text p { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 
 .form-group { margin-bottom: 15px; position: relative; z-index: 1; }
@@ -664,32 +591,43 @@ body.view-mode .form-label svg { stroke: #d97706; }
 .form-label {
   display: flex; align-items: center; gap: 6px;
   margin-bottom: 7px; font-weight: 700; font-size: 11px;
-  color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.6px;
+  color: #92400e; text-transform: uppercase; letter-spacing: 0.6px;
 }
-.form-label svg { width: 13px; height: 13px; stroke: var(--primary); }
+body.edit-mode .form-label { color: var(--primary-dark); }
+body.edit-mode .form-label svg { stroke: var(--primary); }
+.form-label svg { width: 13px; height: 13px; stroke: #d97706; }
 
 .form-control {
   width: 100%; padding: 14px 16px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbfc 100%);
-  border: 1.8px solid #cbd5e1; border-radius: 11px;
-  font-size: 15px; font-family: inherit; color: var(--text-primary);
+  background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
+  border: 1.8px solid #fcd34d; border-radius: 11px;
+  font-size: 15px; font-family: inherit; color: #78716c;
   transition: all 0.25s ease;
+}
+body.edit-mode .form-control {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbfc 100%);
+  border: 1.8px solid #cbd5e1;
+  color: var(--text-primary);
 }
 .form-control::placeholder { color: #94a3b8; }
 .form-control:focus {
   outline: none; border-color: var(--primary); background: #ffffff;
   box-shadow: 0 0 0 4px rgba(8, 145, 178, 0.1), 0 2px 8px rgba(8, 145, 178, 0.08);
   transform: translateY(-1px);
+  color: var(--text-primary);
 }
 
 .form-control:disabled {
-  background: linear-gradient(180deg, #fefce8 0%, #fef3c7 100%);
-  border: 1.8px solid #fcd34d; color: #78716c; cursor: not-allowed; opacity: 1;
+  background: linear-gradient(180deg, #fefce8 0%, #fef3c7 100%) !important;
+  border: 1.8px solid #fcd34d !important; 
+  color: #78716c !important; 
+  cursor: not-allowed; 
+  opacity: 1;
 }
 
 .select-wrapper { position: relative; }
 
-body.view-mode .select-wrapper::after {
+body:not(.edit-mode) .select-wrapper::after {
   content: 'Preview';
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
   font-size: 9px; font-weight: 800; color: #d97706;
@@ -697,11 +635,12 @@ body.view-mode .select-wrapper::after {
   pointer-events: none; z-index: 2;
 }
 
-body.view-mode #service {
+body:not(.edit-mode) #service {
   padding-right: 70px !important;
-  border-color: #fbbf24;
+  border-color: #fbbf24 !important;
   background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%) !important;
-  color: #92400e; cursor: pointer !important;
+  color: #92400e !important; 
+  cursor: pointer !important;
 }
 
 select.form-control {
@@ -715,7 +654,7 @@ select.form-control {
   display: none; font-size: 10px; color: #d97706;
   font-weight: 600; margin-top: 6px; text-align: right;
 }
-body.view-mode .service-hint { display: block; }
+body:not(.edit-mode) .service-hint { display: block; }
 
 .btn {
   width: 100%; padding: 15px 20px; border: none;
@@ -769,8 +708,8 @@ body.view-mode .service-hint { display: block; }
 @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 .item-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(8,145,178,0.1); }
 
-body.view-mode .long-press-hint,
-body.view-mode .press-overlay { display: none !important; }
+body:not(.edit-mode) .long-press-hint,
+body:not(.edit-mode) .press-overlay { display: none !important; }
 
 .item-card.pressing {
   border-color: var(--danger);
@@ -890,8 +829,8 @@ body.view-mode .press-overlay { display: none !important; }
   .long-press-hint { display: none; }
   .mode-text { font-size: 12px; }
   .mode-icon { width: 32px; height: 32px; }
-  .fp-scanner-container { width: 120px; height: 120px; }
-  .fp-icon { width: 48px; height: 48px; }
+  .pw-lock-container { width: 85px; height: 85px; }
+  .pw-lock-icon { width: 38px; height: 38px; }
 }
 </style>
 </head>
@@ -937,63 +876,48 @@ body.view-mode .press-overlay { display: none !important; }
 <div class="data-particle p2"></div>
 <div class="data-particle p3"></div>
 
-<!-- Fingerprint Unlock Modal -->
-<div class="fingerprint-overlay" id="fingerprintModal">
-  <div class="fingerprint-modal">
+<!-- Password Unlock Modal -->
+<div class="password-overlay" id="passwordModal">
+  <div class="password-modal">
     
     <!-- Header -->
-    <div class="fp-header">
+    <div class="pw-header">
       <span></span>
-      <span class="fp-title">Verifikasi</span>
-      <button class="fp-close-btn" onclick="closeFingerprintModal()">
+      <span class="pw-title">Verifikasi Password</span>
+      <button class="pw-close-btn" onclick="closePasswordModal()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     
-    <!-- Fingerprint Scanner -->
-    <div class="fp-scanner-container">
-      <div class="fp-scanner-outer"></div>
-      <div class="fp-scanner-inner" id="fpScanner" onclick="startFingerprintScan()">
-        <div class="fp-scan-line"></div>
-        <svg class="fp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 018 4"/>
-          <path d="M5 19.5C5.5 18 6 16 6 14"/>
-          <path d="M12 12h.01"/>
-          <path d="M17 19.5c-.5-1.5-1-3.5-1-5.5"/>
-          <path d="M12 22a10 10 0 01-8-4"/>
-          <path d="M22 12a10 10 0 01-8 4"/>
-          <path d="M19 19.5c.5-1.5 1-3.5 1-5.5"/>
-          <path d="M2 12a10 10 0 018-4"/>
+    <!-- Lock Icon -->
+    <div class="pw-lock-container">
+      <div class="pw-lock-outer"></div>
+      <div class="pw-lock-inner" id="pwLockInner">
+        <svg class="pw-lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0110 0v4"/>
         </svg>
-        <span class="fp-success-icon">✓</span>
-        <span class="fp-error-icon">✕</span>
+        <span class="pw-success-icon">✓</span>
+        <span class="pw-error-icon">✕</span>
       </div>
     </div>
     
-    <div class="fp-status" id="fpStatus">Sentuh sensor untuk verifikasi</div>
-    <div class="fp-hint" id="fpHint">Gunakan sidik jari Anda</div>
+    <div class="pw-status" id="pwStatus">Masukkan password untuk membuka kunci</div>
     
-    <!-- Divider -->
-    <div class="fp-divider">
-      <div class="fp-divider-line"></div>
-      <span class="fp-divider-text">atau</span>
-      <div class="fp-divider-line"></div>
+    <!-- Password Input -->
+    <div class="pw-input-wrapper">
+      <input type="password" id="pwInput" class="pw-input" placeholder="Password..." maxlength="20" autocomplete="off">
+      <button type="button" class="pw-toggle-btn" onclick="togglePassword()" id="pwToggleBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
     </div>
     
-    <!-- Password Section -->
-    <div class="fp-password-section" id="fpPasswordSection">
-      <div class="fp-password-input-wrapper">
-        <input type="password" id="fpPasswordInput" class="fp-password-input" placeholder="Masukkan password" maxlength="20">
-        <button type="button" class="fp-toggle-pass" onclick="toggleFpPassword()" id="fpTogglePass">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        </button>
-      </div>
-      <button class="fp-submit-btn" onclick="submitFpPassword()">Buka dengan Password</button>
-    </div>
+    <button class="pw-submit-btn" onclick="submitPassword()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 019.9-1"/></svg>
+      Buka Kunci
+    </button>
     
-    <!-- Links -->
-    <div class="fp-alt-link" id="fpAltLink" onclick="showPasswordMode()">Gunakan Password sebagai alternatif</div>
-    <div class="fp-back-link" id="fpBackLink" onclick="showFingerprintMode()">Kembali ke Sidik Jari</div>
+    <div class="pw-hint">Tekan Enter atau klik tombol untuk submit</div>
     
   </div>
 </div>
@@ -1018,14 +942,14 @@ body.view-mode .press-overlay { display: none !important; }
   <!-- Mode Bar -->
   <div class="mode-bar" id="modeBar">
     <div class="mode-info">
-      <div class="mode-icon" id="modeIcon">👁️</div>
+      <div class="mode-icon" id="modeIcon">🔒</div>
       <div class="mode-text" id="modeText">
-        MODE VIEWING
-        <small>Klik tombol untuk buka edit</small>
+        MODE TERKUNCI
+        <small>Masukkan password untuk edit</small>
       </div>
     </div>
     <div class="mode-action" id="modeAction">
-      <button class="btn-mode-switch" id="modeSwitchBtn" onclick="openFingerprintModal()">
+      <button class="btn-mode-switch" id="modeSwitchBtn" onclick="openPasswordModal()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
         Buka Kunci
       </button>
@@ -1147,7 +1071,8 @@ body.view-mode .press-overlay { display: none !important; }
           Simpan Transaksi
         </button>
         
-        <a href="laporan.html" class="btn btn-report" id="btnReport" disabled>
+        <!-- Tombol Laporan - SELALU AKTIF -->
+        <a href="laporan.html" class="btn btn-report" id="btnReport">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           Buka Halaman Laporan
         </a>
@@ -1193,6 +1118,7 @@ const db = getFirestore(app);
 // ==================== MODE MANAGEMENT ====================
 const EDIT_PASSWORD = 'teknisi2024';
 
+// Default SELALU mode terkunci (view mode)
 let isEditMode = false;
 let selectedDate = '';
 let deleteTargetId = null;
@@ -1206,201 +1132,163 @@ const icons = {
   'Lainnya': { icon: '⚙️', cls: 'icon-lainnya' }
 };
 
-function checkEditMode() {
-  const storedMode = localStorage.getItem('ct_edit_mode');
-  if (storedMode === 'true') {
-    enableEditMode();
-  } else {
-    disableViewMode();
-  }
+// Inisialisasi: SELALU mulai dengan mode terkunci
+function initMode() {
+  disableViewMode();
 }
 
 function enableEditMode() {
   isEditMode = true;
-  document.body.classList.remove('view-mode');
-  localStorage.setItem('ct_edit_mode', 'true');
+  document.body.classList.add('edit-mode');
   
   const modeBar = document.getElementById('modeBar');
-  modeBar.classList.remove('view-mode');
+  modeBar.classList.remove('mode-bar');
+  modeBar.classList.add('edit-mode');
   document.getElementById('modeIcon').textContent = '✏️';
   document.getElementById('modeText').innerHTML = 'MODE EDIT<small>Teknisi aktif input data</small>';
   document.getElementById('modeSwitchBtn').innerHTML = `
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
     Kunci View
   `;
-  document.getElementById('modeSwitchBtn').onclick = disableViewMode;
+  document.getElementById('modeSwitchBtn').onclick = lockViewMode;
   
-  document.getElementById('viewOnlyIndicator').style.display = 'none';
+  // Enable form inputs
   document.getElementById('nama').disabled = false;
   document.getElementById('keterangan').disabled = false;
   document.getElementById('biaya').disabled = false;
   document.getElementById('btnSimpan').disabled = false;
-  document.getElementById('btnReport').disabled = false;
+  // Tombol report TIDAK perlu di-enable karena selalu aktif
   
   const svcSelect = document.getElementById('service');
   svcSelect.disabled = false;
-  svcSelect.style.cssText = '';
   
   showToast('Mode Edit aktif!', 'success');
 }
 
 function disableViewMode() {
   isEditMode = false;
-  document.body.classList.add('view-mode');
-  localStorage.setItem('ct_edit_mode', 'false');
+  document.body.classList.remove('edit-mode');
   
   const modeBar = document.getElementById('modeBar');
-  modeBar.classList.add('view-mode');
-  document.getElementById('modeIcon').textContent = '👁️';
-  document.getElementById('modeText').innerHTML = 'MODE VIEWING<small>Klik tombol untuk buka edit</small>';
+  modeBar.classList.add('mode-bar');
+  modeBar.classList.remove('edit-mode');
+  document.getElementById('modeIcon').textContent = '🔒';
+  document.getElementById('modeText').innerHTML = 'MODE TERKUNCI<small>Masukkan password untuk edit</small>';
   document.getElementById('modeSwitchBtn').innerHTML = `
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
     Buka Kunci
   `;
-  document.getElementById('modeSwitchBtn').onclick = openFingerprintModal;
+  document.getElementById('modeSwitchBtn').onclick = openPasswordModal;
   
-  document.getElementById('viewOnlyIndicator').style.display = 'flex';
+  // Disable form inputs (KECUALI tombol report)
   document.getElementById('nama').disabled = true;
   document.getElementById('keterangan').disabled = true;
   document.getElementById('biaya').disabled = true;
   document.getElementById('btnSimpan').disabled = true;
-  document.getElementById('btnReport').disabled = true;
+  // btnReport TIDAK disabled - selalu bisa klik!
   
   const svcSelect = document.getElementById('service');
   svcSelect.disabled = false;
 }
 
-// ==================== FINGERPRINT MODAL ====================
-window.openFingerprintModal = function() {
-  if (isEditMode) return;
-  resetFingerprintUI();
-  document.getElementById('fingerprintModal').classList.add('show');
-};
-
-window.closeFingerprintModal = function() {
-  document.getElementById('fingerprintModal').classList.remove('show');
-  cancelFingerprintScan();
-};
-
-function resetFingerprintUI() {
-  const scanner = document.getElementById('fpScanner');
-  const status = document.getElementById('fpStatus');
-  const hint = document.getElementById('fpHint');
-  
-  scanner.className = 'fp-scanner-inner';
-  status.className = 'fp-status';
-  status.textContent = 'Sentuh sensor untuk verifikasi';
-  hint.style.display = 'block';
-  
-  // Reset to fingerprint mode
-  document.getElementById('fpPasswordSection').classList.remove('show');
-  document.getElementById('fpAltLink').style.display = 'block';
-  document.getElementById('fpBackLink').classList.remove('show');
-  document.getElementById('fpPasswordInput').value = '';
+function lockViewMode() {
+  disableViewMode();
+  showToast('Form dikunci kembali', 'info');
 }
 
-window.showPasswordMode = function() {
-  document.getElementById('fpPasswordSection').classList.add('show');
-  document.getElementById('fpAltLink').style.display = 'none';
-  document.getElementById('fpBackLink').classList.add('show');
-  setTimeout(() => document.getElementById('fpPasswordInput').focus(), 300);
+// ==================== PASSWORD MODAL ====================
+window.openPasswordModal = function() {
+  if (isEditMode) return;
+  resetPasswordUI();
+  document.getElementById('passwordModal').classList.add('show');
+  setTimeout(() => document.getElementById('pwInput').focus(), 300);
 };
 
-window.showFingerprintMode = function() {
-  document.getElementById('fpPasswordSection').classList.remove('show');
-  document.getElementById('fpAltLink').style.display = 'block';
-  document.getElementById('fpBackLink').classList.remove('show');
-  resetFingerprintUI();
+window.closePasswordModal = function() {
+  document.getElementById('passwordModal').classList.remove('show');
 };
 
-window.toggleFpPassword = function() {
-  const input = document.getElementById('fpPasswordInput');
-  const toggle = document.getElementById('fpTogglePass');
+function resetPasswordUI() {
+  const lockInner = document.getElementById('pwLockInner');
+  const status = document.getElementById('pwStatus');
+  
+  lockInner.className = 'pw-lock-inner';
+  status.className = 'pw-status';
+  status.textContent = 'Masukkan password untuk membuka kunci';
+  document.getElementById('pwInput').value = '';
+  document.getElementById('pwInput').type = 'password';
+  updateToggleIcon(false);
+}
+
+window.togglePassword = function() {
+  const input = document.getElementById('pwInput');
   if (input.type === 'password') {
     input.type = 'text';
-    toggle.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    updateToggleIcon(true);
   } else {
     input.type = 'password';
-    toggle.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    updateToggleIcon(false);
   }
 };
 
-let fpScanTimeout = null;
-
-window.startFingerprintScan = function() {
-  const scanner = document.getElementById('fpScanner');
-  const status = document.getElementById('fpStatus');
-  const hint = document.getElementById('fpHint');
-  
-  if (scanner.classList.contains('scanning') || 
-      scanner.classList.contains('success') || 
-      scanner.classList.contains('error')) return;
-  
-  // Start scanning animation
-  scanner.classList.add('scanning');
-  status.textContent = 'Memindai...';
-  status.className = 'fp-status';
-  hint.style.display = 'none';
-  
-  // Simulate scan duration (1.5 seconds)
-  fpScanTimeout = setTimeout(() => {
-    scanner.classList.remove('scanning');
-    scanner.classList.add('success');
-    status.textContent = 'Terverifikasi!';
-    status.className = 'fp-status success';
-    
-    // Close modal and enable edit after success animation
-    setTimeout(() => {
-      closeFingerprintModal();
-      enableEditMode();
-    }, 800);
-  }, 1500);
-};
-
-function cancelFingerprintScan() {
-  if (fpScanTimeout) {
-    clearTimeout(fpScanTimeout);
-    fpScanTimeout = null;
+function updateToggleIcon(isVisible) {
+  const toggle = document.getElementById('pwToggleBtn');
+  if (isVisible) {
+    toggle.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+  } else {
+    toggle.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
   }
 }
 
-window.submitFpPassword = function() {
-  const input = document.getElementById('fpPasswordInput').value;
-  const scanner = document.getElementById('fpScanner');
-  const status = document.getElementById('fpStatus');
+window.submitPassword = function() {
+  const input = document.getElementById('pwInput').value;
+  const lockInner = document.getElementById('pwLockInner');
+  const status = document.getElementById('pwStatus');
+  
+  if (!input) {
+    status.textContent = 'Password tidak boleh kosong!';
+    status.className = 'pw-status error';
+    lockInner.classList.add('error');
+    setTimeout(() => {
+      lockInner.classList.remove('error');
+      status.className = 'pw-status';
+      status.textContent = 'Masukkan password untuk membuka kunci';
+    }, 1200);
+    return;
+  }
   
   if (input === EDIT_PASSWORD) {
-    scanner.classList.add('success');
-    status.textContent = 'Password benar!';
-    status.className = 'fp-status success';
+    lockInner.classList.add('success');
+    status.textContent = 'Password benar! Membuka...';
+    status.className = 'pw-status success';
     
     setTimeout(() => {
-      closeFingerprintModal();
+      closePasswordModal();
       enableEditMode();
-    }, 600);
+    }, 800);
   } else {
-    scanner.classList.add('error');
-    status.textContent = 'Password salah!';
-    status.className = 'fp-status error';
-    document.getElementById('fpPasswordInput').value = '';
+    lockInner.classList.add('error');
+    status.textContent = 'Password salah! Coba lagi.';
+    status.className = 'pw-status error';
+    document.getElementById('pwInput').value = '';
     
     setTimeout(() => {
-      scanner.classList.remove('error');
-      status.className = 'fp-status';
-      status.textContent = 'Coba lagi...';
-      document.getElementById('fpPasswordInput').focus();
-    }, 800);
+      lockInner.classList.remove('error');
+      status.className = 'pw-status';
+      status.textContent = 'Masukkan password untuk membuka kunci';
+      document.getElementById('pwInput').focus();
+    }, 1500);
   }
 };
 
 // Enter key for password
-document.getElementById('fpPasswordInput').addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') submitFpPassword();
+document.getElementById('pwInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') submitPassword();
 });
 
 // Close modal on overlay click
-document.getElementById('fingerprintModal').addEventListener('click', function(e) {
-  if (e.target === this) closeFingerprintModal();
+document.getElementById('passwordModal').addEventListener('click', function(e) {
+  if (e.target === this) closePasswordModal();
 });
 
 // ==================== CORE FUNCTIONS ====================
@@ -1649,8 +1537,8 @@ window.hapus=async function(id){
   catch(e){ showToast('Gagal hapus!','error'); }
 };
 
-// Initialize
-checkEditMode();
+// Initialize - SELALU mulai dengan mode terkunci
+initMode();
 initDate(); 
 loadData();
 </script>
