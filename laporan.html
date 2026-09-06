@@ -303,13 +303,11 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   padding: 24px;
   transform: scale(0.95);
   transition: all 0.3s ease;
   box-shadow: var(--shadow-xl);
-  max-height: 90vh;
-  overflow-y: auto;
 }
 .modal-overlay.show .modal-box { transform: scale(1); }
 
@@ -375,39 +373,6 @@ body {
 .preview-stat { text-align: center; background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border); }
 .preview-stat-label { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
 .preview-stat-value { font-size: 15px; font-weight: 800; color: var(--primary); }
-
-/* PREVIEW TABLE */
-.preview-table-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 14px;
-  margin-top: 14px;
-  max-height: 250px;
-  overflow-y: auto;
-}
-.preview-table-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
-.preview-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 11px;
-}
-.preview-table th {
-  background: var(--bg-input);
-  padding: 8px 6px;
-  text-align: left;
-  font-weight: 700;
-  color: var(--text-secondary);
-  position: sticky;
-  top: 0;
-}
-.preview-table td {
-  padding: 6px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text-secondary);
-}
-.preview-table tr:hover td { background: var(--bg-card-hover); }
-.preview-table .amount { text-align: right; font-weight: 700; color: var(--success); }
 
 .modal-footer { display: flex; gap: 10px; }
 
@@ -569,30 +534,13 @@ body {
           </div>
         </div>
       </div>
-      
-      <!-- Preview Table -->
-      <div class="preview-table-section">
-        <div class="preview-table-title">Detail Transaksi</div>
-        <table class="preview-table">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Tanggal</th>
-              <th>Pelanggan</th>
-              <th>Service</th>
-              <th style="text-align:right">Biaya</th>
-            </tr>
-          </thead>
-          <tbody id="previewTableBody"></tbody>
-        </table>
-      </div>
     </div>
     
     <div class="modal-footer">
       <button class="btn-modal btn-cancel" onclick="closeModal()">Batal</button>
       <button class="btn-modal btn-process" onclick="processAction()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Cetak / Export
+        Proses
       </button>
     </div>
   </div>
@@ -638,7 +586,7 @@ body {
         </button>
         
         <div class="menu-divider"></div>
-        <div class="menu-footer"><div class="menu-footer-text">v2.2 - Preview Added</div></div>
+        <div class="menu-footer"><div class="menu-footer-text">v2.1 - Fixed</div></div>
       </div>
     </div>
   </div>
@@ -717,8 +665,16 @@ const menuContainer = document.getElementById('menuContainer');
 // 🔧 FUNGSI TANGGAL YANG BENAR
 // ============================================
 
+/**
+ * Format tanggal standar: YYYY-MM-DD
+ * Firebase menyimpan sebagai STRING dalam format ini
+ * Date input HTML juga menghasilkan format ini
+ * Jadi bandingkan string saja, tidak perlu convert ke Date object!
+ */
+
 function getTodayString() {
   const now = new Date();
+  // Format: YYYY-MM-DD (sama seperti Firebase & date input)
   return now.getFullYear() + '-' + 
          String(now.getMonth()+1).padStart(2,'0') + '-' + 
          String(now.getDate()).padStart(2,'0');
@@ -730,23 +686,29 @@ function formatDateToString(date) {
          String(date.getDate()).padStart(2,'0');
 }
 
+/**
+ * ✅ FILTER PRESET (today/week/month)
+ * Bandingkan string langsung karena format sama!
+ */
 function isInRange(dateStr, range) {
-  const today = getTodayString();
+  const today = getTodayString(); // "2024-01-15"
   
   switch(range) {
     case 'today':
       return dateStr === today;
       
     case 'week': {
+      // Hitung start of week dari today
       const d = new Date(today + 'T00:00:00');
       const day = d.getDay();
-      const diff = day === 0 ? 6 : day - 1;
+      const diff = day === 0 ? 6 : day - 1; // Monday = 0
       d.setDate(d.getDate() - diff);
       const startOfWeek = formatDateToString(d);
       return dateStr >= startOfWeek && dateStr <= today;
     }
     
     case 'month':
+      // Bandingkan YYYY-MM saja
       return dateStr.substring(0, 7) === today.substring(0, 7);
       
     default:
@@ -754,7 +716,13 @@ function isInRange(dateStr, range) {
   }
 }
 
+/**
+ * ✅ FILTER RANGE (start - end)
+ * Bandingkan string langsung! Karena format sama: YYYY-MM-DD
+ * String comparison works for dates in this format!
+ */
 function isInDateRange(dateStr, startDate, endDate) {
+  // Semua string "YYYY-MM-DD" bisa dibandingkan langsung
   return dateStr >= startDate && dateStr <= endDate;
 }
 
@@ -861,30 +829,15 @@ function updatePreview() {
   if (!s || !e) {
     document.getElementById('previewCount').textContent = '0';
     document.getElementById('previewTotal').textContent = 'Rp 0';
-    document.getElementById('previewTableBody').innerHTML = '';
     return;
   }
   
+  // ✅ Pakai fungsi yang benar!
   const filtered = getDataByDateRange(s, e);
   const total = filtered.reduce((sum, item) => sum + (Number(item.biaya) || 0), 0);
   
   document.getElementById('previewCount').textContent = filtered.length;
   document.getElementById('previewTotal').textContent = 'Rp ' + formatRupiah(total);
-  
-  // Build preview table
-  let rows = '';
-  filtered.sort((a,b) => b.tanggal.localeCompare(a.tanggal));
-  filtered.forEach((item, idx) => {
-    const svc = item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
-    rows += `<tr>
-      <td>${idx+1}</td>
-      <td>${formatDateID(item.tanggal)}</td>
-      <td>${item.nama||'-'}</td>
-      <td>${svc}</td>
-      <td class="amount">Rp ${formatRupiah(item.biaya||0)}</td>
-    </tr>`;
-  });
-  document.getElementById('previewTableBody').innerHTML = rows;
 }
 
 document.getElementById('startDate').addEventListener('change', updatePreview);
@@ -898,6 +851,7 @@ window.processAction = async function() {
   if (!s || !e) { showToast('Pilih tanggal!', 'error'); return; }
   if (s > e) { showToast('Tanggal mulai > akhir!', 'error'); return; }
   
+  // ✅ Filter dengan fungsi yang benar
   const data = getDataByDateRange(s, e);
   
   if (data.length === 0) { showToast('Tidak ada data!', 'error'); return; }
