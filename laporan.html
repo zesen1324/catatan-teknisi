@@ -303,11 +303,13 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   padding: 24px;
   transform: scale(0.95);
   transition: all 0.3s ease;
   box-shadow: var(--shadow-xl);
+  max-height: 90vh;
+  overflow-y: auto;
 }
 .modal-overlay.show .modal-box { transform: scale(1); }
 
@@ -373,6 +375,39 @@ body {
 .preview-stat { text-align: center; background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border); }
 .preview-stat-label { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
 .preview-stat-value { font-size: 15px; font-weight: 800; color: var(--primary); }
+
+/* PREVIEW TABLE */
+.preview-table-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-top: 14px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+.preview-table-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
+.preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.preview-table th {
+  background: var(--bg-input);
+  padding: 8px 6px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--text-secondary);
+  position: sticky;
+  top: 0;
+}
+.preview-table td {
+  padding: 6px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.preview-table tr:hover td { background: var(--bg-card-hover); }
+.preview-table .amount { text-align: right; font-weight: 700; color: var(--success); }
 
 .modal-footer { display: flex; gap: 10px; }
 
@@ -534,13 +569,30 @@ body {
           </div>
         </div>
       </div>
+      
+      <!-- Preview Table -->
+      <div class="preview-table-section">
+        <div class="preview-table-title">Detail Transaksi</div>
+        <table class="preview-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Tanggal</th>
+              <th>Pelanggan</th>
+              <th>Service</th>
+              <th style="text-align:right">Biaya</th>
+            </tr>
+          </thead>
+          <tbody id="previewTableBody"></tbody>
+        </table>
+      </div>
     </div>
     
     <div class="modal-footer">
       <button class="btn-modal btn-cancel" onclick="closeModal()">Batal</button>
       <button class="btn-modal btn-process" onclick="processAction()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Proses
+        Cetak / Export
       </button>
     </div>
   </div>
@@ -586,7 +638,7 @@ body {
         </button>
         
         <div class="menu-divider"></div>
-        <div class="menu-footer"><div class="menu-footer-text">v2.1 - Fixed</div></div>
+        <div class="menu-footer"><div class="menu-footer-text">v2.2 - Preview Added</div></div>
       </div>
     </div>
   </div>
@@ -809,6 +861,7 @@ function updatePreview() {
   if (!s || !e) {
     document.getElementById('previewCount').textContent = '0';
     document.getElementById('previewTotal').textContent = 'Rp 0';
+    document.getElementById('previewTableBody').innerHTML = '';
     return;
   }
   
@@ -817,6 +870,21 @@ function updatePreview() {
   
   document.getElementById('previewCount').textContent = filtered.length;
   document.getElementById('previewTotal').textContent = 'Rp ' + formatRupiah(total);
+  
+  // Build preview table
+  let rows = '';
+  filtered.sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+  filtered.forEach((item, idx) => {
+    const svc = item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
+    rows += `<tr>
+      <td>${idx+1}</td>
+      <td>${formatDateID(item.tanggal)}</td>
+      <td>${item.nama||'-'}</td>
+      <td>${svc}</td>
+      <td class="amount">Rp ${formatRupiah(item.biaya||0)}</td>
+    </tr>`;
+  });
+  document.getElementById('previewTableBody').innerHTML = rows;
 }
 
 document.getElementById('startDate').addEventListener('change', updatePreview);
