@@ -1,534 +1,1029 @@
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Calendar, Download, FileText, Filter, Printer, Share2, TrendingUp, Wallet, Clock } from "lucide-react";
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laporan Pendapatan - Catatan Teknisi</title>
 
-interface Transaction {
-  id: string;
-  nama: string;
-  service: string;
-  keterangan: string;
-  biaya: number;
-  tanggal: string;
+<!-- html2pdf.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #0d9488;
+  --primary-dark: #0f766e;
+  --accent: #f59e0b;
+  --success: #059669;
+  --purple: #7c3aed;
+  --blue: #2563eb;
+  --danger: #dc2626;
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --bg-input: #f1f5f9;
+  --border: #e2e8f0;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
+  --radius-md: 16px;
+  --radius-lg: 24px;
 }
 
-const sampleData: Transaction[] = [
-  { id: "1", nama: "Budi Santoso", service: "Printer", keterangan: "Ganti tinta", biaya: 150000, tanggal: "2024-01-15" },
-  { id: "2", nama: "Siti Rahayu", service: "Komputer", keterangan: "Service motherboard", biaya: 350000, tanggal: "2024-01-14" },
-  { id: "3", nama: "Ahmad Fauzi", service: "Install", keterangan: "Install Windows 11", biaya: 200000, tanggal: "2024-01-13" },
-  { id: "4", nama: "Dewi Lestari", service: "Printer", keterangan: "Ganti roller", biaya: 180000, tanggal: "2024-01-12" },
-  { id: "5", nama: "Rudi Hartono", service: "Lainnya", keterangan: "Upgrade RAM", biaya: 450000, tanggal: "2024-01-11" },
-  { id: "6", nama: "Maya Sari", service: "Komputer", keterangan: "Ganti power supply", biaya: 280000, tanggal: "2024-01-10" },
-  { id: "7", nama: "Joko Widodo", service: "Printer", keterangan: "Bersihkan head", biaya: 120000, tanggal: "2024-01-09" },
-  { id: "8", nama: "Ani Yudhoyono", service: "Install", keterangan: "Install software", biaya: 100000, tanggal: "2024-01-08" },
-];
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-function formatRupiah(num: number) {
-  return new Intl.NumberFormat("id-ID").format(num);
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: linear-gradient(135deg, #f0fdf4 0%, #f0f9ff 50%, #faf5ff 100%);
+  min-height: 100vh;
+  padding: 16px;
+  color: var(--text-primary);
 }
 
-function formatDateID(dateStr: string) {
-  const [y, m, d] = dateStr.split("-");
-  const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-  return `${parseInt(d)} ${months[parseInt(m) - 1]} ${y}`;
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.3;
+  animation: float 25s ease-in-out infinite;
+  pointer-events: none;
 }
+.orb-1 { width: 350px; height: 350px; background: linear-gradient(135deg, var(--primary), transparent); top: -120px; right: -120px; }
+.orb-2 { width: 280px; height: 280px; background: linear-gradient(135deg, var(--purple), transparent); bottom: -100px; left: -100px; animation-delay: -10s; }
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -30px) scale(1.05); }
+}
+
+.container { max-width: 640px; margin: 0 auto; position: relative; z-index: 1; }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0 28px;
+}
+.header-left { display: flex; align-items: center; gap: 16px; }
+
+.back-btn {
+  width: 46px; height: 46px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+.back-btn:hover { background: var(--bg-card-hover); color: var(--primary); transform: translateX(-3px); }
+
+.header-info h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+.header-info p { color: var(--text-muted); font-size: 14px; }
+
+/* MENU */
+.menu-container { position: relative; }
+
+.menu-btn {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.menu-btn:hover { background: var(--bg-card-hover); color: var(--primary); transform: rotate(90deg) scale(1.06); }
+.menu-btn.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; transform: rotate(90deg); }
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 260px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.25s ease;
+  z-index: 100;
+}
+.dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+
+.menu-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(13,148,136,0.05);
+}
+.menu-header-title { font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+.dropdown-item:hover { background: var(--bg-input); color: var(--text-primary); }
+.dropdown-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+.dropdown-item.print { color: var(--blue); }
+.dropdown-item.share { color: var(--success); }
+.dropdown-item.export { color: var(--purple); }
+.dropdown-divider { height: 1px; background: var(--border); margin: 4px 0; }
+.menu-footer { padding: 10px 18px; border-top: 1px solid var(--border); background: var(--bg-input); }
+.menu-footer-text { font-size: 11px; color: var(--text-muted); text-align: center; }
+
+/* STATS */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 14px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.stat-card.today::before { background: linear-gradient(90deg, var(--success), #34d399); }
+.stat-card.week::before { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+.stat-card.month::before { background: linear-gradient(90deg, var(--purple), #a78bfa); }
+.stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.stat-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+.stat-card.today .stat-icon { background: rgba(16,185,129,0.12); }
+.stat-card.week .stat-icon { background: rgba(37,99,235,0.12); }
+.stat-card.month .stat-icon { background: rgba(124,58,237,0.12); }
+.stat-label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.stat-value { font-size: 17px; font-weight: 800; }
+.stat-card.today .stat-value { color: var(--success); }
+.stat-card.week .stat-value { color: var(--blue); }
+.stat-card.month .stat-value { color: var(--purple); }
+
+/* FILTER */
+.filter-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.filter-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+
+.filter-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+.filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+/* SUMMARY */
+.summary-bar {
+  background: linear-gradient(135deg, var(--bg-card), #fefce8);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.summary-text { font-size: 13px; color: var(--text-secondary); }
+.summary-text strong { color: var(--text-primary); }
+.summary-total { font-size: 17px; font-weight: 800; color: var(--accent); }
+
+/* LIST */
+.list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.list-title { font-size: 15px; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.transaction-count { background: var(--bg-input); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; color: var(--text-muted); }
+
+.transaction-list {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.transaction-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.2s ease;
+  animation: fadeInUp 0.3s ease backwards;
+}
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.transaction-item:last-child { border-bottom: none; }
+.transaction-item:hover { background: var(--bg-card-hover); }
+
+.txn-date {
+  background: var(--bg-input);
+  padding: 8px 10px;
+  border-radius: 10px;
+  text-align: center;
+  flex-shrink: 0;
+  min-width: 52px;
+}
+.txn-day { font-size: 18px; font-weight: 800; color: var(--text-primary); line-height: 1; }
+.txn-month { font-size: 9px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+.txn-info { flex: 1; min-width: 0; }
+.txn-name { font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 2px; }
+.txn-service { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+
+.service-badge { padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+.badge-printer { background: rgba(59,130,246,0.12); color: #3b82f6; }
+.badge-komputer { background: rgba(139,92,246,0.12); color: #8b5cf6; }
+.badge-install { background: rgba(16,185,129,0.12); color: #10b981; }
+.badge-lainnya { background: rgba(245,158,11,0.12); color: #f59e0b; }
+.txn-amount { font-weight: 800; font-size: 14px; color: var(--success); white-space: nowrap; }
+
+.empty-state { text-align: center; padding: 50px 20px; color: var(--text-muted); }
+.empty-icon { font-size: 56px; margin-bottom: 12px; opacity: 0.4; }
+.loading { text-align: center; padding: 40px; color: var(--text-muted); }
+.spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.modal-overlay.show { opacity: 1; visibility: visible; }
+
+.modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 400px;
+  padding: 24px;
+  transform: scale(0.95);
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-xl);
+}
+.modal-overlay.show .modal-box { transform: scale(1); }
+
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.modal-title { font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+
+.modal-close {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.modal-close:hover { background: rgba(220,38,38,0.1); color: var(--danger); }
+
+.modal-body { margin-bottom: 20px; }
+.date-range-group { margin-bottom: 14px; }
+.date-range-label { display: block; font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.date-input-wrapper input {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg-input);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.date-input-wrapper input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,148,136,0.15); }
+
+.date-arrow { display: flex; justify-content: center; padding: 6px 0; color: var(--text-muted); }
+.quick-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+
+.quick-filter-btn {
+  padding: 7px 12px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.quick-filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+.preview-section {
+  background: var(--bg-input);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-top: 14px;
+}
+.preview-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
+.preview-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.preview-stat { text-align: center; background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid var(--border); }
+.preview-stat-label { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
+.preview-stat-value { font-size: 15px; font-weight: 800; color: var(--primary); }
+
+.modal-footer { display: flex; gap: 10px; }
+
+.btn-modal {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  font-family: inherit;
+}
+.btn-cancel { background: var(--bg-input); border: 1px solid var(--border); color: var(--text-secondary); }
+.btn-cancel:hover { background: var(--bg-card-hover); }
+.btn-process { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; box-shadow: 0 4px 16px rgba(13,148,136,0.3); }
+.btn-process:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,148,136,0.4); }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 12px 20px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  box-shadow: var(--shadow-lg);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.3s ease;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* PDF TEMPLATE (Hidden) */
+#pdfTemplate {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: A4;
+  padding: 15mm;
+  background: white;
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  font-size: 11pt;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+
+@media (max-width: 520px) {
+  body { padding: 10px; }
+  .stats-grid { grid-template-columns: 1fr; gap: 8px; }
+  .stat-card { display: flex; align-items: center; text-align: left; padding: 14px; }
+  .stat-icon { margin: 0 14px 0 0; }
+  .filter-section { justify-content: center; }
+  .summary-bar { flex-direction: column; gap: 8px; text-align: center; }
+  .transaction-item { flex-wrap: wrap; }
+  .txn-amount { width: 100%; text-align: right; padding-top: 8px; border-top: 1px dashed var(--border); }
+  .modal-box { padding: 18px; }
+}
+</style>
+</head>
+
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div id="toast" class="toast"><span id="toastIcon"></span><span id="toastMessage"></span></div>
+
+<!-- PDF Template (Hidden - untuk generate PDF) -->
+<div id="pdfTemplate">
+  <div style="text-align:center; margin-bottom: 20px;">
+    <h1 style="color:#0d9488; font-size:22pt; margin:0;">LAPORAN PENDAPATAN TEKNISI</h1>
+    <p style="color:#666; font-size:10pt;" id="pdfPeriod">-</p>
+  </div>
+  
+  <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:12px; margin-bottom:16px; font-size:10pt;">
+    <div style="display:flex; justify-content:space-between; margin:4px 0;"><span>Tanggal Cetak:</span><strong id="pdfPrintDate">-</strong></div>
+    <div style="display:flex; justify-content:space-between; margin:4px 0;"><span>Jumlah Transaksi:</span><strong id="pdfTotalTx">0</strong></div>
+    <div style="display:flex; justify-content:space-between; margin:4px 0;"><span>Total Pendapatan:</span><strong style="color:#0d9488;" id="pdfTotalAmount">Rp 0</strong></div>
+  </div>
+  
+  <table style="width:100%; border-collapse:collapse; font-size:9pt;" id="pdfTable">
+    <thead><tr style="background:#1e293b; color:white;">
+      <th style="padding:8px 4px; text-align:left;">No</th>
+      <th style="padding:8px 4px; text-align:left;">Tanggal</th>
+      <th style="padding:8px 4px; text-align:left;">Pelanggan</th>
+      <th style="padding:8px 4px; text-align:left;">Service</th>
+      <th style="padding:8px 4px; text-align:right;">Biaya</th>
+    </tr></thead>
+    <tbody id="pdfTableBody"></tbody>
+  </table>
+  
+  <div style="margin-top:20px; padding:14px; background:#0d9488; color:white; border-radius:8px; text-align:center;">
+    <div style="font-size:9pt; opacity:0.9;">TOTAL PENDAPATAN</div>
+    <div style="font-size:24pt; font-weight:800;" id="pdfGrandTotal">Rp 0</div>
+  </div>
+  
+  <div style="margin-top:16px; text-align:center; color:#999; font-size:8pt;">Dicetak dari Catatan Teknisi App</div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="dateRangeModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Pilih Rentang Tanggal
+      </div>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="date-range-group">
+        <label class="date-range-label">Tanggal Mulai</label>
+        <div class="date-input-wrapper"><input type="date" id="startDate"></div>
+      </div>
+      
+      <div class="date-arrow">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </div>
+      
+      <div class="date-range-group">
+        <label class="date-range-label">Tanggal Akhir</label>
+        <div class="date-input-wrapper"><input type="date" id="endDate"></div>
+      </div>
+      
+      <div class="quick-filters">
+        <button class="quick-filter-btn" onclick="setQuickDate('today')">Hari Ini</button>
+        <button class="quick-filter-btn" onclick="setQuickDate('week')">Minggu Ini</button>
+        <button class="quick-filter-btn" onclick="setQuickDate('month')">Bulan Ini</button>
+        <button class="quick-filter-btn" onclick="setQuickDate('all')">Semua Data</button>
+      </div>
+      
+      <div class="preview-section">
+        <div class="preview-title">Preview Hasil</div>
+        <div class="preview-stats">
+          <div class="preview-stat">
+            <div class="preview-stat-label">Transaksi</div>
+            <div class="preview-stat-value" id="previewCount">0</div>
+          </div>
+          <div class="preview-stat">
+            <div class="preview-stat-label">Total</div>
+            <div class="preview-stat-value" id="previewTotal">Rp 0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn-modal btn-cancel" onclick="closeModal()">Batal</button>
+      <button class="btn-modal btn-process" onclick="processAction()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Proses
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <a href="index.html" class="back-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </a>
+      <div class="header-info">
+        <h1>Laporan Pendapatan</h1>
+        <p>Riwayat semua transaksi</p>
+      </div>
+    </div>
+    
+    <!-- Menu -->
+    <div class="menu-container" id="menuContainer">
+      <button class="menu-btn" id="menuBtn" onclick="toggleMenu(event)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+      </button>
+      
+      <div class="dropdown-menu" id="dropdownMenu">
+        <div class="menu-header">
+          <div class="menu-header-title">Opsi Laporan</div>
+        </div>
+        
+        <button class="dropdown-item print" onclick="openModal('print')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Cetak / Download PDF
+        </button>
+        
+        <button class="dropdown-item share" onclick="openModal('share')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+        
+        <button class="dropdown-item export" onclick="openModal('export-json')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Export JSON
+        </button>
+        
+        <div class="menu-divider"></div>
+        <div class="menu-footer"><div class="menu-footer-text">v2.1 - Fixed</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card today">
+      <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="stat-label">Hari Ini</div>
+      <div class="stat-value" id="statToday">Rp 0</div>
+    </div>
+    <div class="stat-card week">
+      <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div class="stat-label">Minggu Ini</div>
+      <div class="stat-value" id="statWeek">Rp 0</div>
+    </div>
+    <div class="stat-card month">
+      <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M4 18V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-1z"/><path d="M12 17V7"/><path d="M8 11h8"/></svg></div>
+      <div class="stat-label">Bulan Ini</div>
+      <div class="stat-value" id="statMonth">Rp 0</div>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-section">
+    <span class="filter-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg> Filter:</span>
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Semua</button>
+    <button class="filter-btn" data-filter="today" onclick="setFilter('today')">Hari Ini</button>
+    <button class="filter-btn" data-filter="week" onclick="setFilter('week')">Minggu Ini</button>
+    <button class="filter-btn" data-filter="month" onclick="setFilter('month')">Bulan Ini</button>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-bar">
+    <div class="summary-text">Menampilkan <strong id="showCount">0</strong> transaksi</div>
+    <div class="summary-total" id="summaryTotal">Total: Rp 0</div>
+  </div>
+
+  <!-- List -->
+  <div class="list-header">
+    <div class="list-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg> Daftar Transaksi</div>
+    <span class="transaction-count" id="totalCount">0 total</span>
+  </div>
+  
+  <div id="transactionList" class="transaction-list">
+    <div class="loading"><div class="spinner"></div><p>Memuat data...</p></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// Firebase Config
+const firebaseConfig = {
+  apiKey: "AIzaSyD25yifoIuCrqXVKEx7NvALoAJ8PNb8pDg",
+  authDomain: "catatan-teknisi-50aef.firebaseapp.com",
+  projectId: "catatan-teknisi-50aef",
+  storageBucket: "catatan-teknisi-50aef.firebasestorage.app",
+  messagingSenderId: "172857160604",
+  appId: "1:172857160604:web:8e94e98ca0e7e28309ce59"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let allData = [];
+let currentFilter = 'all';
+let pendingAction = null;
+
+const menuBtn = document.getElementById('menuBtn');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const menuContainer = document.getElementById('menuContainer');
+
+// ============================================
+// 🔧 FUNGSI TANGGAL YANG BENAR
+// ============================================
 
 function getTodayString() {
   const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  return now.getFullYear() + '-' + 
+         String(now.getMonth()+1).padStart(2,'0') + '-' + 
+         String(now.getDate()).padStart(2,'0');
 }
 
-function getServiceBadgeClass(svc: string) {
-  const classes: Record<string, string> = {
-    Printer: "bg-blue-100 text-blue-700",
-    Komputer: "bg-purple-100 text-purple-700",
-    Install: "bg-emerald-100 text-emerald-700",
-    Lainnya: "bg-amber-100 text-amber-700",
-  };
-  return classes[svc] || "bg-amber-100 text-amber-700";
+function formatDateToString(date) {
+  return date.getFullYear() + '-' + 
+         String(date.getMonth()+1).padStart(2,'0') + '-' + 
+         String(date.getDate()).padStart(2,'0');
 }
 
-export default function App() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [filter, setFilter] = useState("all");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [pendingAction, setPendingAction] = useState<"pdf" | "csv" | "json">("pdf");
-  const [toast, setToast] = useState<{ msg: string; type: "success" | "error" } | null>(null);
-
-  useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => setTransactions(sampleData), 500);
-  }, []);
-
-  useEffect(() => {
-    if (toast) {
-      const timer = setTimeout(() => setToast(null), 2500);
-      return () => clearTimeout(timer);
+function isInRange(dateStr, range) {
+  const today = getTodayString();
+  
+  switch(range) {
+    case 'today':
+      return dateStr === today;
+      
+    case 'week': {
+      const d = new Date(today + 'T00:00:00');
+      const day = d.getDay();
+      const diff = day === 0 ? 6 : day - 1;
+      d.setDate(d.getDate() - diff);
+      const startOfWeek = formatDateToString(d);
+      return dateStr >= startOfWeek && dateStr <= today;
     }
-  }, [toast]);
+    
+    case 'month':
+      return dateStr.substring(0, 7) === today.substring(0, 7);
+      
+    default:
+      return true;
+  }
+}
 
-  const isInRange = (dateStr: string, range: string) => {
-    const today = getTodayString();
-    switch (range) {
-      case "today":
-        return dateStr === today;
-      case "week": {
-        const d = new Date(today + "T00:00:00");
-        const day = d.getDay();
-        const diff = day === 0 ? 6 : day - 1;
-        d.setDate(d.getDate() - diff);
-        const startOfWeek = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-        return dateStr >= startOfWeek && dateStr <= today;
+function isInDateRange(dateStr, startDate, endDate) {
+  return dateStr >= startDate && dateStr <= endDate;
+}
+
+function getDataByDateRange(start, end) {
+  return allData.filter(item => isInDateRange(item.tanggal, start, end));
+}
+
+// Utility functions
+function formatRupiah(num) {
+  if (!num || isNaN(num)) return '0';
+  return new Intl.NumberFormat('id-ID').format(Math.round(num));
+}
+
+function formatDateID(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  return parseInt(d) + ' ' + months[parseInt(m)-1] + ' ' + y;
+}
+
+function getServiceBadgeClass(svc) {
+  return {'Printer':'badge-printer','Komputer':'badge-komputer','Install':'badge-install','Lainnya':'badge-lainnya'}[svc] || 'badge-lainnya';
+}
+
+function formatDate(dateStr) {
+  const [y,m,d] = dateStr.split('-');
+  const dt = new Date(y, m-1, d);
+  return { day: dt.getDate(), month: dt.toLocaleDateString('id-ID',{month:'short'}) };
+}
+
+// Toast
+window.showToast = function(msg, type='success') {
+  const toast = document.getElementById('toast');
+  toast.innerHTML = `<span>${type==='success'?'✅':'❌'}</span><span>${msg}</span>`;
+  toast.style.borderColor = type==='success'?'var(--success)':'var(--danger)';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+};
+
+// Menu
+window.toggleMenu = function(e) {
+  if(e) e.stopPropagation();
+  menuBtn.classList.toggle('active');
+  dropdownMenu.classList.toggle('show');
+};
+document.addEventListener('click', e => { if(!menuContainer.contains(e.target)) { menuBtn.classList.remove('active'); dropdownMenu.classList.remove('show'); }});
+
+// Modal
+window.openModal = function(action) {
+  pendingAction = action;
+  menuBtn.classList.remove('active');
+  dropdownMenu.classList.remove('show');
+  
+  setTimeout(() => {
+    const titles = {'print':'Cetak / Download PDF','share':'Export CSV','export-json':'Export JSON'};
+    document.getElementById('modalTitle').innerHTML = titles[action] || 'Pilih Tanggal';
+    setQuickDate('week');
+    document.getElementById('dateRangeModal').classList.add('show');
+    updatePreview();
+  }, 150);
+};
+
+window.closeModal = function() { document.getElementById('dateRangeModal').classList.remove('show'); };
+
+window.setQuickDate = function(preset) {
+  const today = new Date();
+  let s, e;
+  
+  switch(preset) {
+    case 'today':
+      s = e = today;
+      break;
+    case 'week':
+      s = new Date(today);
+      const dow = s.getDay();
+      s.setDate(today.getDate() - (dow === 0 ? 6 : dow - 1));
+      e = today;
+      break;
+    case 'month':
+      s = new Date(today.getFullYear(), today.getMonth(), 1);
+      e = today;
+      break;
+    case 'all':
+      if (allData.length > 0) {
+        const dates = allData.map(d => d.tanggal).sort();
+        s = new Date(dates[0]);
+        e = new Date(dates[dates.length-1]);
+      } else {
+        s = e = today;
       }
-      case "month":
-        return dateStr.substring(0, 7) === today.substring(0, 7);
-      default:
-        return true;
-    }
-  };
+      break;
+    default:
+      s = e = today;
+  }
+  
+  document.getElementById('startDate').value = formatDateToString(s);
+  document.getElementById('endDate').value = formatDateToString(e);
+  updatePreview();
+};
 
-  const isInDateRange = (dateStr: string, start: string, end: string) => {
-    return dateStr >= start && dateStr <= end;
-  };
-
-  const getFilteredData = () => {
-    if (showModal && startDate && endDate) {
-      return transactions.filter((t) => isInDateRange(t.tanggal, startDate, endDate));
-    }
-    return transactions.filter((t) => isInRange(t.tanggal, filter));
-  };
-
-  const filteredData = getFilteredData();
-  const total = filteredData.reduce((sum, item) => sum + item.biaya, 0);
-
-  const stats = {
-    today: transactions.filter((t) => isInRange(t.tanggal, "today")).reduce((s, i) => s + i.biaya, 0),
-    week: transactions.filter((t) => isInRange(t.tanggal, "week")).reduce((s, i) => s + i.biaya, 0),
-    month: transactions.filter((t) => isInRange(t.tanggal, "month")).reduce((s, i) => s + i.biaya, 0),
-  };
-
-  const openModal = (action: "pdf" | "csv" | "json") => {
-    setPendingAction(action);
-    setStartDate(getTodayString());
-    setEndDate(getTodayString());
-    setShowModal(true);
-  };
-
-  const setQuickDate = (preset: string) => {
-    const today = new Date();
-    let s: Date, e: Date;
-    switch (preset) {
-      case "today":
-        s = e = today;
-        break;
-      case "week":
-        s = new Date(today);
-        const dow = s.getDay();
-        s.setDate(today.getDate() - (dow === 0 ? 6 : dow - 1));
-        e = today;
-        break;
-      case "month":
-        s = new Date(today.getFullYear(), today.getMonth(), 1);
-        e = today;
-        break;
-      case "all":
-        if (transactions.length > 0) {
-          const dates = transactions.map((d) => d.tanggal).sort();
-          s = new Date(dates[0]);
-          e = new Date(dates[dates.length - 1]);
-        } else {
-          s = e = today;
-        }
-        break;
-      default:
-        s = e = today;
-    }
-    const format = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    setStartDate(format(s));
-    setEndDate(format(e));
-  };
-
-  const processAction = () => {
-    if (!startDate || !endDate) {
-      setToast({ msg: "Pilih tanggal!", type: "error" });
-      return;
-    }
-    if (startDate > endDate) {
-      setToast({ msg: "Tanggal mulai > akhir!", type: "error" });
-      return;
-    }
-    const data = transactions.filter((t) => isInDateRange(t.tanggal, startDate, endDate));
-    if (data.length === 0) {
-      setToast({ msg: "Tidak ada data!", type: "error" });
-      return;
-    }
-    setShowModal(false);
-    if (pendingAction === "pdf") {
-      generatePDF(data, startDate, endDate);
-    } else if (pendingAction === "csv") {
-      exportCSV(data, startDate, endDate);
-    } else {
-      exportJSON(data, startDate, endDate);
-    }
-  };
-
-  const generatePDF = (data: Transaction[], s: string, e: string) => {
-    setToast({ msg: "Membuat PDF...", type: "success" });
-    setTimeout(() => {
-      const total = data.reduce((sum, i) => sum + i.biaya, 0);
-      const period = `${formatDateID(s)} - ${formatDateID(e)}`;
-      const rows = data
-        .map(
-          (item, idx) => `
-        <tr style="background:${idx % 2 === 0 ? "#fff" : "#f8fafc"}">
-          <td style="padding:6px 4px">${idx + 1}</td>
-          <td style="padding:6px 4px">${formatDateID(item.tanggal)}</td>
-          <td style="padding:6px 4px;font-weight:600">${item.nama}</td>
-          <td style="padding:6px 4px">${item.service}</td>
-          <td style="padding:6px 4px;text-align:right;font-weight:700;color:#0d9488">Rp ${formatRupiah(item.biaya)}</td>
-        </tr>`
-        )
-        .join("");
-
-      const html = `
-        <html>
-        <head>
-          <style>
-            body { font-family: Arial, sans-serif; padding: 20px; }
-            h1 { color: #0d9488; text-align: center; font-size: 22px; margin-bottom: 5px; }
-            .period { text-align: center; color: #666; font-size: 12px; margin-bottom: 20px; }
-            .summary { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 12px; }
-            .summary div { display: flex; justify-content: space-between; margin: 4px 0; }
-            table { width: 100%; border-collapse: collapse; font-size: 11px; }
-            th { background: #1e293b; color: white; padding: 8px 4px; text-align: left; }
-            td { padding: 6px 4px; }
-            .total-box { margin-top: 20px; padding: 14px; background: #0d9488; color: white; border-radius: 8px; text-align: center; }
-            .total-box .label { font-size: 10px; opacity: 0.9; }
-            .total-box .value { font-size: 24px; font-weight: 800; }
-            .footer { margin-top: 16px; text-align: center; color: #999; font-size: 8px; }
-          </style>
-        </head>
-        <body>
-          <h1>LAPORAN PENDAPATAN TEKNISI</h1>
-          <div class="period">Periode: ${period}</div>
-          <div class="summary">
-            <div><span>Tanggal Cetak:</span><strong>${formatDateID(getTodayString())}</strong></div>
-            <div><span>Jumlah Transaksi:</span><strong>${data.length}</strong></div>
-            <div><span>Total Pendapatan:</span><strong style="color:#0d9488">Rp ${formatRupiah(total)}</strong></div>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th>No</th><th>Tanggal</th><th>Pelanggan</th><th>Service</th><th style="text-align:right">Biaya</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-          <div class="total-box">
-            <div class="label">TOTAL PENDAPATAN</div>
-            <div class="value">Rp ${formatRupiah(total)}</div>
-          </div>
-          <div class="footer">Dicetak dari Catatan Teknisi App</div>
-        </body>
-        </html>`;
-
-      const blob = new Blob([html], { type: "text/html" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `Laporan_Teknisi_${s}_${e}.html`;
-      a.click();
-      URL.revokeObjectURL(url);
-      setToast({ msg: "Laporan berhasil didownload!", type: "success" });
-    }, 500);
-  };
-
-  const exportCSV = (data: Transaction[], s: string, e: string) => {
-    const headers = ["No", "Tanggal", "Pelanggan", "Service", "Keterangan", "Biaya"];
-    const rows = data.map((i, idx) => [idx + 1, i.tanggal, i.nama, i.service, i.keterangan, i.biaya]);
-    const csv = [headers, ...rows].map((r) => r.map((c) => `"${c}"`).join(",")).join("\n");
-    downloadFile(csv, `laporan_${s}_${e}.csv`, "text/csv");
-    setToast({ msg: "CSV berhasil didownload!", type: "success" });
-  };
-
-  const exportJSON = (data: Transaction[], s: string, e: string) => {
-    const total = data.reduce((sum, i) => sum + i.biaya, 0);
-    const json = {
-      meta: { title: "Laporan Pendapatan Teknisi", periode: { start: s, end: e }, generatedAt: new Date().toISOString() },
-      summary: { totalTransactions: data.length, totalPendapatan: total },
-      transactions: data.map((i, idx) => ({
-        no: idx + 1,
-        tanggal: i.tanggal,
-        pelanggan: i.nama,
-        service: i.service,
-        keterangan: i.keterangan,
-        biaya: i.biaya,
-      })),
-    };
-    downloadFile(JSON.stringify(json, null, 2), `laporan_${s}_${e}.json`, "application/json");
-    setToast({ msg: "JSON berhasil didownload!", type: "success" });
-  };
-
-  const downloadFile = (content: string, filename: string, type: string) => {
-    const blob = new Blob(["\ufeff" + content], { type });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.style.display = "none";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const filterButtons = [
-    { key: "all", label: "Semua" },
-    { key: "today", label: "Hari Ini" },
-    { key: "week", label: "Minggu Ini" },
-    { key: "month", label: "Bulan Ini" },
-  ];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-sky-50 to-purple-50 p-4">
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between py-6">
-          <div>
-            <h1 className="text-2xl font-extrabold text-slate-800 tracking-tight">Laporan Pendapatan</h1>
-            <p className="text-sm text-slate-400">Riwayat semua transaksi</p>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              className="bg-white hover:bg-slate-50 hover:text-emerald-600"
-              onClick={() => openModal("pdf")}
-            >
-              <Printer className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="bg-white hover:bg-slate-50 hover:text-emerald-600"
-              onClick={() => openModal("csv")}
-            >
-              <Share2 className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="bg-white hover:bg-slate-50 hover:text-emerald-600"
-              onClick={() => openModal("json")}
-            >
-              <FileText className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 mb-5">
-          <Card className="border-t-4 border-t-emerald-500 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-4 text-center">
-              <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center mx-auto mb-2">
-                <Clock className="h-4 w-4 text-emerald-600" />
-              </div>
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-1">Hari Ini</p>
-              <p className="text-sm font-extrabold text-emerald-600">Rp {formatRupiah(stats.today)}</p>
-            </CardContent>
-          </Card>
-          <Card className="border-t-4 border-t-blue-500 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-4 text-center">
-              <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center mx-auto mb-2">
-                <Calendar className="h-4 w-4 text-blue-600" />
-              </div>
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-1">Minggu Ini</p>
-              <p className="text-sm font-extrabold text-blue-600">Rp {formatRupiah(stats.week)}</p>
-            </CardContent>
-          </Card>
-          <Card className="border-t-4 border-t-purple-500 shadow-sm hover:shadow-md transition-shadow">
-            <CardContent className="p-4 text-center">
-              <div className="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center mx-auto mb-2">
-                <TrendingUp className="h-4 w-4 text-purple-600" />
-              </div>
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-1">Bulan Ini</p>
-              <p className="text-sm font-extrabold text-purple-600">Rp {formatRupiah(stats.month)}</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Filter */}
-        <Card className="mb-4 shadow-sm">
-          <CardContent className="p-4 flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-semibold text-slate-500 flex items-center gap-1">
-              <Filter className="h-3 w-3" /> Filter:
-            </span>
-            {filterButtons.map((btn) => (
-              <Button
-                key={btn.key}
-                size="sm"
-                variant={filter === btn.key ? "default" : "outline"}
-                className={filter === btn.key ? "bg-emerald-600 hover:bg-emerald-700" : "bg-slate-50 hover:bg-slate-100"}
-                onClick={() => setFilter(btn.key)}
-              >
-                {btn.label}
-              </Button>
-            ))}
-          </CardContent>
-        </Card>
-
-        {/* Summary */}
-        <div className="bg-gradient-to-r from-white to-amber-50 border border-slate-200 rounded-xl p-4 mb-4 flex justify-between items-center shadow-sm">
-          <p className="text-xs text-slate-500">
-            Menampilkan <strong className="text-slate-800">{filteredData.length}</strong> transaksi
-          </p>
-          <p className="text-sm font-extrabold text-amber-600">Total: Rp {formatRupiah(total)}</p>
-        </div>
-
-        {/* Transaction List */}
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-bold text-slate-600 flex items-center gap-2">
-            <Wallet className="h-4 w-4" /> Daftar Transaksi
-          </h2>
-          <span className="bg-slate-100 px-3 py-1 rounded-full text-[11px] font-semibold text-slate-400">
-            {transactions.length} total
-          </span>
-        </div>
-
-        <Card className="shadow-sm max-h-[480px] overflow-y-auto">
-          {transactions.length === 0 ? (
-            <CardContent className="py-12 text-center">
-              <div className="text-5xl mb-3 opacity-40">📊</div>
-              <p className="text-sm text-slate-400">Memuat data...</p>
-            </CardContent>
-          ) : filteredData.length === 0 ? (
-            <CardContent className="py-12 text-center">
-              <div className="text-5xl mb-3 opacity-40">📊</div>
-              <p className="text-sm text-slate-400">Tidak ada transaksi</p>
-            </CardContent>
-          ) : (
-            <div>
-              {filteredData.map((item, idx) => {
-                const [y, m, d] = item.tanggal.split("-");
-                const dt = new Date(Number(y), Number(m) - 1, Number(d));
-                return (
-                  <div
-                    key={item.id}
-                    className="flex items-center gap-3 p-4 border-b border-slate-100 hover:bg-slate-50 transition-colors"
-                    style={{ animation: `fadeInUp 0.3s ease ${idx * 30}ms backwards` }}
-                  >
-                    <div className="bg-slate-100 px-2.5 py-2 rounded-lg text-center min-w-[52px]">
-                      <div className="text-lg font-extrabold text-slate-800 leading-none">{dt.getDate()}</div>
-                      <div className="text-[9px] text-slate-400 font-semibold uppercase mt-0.5">
-                        {dt.toLocaleDateString("id-ID", { month: "short" })}
-                      </div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-bold text-sm text-slate-800 mb-0.5">{item.nama}</p>
-                      <div className="flex items-center gap-1.5">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${getServiceBadgeClass(item.service)}`}>
-                          {item.service === "Lainnya" ? item.keterangan : item.service}
-                        </span>
-                      </div>
-                    </div>
-                    <p className="font-extrabold text-sm text-emerald-600 whitespace-nowrap">Rp {formatRupiah(item.biaya)}</p>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </Card>
-      </div>
-
-      {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-5">
-          <div className="bg-white rounded-2xl border border-slate-200 w-full max-w-md p-6 shadow-2xl">
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-extrabold text-slate-800 flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-emerald-600" />
-                {pendingAction === "pdf" ? "Cetak / Download PDF" : pendingAction === "csv" ? "Export CSV" : "Export JSON"}
-              </h3>
-              <Button variant="ghost" size="icon" className="hover:bg-red-50 hover:text-red-600" onClick={() => setShowModal(false)}>
-                ✕
-              </Button>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <Label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Tanggal Mulai</Label>
-                <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="mt-1.5" />
-              </div>
-              <div className="flex justify-center text-slate-400">
-                <Download className="h-4 w-4 rotate-90" />
-              </div>
-              <div>
-                <Label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Tanggal Akhir</Label>
-                <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="mt-1.5" />
-              </div>
-
-              <div className="flex flex-wrap gap-1.5">
-                {[
-                  { key: "today", label: "Hari Ini" },
-                  { key: "week", label: "Minggu Ini" },
-                  { key: "month", label: "Bulan Ini" },
-                  { key: "all", label: "Semua Data" },
-                ].map((btn) => (
-                  <Button key={btn.key} size="sm" variant="outline" className="rounded-full text-[11px]" onClick={() => setQuickDate(btn.key)}>
-                    {btn.label}
-                  </Button>
-                ))}
-              </div>
-
-              <div className="bg-slate-50 rounded-xl p-4">
-                <p className="text-[11px] font-bold text-slate-400 uppercase mb-2">Preview Hasil</p>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="text-center bg-white p-3 rounded-lg border border-slate-200">
-                    <p className="text-[10px] text-slate-400 mb-1">Transaksi</p>
-                    <p className="text-sm font-extrabold text-emerald-600">
-                      {transactions.filter((t) => isInDateRange(t.tanggal, startDate, endDate)).length}
-                    </p>
-                  </div>
-                  <div className="text-center bg-white p-3 rounded-lg border border-slate-200">
-                    <p className="text-[10px] text-slate-400 mb-1">Total</p>
-                    <p className="text-sm font-extrabold text-emerald-600">
-                      Rp {formatRupiah(transactions.filter((t) => isInDateRange(t.tanggal, startDate, endDate)).reduce((s, i) => s + i.biaya, 0))}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-2 mt-5">
-              <Button variant="outline" className="flex-1" onClick={() => setShowModal(false)}>
-                Batal
-              </Button>
-              <Button className="flex-1 bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-600/30" onClick={processAction}>
-                <Download className="h-4 w-4 mr-1" /> Proses
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Toast */}
-      {toast && (
-        <div className="fixed bottom-5 left-1/2 -translate-x-1/2 bg-white border border-slate-200 px-5 py-3 rounded-xl shadow-lg flex items-center gap-2 text-sm font-semibold z-[9999]">
-          <span>{toast.type === "success" ? "✅" : "❌"}</span>
-          <span>{toast.msg}</span>
-        </div>
-      )}
-
-      <style>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
-    </div>
-  );
+function updatePreview() {
+  const s = document.getElementById('startDate').value;
+  const e = document.getElementById('endDate').value;
+  
+  if (!s || !e) {
+    document.getElementById('previewCount').textContent = '0';
+    document.getElementById('previewTotal').textContent = 'Rp 0';
+    return;
+  }
+  
+  const filtered = getDataByDateRange(s, e);
+  const total = filtered.reduce((sum, item) => sum + (Number(item.biaya) || 0), 0);
+  
+  document.getElementById('previewCount').textContent = filtered.length;
+  document.getElementById('previewTotal').textContent = 'Rp ' + formatRupiah(total);
 }
+
+document.getElementById('startDate').addEventListener('change', updatePreview);
+document.getElementById('endDate').addEventListener('change', updatePreview);
+
+// Process Action
+window.processAction = async function() {
+  const s = document.getElementById('startDate').value;
+  const e = document.getElementById('endDate').value;
+  
+  if (!s || !e) { showToast('Pilih tanggal!', 'error'); return; }
+  if (s > e) { showToast('Tanggal mulai > akhir!', 'error'); return; }
+  
+  const data = getDataByDateRange(s, e);
+  
+  if (data.length === 0) { showToast('Tidak ada data!', 'error'); return; }
+  
+  closeModal();
+  
+  switch(pendingAction) {
+    case 'print': await generatePDF(data, s, e); break;
+    case 'share': await exportCSV(data, s, e); break;
+    case 'export-json': await exportJSON(data, s, e); break;
+  }
+};
+
+// ============================================
+// 📄 PDF GENERATION (FIXED)
+// ============================================
+
+async function generatePDF(data, startDate, endDate) {
+  showToast('Membuat PDF...', 'success');
+  
+  try {
+    // Delay sedikit biar DOM siap
+    await new Promise(r => setTimeout(r, 200));
+    
+    const total = data.reduce((sum, i) => sum + (Number(i.biaya)||0), 0);
+    const period = formatDateID(startDate) + ' - ' + formatDateID(endDate);
+    
+    // Fill template
+    document.getElementById('pdfPeriod').textContent = 'Periode: ' + period;
+    document.getElementById('pdfPrintDate').textContent = formatDateID(getTodayString());
+    document.getElementById('pdfTotalTx').textContent = data.length + ' transaksi';
+    document.getElementById('pdfTotalAmount').textContent = 'Rp ' + formatRupiah(total);
+    document.getElementById('pdfGrandTotal').textContent = 'Rp ' + formatRupiah(total);
+    
+    // Build table
+    let rows = '';
+    data.forEach((item, idx) => {
+      const svc = item.service === 'Lainnya' ? (item.keterangan || 'Lainnya') : item.service;
+      const bg = idx % 2 === 0 ? '#fff' : '#f8fafc';
+      rows += `<tr style="background:${bg}">
+        <td style="padding:6px 4px">${idx+1}</td>
+        <td style="padding:6px 4px">${formatDateID(item.tanggal)}</td>
+        <td style="padding:6px 4px;font-weight:600">${item.nama||'-'}</td>
+        <td style="padding:6px 4px">${svc}</td>
+        <td style="padding:6px 4px;text-align:right;font-weight:700;color:#0d9488">Rp ${formatRupiah(item.biaya||0)}</td>
+      </tr>`;
+    });
+    document.getElementById('pdfTableBody').innerHTML = rows;
+    
+    // Generate PDF
+    const element = document.getElementById('pdfTemplate');
+    const filename = `Laporan_Teknisi_${startDate}_${endDate}.pdf`;
+    
+    const opt = {
+      margin: 10,
+      filename: filename,
+      image: { type: 'jpeg', quality: 0.95 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+    
+    await html2pdf().set(opt).from(element).save();
+    showToast('PDF berhasil didownload!', 'success');
+    
+  } catch(err) {
+    console.error('PDF Error:', err);
+    showToast('Gagal membuat PDF!', 'error');
+  }
+}
+
+// Export CSV
+async function exportCSV(data, s, e) {
+  const headers = ['No','Tanggal','Pelanggan','Service','Keterangan','Biaya'];
+  const rows = data.map((i, idx) => [
+    idx+1, i.tanggal, i.nama||'-', i.service||'-', i.keterangan||'-', Number(i.biaya)||0
+  ]);
+  const csv = [headers,...rows].map(r => r.map(c=>`"${c}"`).join(',')).join('\n');
+  
+  downloadFile(csv, `laporan_${s}_${e}.csv`, 'text/csv');
+  showToast('CSV berhasil didownload!', 'success');
+}
+
+// Export JSON
+async function exportJSON(data, s, e) {
+  const total = data.reduce((sum,i)=>sum+(Number(i.biaya)||0),0);
+  const json = {
+    meta: { title: 'Laporan Pendapatan Teknisi', periode: {start:s,end:e}, generatedAt: new Date().toISOString() },
+    summary: { totalTransactions: data.length, totalPendapatan: total },
+    transactions: data.map((i,idx) => ({
+      no: idx+1, tanggal: i.tanggal, pelanggan: i.nama||'-',
+      service: i.service||'-', keterangan: i.keterangan||null, biaya: Number(i.biaya)||0
+    }))
+  };
+  
+  downloadFile(JSON.stringify(json,null,2), `laporan_${s}_${e}.json`, 'application/json');
+  showToast('JSON berhasil didownload!', 'success');
+}
+
+function downloadFile(content, filename, type) {
+  const blob = new Blob(['\ufeff'+content], {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=filename;
+  a.style.display='none'; document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+// Filter
+window.setFilter = function(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter===f));
+  renderList();
+};
+
+function renderList() {
+  const filtered = allData.filter(item => isInRange(item.tanggal, currentFilter));
+  const total = filtered.reduce((s,i) => s+(Number(i.biaya)||0),0);
+  
+  document.getElementById('showCount').textContent = filtered.length;
+  document.getElementById('summaryTotal').textContent = 'Total: Rp ' + formatRupiah(total);
+  
+  filtered.sort((a,b) => b.tanggal.localeCompare(a.tanggal));
+  const container = document.getElementById('transactionList');
+  
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><p>Tidak ada transaksi</p></div>';
+    return;
+  }
+  
+  container.innerHTML = filtered.map((item, idx) => {
+    const svc = item.service==='Lainnya'?(item.keterangan||'Lainnya'):item.service;
+    const dt = formatDate(item.tanggal);
+    return `<div class="transaction-item" style="animation-delay:${idx*30}ms">
+      <div class="txn-date"><div class="txn-day">${dt.day}</div><div class="txn-month">${dt.month}</div></div>
+      <div class="txn-info"><div class="txn-name">${item.nama||'-'}</div><div class="txn-service"><span class="service-badge ${getServiceBadgeClass(item.service)}">${svc}</span></div></div>
+      <div class="txn-amount">Rp ${formatRupiah(item.biaya||0)}</div>
+    </div>`;
+  }).join('');
+}
+
+// Load Data
+async function loadReport() {
+  try {
+    const snap = await getDocs(collection(db, "data"));
+    allData = [];
+    let tT=0, tW=0, tM=0;
+    const today = getTodayString();
+    const now = new Date();
+    
+    // Start of week
+    const sow = new Date(now);
+    const dow = sow.getDay();
+    sow.setDate(now.getDate() - (dow===0?6:dow-1));
+    const startOfWeek = formatDateToString(sow);
+    
+    // Start of month
+    const som = formatDateToString(new Date(now.getFullYear(), now.getMonth(), 1));
+    
+    snap.forEach(doc => {
+      const d = doc.data();
+      // Validasi data
+      const item = {
+        nama: d.nama || '-',
+        service: d.service || '-',
+        keterangan: d.keterangan || null,
+        biaya: Number(d.biaya) || 0,  // Pasti number!
+        tanggal: d.tanggal || today   // Pasti ada tanggal!
+      };
+      allData.push(item);
+      
+      // Stats
+      if (item.tanggal === today) tT += item.biaya;
+      if (item.tanggal >= startOfWeek) tW += item.biaya;
+      if (item.tanggal >= som) tM += item.biaya;
+    });
+    
+    document.getElementById('statToday').textContent = 'Rp ' + formatRupiah(tT);
+    document.getElementById('statWeek').textContent = 'Rp ' + formatRupiah(tW);
+    document.getElementById('statMonth').textContent = 'Rp ' + formatRupiah(tM);
+    document.getElementById('totalCount').textContent = allData.length + ' total';
+    
+    renderList();
+    
+  } catch(e) {
+    console.error(e);
+    document.getElementById('transactionList').innerHTML = '<div class="empty-state"><div class="empty-icon">❌</div><p>Gagal load data</p></div>';
+  }
+}
+
+loadReport();
+
+// Close modal on outside click or Escape
+document.getElementById('dateRangeModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>
